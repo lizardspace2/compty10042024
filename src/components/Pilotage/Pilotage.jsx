@@ -1,11 +1,12 @@
 // Pilotage.js
 import React from 'react';
+import MyChartComponent from './components/MyChartComponent';
 
 function Pilotage() {
   return (
     <div>
       <h1>Pilotage Page</h1>
-      {/* Add your pilotage page content here */}
+      <MyChartComponent/>
     </div>
   );
 }
