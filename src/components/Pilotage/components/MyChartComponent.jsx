@@ -16,6 +16,7 @@ import {
   Legend,
 } from 'recharts';
 
+// Define the data array outside of the component for simplicity
 const data = [
     { name: 'janv.', Revenues: 4000, Expenses: 2400, Result: 1600 },
     { name: 'févr.', Revenues: 3000, Expenses: 1398, Result: 1602 },
@@ -74,57 +75,74 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
   };
 
+// Custom tick component to adjust the label position
+const CustomTick = (props) => {
+  const { x, y, payload } = props;
+  
+  return (
+    <Text x={x} y={y} dy={16} textAnchor="middle" fill="#666">
+      {payload.value}
+    </Text>
+  );
+};
+
 function MyChartComponent() {
-    const bgColor = useColorModeValue('white', 'gray.800');
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
-    const textColor = useColorModeValue('gray.700', 'gray.200'); // This should match the text color in your theme
-    const barSize = 50; // Updated bar size to be twice as wide
-  
-    return (
-      <Box
-        p={4}
-        bg={bgColor}
-        borderRadius="lg"
-        boxShadow="md"
-        borderColor={borderColor}
-        borderWidth={1}
-      >
-        <ResponsiveContainer width="100%" height={300}>
-          <ComposedChart data={data}>
-            <CartesianGrid stroke="#f5f5f5" />
-            <XAxis 
-              dataKey="name" 
-              scale="band" 
-              stroke={textColor}
-              tick={{ fill: textColor }}
-              tickLine={false}
-            />
-            {/* Remove the left YAxis and update the right YAxis as the primary axis */}
-            <YAxis 
-              yAxisId="right" 
-              orientation="right" 
-              stroke={textColor}
-              tick={{ fill: textColor }}
-              tickLine={false}
-              tickFormatter={(value) => `${value}€`}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Bar yAxisId="right" dataKey="Expenses" barSize={barSize} fill="#EB6B9D" shape={<CustomBarShape />} />
-            <Bar yAxisId="right" dataKey="Revenues" barSize={barSize} fill="#7DD3FC" shape={<CustomBarShape />} />
-            <Line 
-              yAxisId="right" 
-              type="monotone" 
-              dataKey="Result" 
-              stroke="#333333"
-              strokeWidth={2}
-              dot={{ fill: '#333333', stroke: '#fff', strokeWidth: 2, r: 5 }}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </Box>
-    );
-  }
-  
-  export default MyChartComponent;
-  
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const barSize = 50; // Set the size of the bars
+
+  // Prepare the data with a fake bar to manipulate label position
+  const newData = data.map(item => ({
+    ...item,
+    Fake: Math.max(item.Revenues, item.Expenses),
+  }));
+
+  return (
+    <Box
+      p={4}
+      bg={bgColor}
+      borderRadius="lg"
+      boxShadow="md"
+      borderColor={borderColor}
+      borderWidth={1}
+    >
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart data={newData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis 
+            dataKey="name" 
+            scale="band" 
+            stroke={textColor}
+            tick={<CustomTick />} // Custom tick component
+            tickLine={false}
+            interval={0}
+          />
+          <YAxis 
+            yAxisId="right" 
+            orientation="right" 
+            stroke={textColor}
+            tick={{ fill: textColor }}
+            tickLine={false}
+            tickFormatter={(value) => `${value}€`}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend />
+          <Bar yAxisId="right" dataKey="Fake" barSize={barSize} fill="transparent" />
+          <Bar yAxisId="right" dataKey="Expenses" barSize={barSize} fill="#EB6B9D" shape={<CustomBarShape />} />
+          <Bar yAxisId="right" dataKey="Revenues" barSize={barSize} fill="#7DD3FC" shape={<CustomBarShape />} />
+          <Line 
+            yAxisId="right" 
+            type="monotone" 
+            dataKey="Result" 
+            stroke="#333333"
+            strokeWidth={2}
+            dot={{ fill: '#333333', stroke: '#fff', strokeWidth: 2, r: 5 }}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Box>
+  );
+}
+
+export default MyChartComponent;
