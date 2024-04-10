@@ -30,34 +30,34 @@ const data = [
     { name: 'nov.', Revenues: 2780, Expenses: 3908, Result: -1128 },
     { name: 'déc.', Revenues: 1890, Expenses: 4800, Result: -2910 }
   ]; 
-
-// Define a custom shape for the bars
 const CustomBarShape = (props) => {
-  const { fill, x, y, width, height } = props;
+    const { fill, x, y, width, height } = props;
+    const borderRadius = 5; // This sets the border-radius for the bar's top corners
   
-  // Define the gradient id based on the fill color to ensure uniqueness
-  const gradientId = `gradient-${fill.replace('#', '')}`;
-
-  return (
-    <g>
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor={fill} stopOpacity={0.8}/>
-          <stop offset="95%" stopColor={fill} stopOpacity={0.5}/>
-        </linearGradient>
-      </defs>
-      <rect
-        radius={[5, 5, 0, 0]} // Adjust corner radius here
-        fill={`url(#${gradientId})`}
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-      />
-    </g>
-  );
-};
-
+    // Define the gradientId dynamically to ensure it's unique for multiple instances
+    const gradientId = `gradient-${Math.floor(Math.random() * 100000)}`;
+  
+    return (
+      <g>
+        <defs>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={fill} stopOpacity={0.8}/>
+            <stop offset="95%" stopColor={fill} stopOpacity={0.5}/>
+          </linearGradient>
+        </defs>
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          rx={borderRadius} // Apply border-radius to the x-axis of the rectangle
+          ry={borderRadius} // Apply border-radius to the y-axis of the rectangle
+          fill={`url(#${gradientId})`}
+        />
+      </g>
+    );
+  };
+  
 // Custom tooltip to match the design
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
