@@ -48,7 +48,6 @@ function RevenueTable() {
             {revenues.map((amount, index) => (
               <Th isNumeric key={index}>{amount.toLocaleString()}</Th>
             ))}
-            {/* Bold and sum for the last entry, with increased font weight */}
             <Th isNumeric fontWeight="1000">{totalRevenue.toLocaleString()}</Th>
           </Tr>
         </Thead>
