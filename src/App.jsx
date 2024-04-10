@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Pilotage from './components/Pilotage';
+import Pilotage from './components/Pilotage/Pilotage';
 import Transactions from './components/Transactions';
 import Todo from './components/Todo';
 import Documents from './components/Documents';
