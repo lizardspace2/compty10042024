@@ -1,5 +1,9 @@
 import React from 'react';
 import {
+  Box, // Importing the Box component from Chakra UI
+  useColorModeValue, // Hook to handle color mode
+} from '@chakra-ui/react';
+import {
   ResponsiveContainer,
   ComposedChart,
   Bar,
@@ -8,7 +12,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
 } from 'recharts';
 
 const data = [
@@ -27,20 +31,32 @@ const data = [
   ];  
 
 function MyChartComponent() {
+  const bgColor = useColorModeValue('white', 'gray.800'); // Conditional background color
+  const borderColor = useColorModeValue('gray.200', 'gray.700'); // Conditional border color
+  
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <ComposedChart data={data}>
-        <CartesianGrid stroke="#f5f5f5" />
-        <XAxis dataKey="name" scale="band" />
-        <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-        <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
-        <Tooltip />
-        <Legend />
-        <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#8884d8" />
-        <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#82ca9d" />
-        <Line yAxisId="right" type="monotone" dataKey="Result" stroke="#ff7300" />
-      </ComposedChart>
-    </ResponsiveContainer>
+    <Box
+      p={4} // Padding from Chakra UI
+      bg={bgColor} // Background color from Chakra UI
+      borderRadius="lg" // Border radius from Chakra UI
+      boxShadow="md" // Shadow from Chakra UI
+      borderColor={borderColor} // Border color from Chakra UI
+      borderWidth={1} // Border width from Chakra UI
+    >
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart data={data}>
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis dataKey="name" scale="band" />
+          <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+          <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+          <Tooltip />
+          <Legend />
+          <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#8884d8" />
+          <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#82ca9d" />
+          <Line yAxisId="right" type="monotone" dataKey="Result" stroke="#ff7300" />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Box>
   );
 }
 
