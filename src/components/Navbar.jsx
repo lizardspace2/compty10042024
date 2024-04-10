@@ -8,7 +8,7 @@ function Navbar() {
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column"> {/* Assurez-vous que la hauteur du conteneur est suffisante pour pousser le contenu vers le bas */}
       <VStack spacing={4} align="stretch" flex="1">
         <Box>
-          <Text fontSize="lg" fontWeight="bold">indy</Text>
+          <Text fontSize="lg" fontWeight="bold">Compty 🚀</Text>
         </Box>
         <Divider />
         {/* Les liens existants restent inchangés */}
