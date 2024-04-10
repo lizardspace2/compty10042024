@@ -1,28 +1,23 @@
-import './App.css';
+import React from 'react';
+import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
+import Navbar from './components/Navbar'; // Assurez-vous d'importer le composant Navbar depuis son fichier
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
+    <ChakraProvider>
+      <Flex>
+        {/* Navbar à gauche */}
+        <Box minW="200px">
+          <Navbar />
+        </Box>
+        
+        {/* Contenu principal à droite */}
+        <Box flex="1" p={5}>
+          {/* Contenu de votre application */}
+          <Text>Bienvenue dans l'application!</Text>
+        </Box>
+      </Flex>
+    </ChakraProvider>
   );
 }
 
