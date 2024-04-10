@@ -75,63 +75,56 @@ const CustomTooltip = ({ active, payload, label }) => {
   };
 
 function MyChartComponent() {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  const textColor = useColorModeValue('gray.700', 'gray.200'); // This should match the text color in your theme
-
-  return (
-    <Box
-      p={4}
-      bg={bgColor}
-      borderRadius="lg"
-      boxShadow="md"
-      borderColor={borderColor}
-      borderWidth={1}
-    >
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={data}>
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis 
-            dataKey="name" 
-            scale="band" 
-            stroke={textColor} // Axis line color
-            tick={{ fill: textColor }} // Tick text color
-            tickLine={false} // Hide tick line
-            // If you want to rotate the labels:
-            // tick={{ angle: -45, fill: textColor }}
-          />
-          <YAxis 
-            yAxisId="left" 
-            orientation="left" 
-            stroke={textColor} // Axis line color
-            tick={{ fill: textColor }} // Tick text color
-            tickLine={false} // Hide tick line
-            tickFormatter={(value) => `${value}€`} // Add euro sign to tick
-          />
-          <YAxis 
-            yAxisId="right" 
-            orientation="right" 
-            stroke={textColor} // Axis line color
-            tick={{ fill: textColor }} // Tick text color
-            tickLine={false} // Hide tick line
-            tickFormatter={(value) => `${value}€`} // Add euro sign to tick
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#EB6B9D" shape={<CustomBarShape />} />
-          <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#7DD3FC" shape={<CustomBarShape />} />
-          <Line 
-            yAxisId="right" 
-            type="monotone" 
-            dataKey="Result" 
-            stroke="#333333" 
-            strokeWidth={2}
-            dot={{ fill: '#333333', stroke: '#fff', strokeWidth: 2, r: 5 }}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </Box>
-  );
-}
-
-export default MyChartComponent;
+    const bgColor = useColorModeValue('white', 'gray.800');
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const textColor = useColorModeValue('gray.700', 'gray.200'); // This should match the text color in your theme
+    const barSize = 50; // Updated bar size to be twice as wide
+  
+    return (
+      <Box
+        p={4}
+        bg={bgColor}
+        borderRadius="lg"
+        boxShadow="md"
+        borderColor={borderColor}
+        borderWidth={1}
+      >
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart data={data}>
+            <CartesianGrid stroke="#f5f5f5" />
+            <XAxis 
+              dataKey="name" 
+              scale="band" 
+              stroke={textColor}
+              tick={{ fill: textColor }}
+              tickLine={false}
+            />
+            {/* Remove the left YAxis and update the right YAxis as the primary axis */}
+            <YAxis 
+              yAxisId="right" 
+              orientation="right" 
+              stroke={textColor}
+              tick={{ fill: textColor }}
+              tickLine={false}
+              tickFormatter={(value) => `${value}€`}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend />
+            <Bar yAxisId="right" dataKey="Expenses" barSize={barSize} fill="#EB6B9D" shape={<CustomBarShape />} />
+            <Bar yAxisId="right" dataKey="Revenues" barSize={barSize} fill="#7DD3FC" shape={<CustomBarShape />} />
+            <Line 
+              yAxisId="right" 
+              type="monotone" 
+              dataKey="Result" 
+              stroke="#333333"
+              strokeWidth={2}
+              dot={{ fill: '#333333', stroke: '#fff', strokeWidth: 2, r: 5 }}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </Box>
+    );
+  }
+  
+  export default MyChartComponent;
+  
