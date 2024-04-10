@@ -1,9 +1,9 @@
 // Pilotage.js
 import React from 'react';
 import MyChartComponent from './components/MyChartComponent';
-import CustomChart from './components/CustomChart';
 import RevenueTable from './components/RevenueTable';
 import DepenseTable from './components/DepenseTable';
+import ThresholdProgressBar from './components/ThresholdProgressBar';
 
 function Pilotage() {
   return (
@@ -12,6 +12,7 @@ function Pilotage() {
       <MyChartComponent/>
       <RevenueTable/>
       <DepenseTable/>
+      <ThresholdProgressBar/>
     </div>
   );
 }
