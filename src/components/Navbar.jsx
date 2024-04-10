@@ -1,24 +1,23 @@
 import React from 'react';
-import { Box, VStack, Text, Divider, Icon, Button, Spacer } from '@chakra-ui/react'; // Importez Spacer depuis chakra-ui
+import { Box, VStack, Text, Divider, Icon, Button, Spacer } from '@chakra-ui/react';
 import { FaHome, FaRegListAlt, FaRegCreditCard, FaRegFileAlt, FaUserFriends, FaUserCircle, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column"> {/* Assurez-vous que la hauteur du conteneur est suffisante pour pousser le contenu vers le bas */}
+    <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
         <Box>
           <Text fontSize="lg" fontWeight="bold">Compty 🚀</Text>
         </Box>
         <Divider />
-        {/* Les liens existants restent inchangés */}
-        <Link to="/profile" style={{ textDecoration: 'none' }}>
+        <Link to="/profile" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaUserCircle} />
             <Text ml={2}>Bonjour Guillaume</Text>
           </Button>
         </Link>
-        <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+        <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaHome} />
             <Text ml={2}>Pilotage</Text>
@@ -30,7 +29,7 @@ function Navbar() {
             <Text ml={2}>Transactions</Text>
           </Button>
         </Link>
-        <Link to="/tasks" style={{ textDecoration: 'none' }}>
+        <Link to="/todo" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full" position="relative">
             <Icon as={FaRegListAlt} />
             <Text ml={2}>À faire</Text>
@@ -45,14 +44,14 @@ function Navbar() {
             <Text ml={2}>Documents</Text>
           </Button>
         </Link>
-        <Link to="/accompaniment" style={{ textDecoration: 'none' }}>
+        <Link to="/accompaniment" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaUserFriends} />
             <Text ml={2}>Accompagnement</Text>
           </Button>
         </Link>
         <Divider />
-        <Spacer /> {/* Ce Spacer va pousser tout ce qui se trouve en dessous vers le bas du conteneur. */}
+        <Spacer />
         <Link to="/sponsorship" style={{ textDecoration: 'none' }}>
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaPaperPlane} />
