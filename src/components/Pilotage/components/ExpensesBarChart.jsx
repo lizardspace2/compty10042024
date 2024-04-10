@@ -6,7 +6,7 @@ import {
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 // Sample data
 const data = [
@@ -28,46 +28,34 @@ function ExpensesBarChart() {
   return (
     <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm">
       <VStack spacing={5} align="stretch">
-        <Box>
-          <Text fontSize="xl" fontWeight="semibold" mb={1}>
-            Dépenses
-          </Text>
-          <Text fontSize="3xl" fontWeight="bold" color={theme.colors.pink[600]}>
-            {totalExpenses.toLocaleString('fr-FR')} €
-          </Text>
-        </Box>
+        <Text fontSize="xl" fontWeight="semibold" mb={1}>
+          Dépenses
+        </Text>
+        <Text fontSize="3xl" fontWeight="bold" color={theme.colors.pink[600]}>
+          {totalExpenses.toLocaleString('fr-FR')} €
+        </Text>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart
             data={data}
             layout="vertical"
             margin={{ top: 0, right: 30, bottom: 0, left: 30 }}
-            barSize={10}
+            barCategoryGap="35%"
           >
-            <XAxis type="number" hide />
-            <YAxis
-              dataKey="name"
-              type="category"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 14, fill: textColor }}
-            />
+            <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
+            <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
             <Tooltip
+              cursor={{ fill: 'transparent' }}
               contentStyle={{
                 borderRadius: '12px',
                 borderColor: 'rgba(0,0,0,0)',
                 boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
               }}
-              cursor={{ fill: 'transparent' }}
+              formatter={(value) => [value.toLocaleString('fr-FR'), 'Valeur']}
             />
-            <Bar
-              dataKey="value"
-              fill={barFillColor}
-              background={{ fill: theme.colors.gray[200] }}
-            >
+            <Bar dataKey="value" fill={barFillColor} radius={[10, 10, 0, 0]}>
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={index === 1 ? theme.colors.pink[400] : barFillColor} />
+                <Cell key={`cell-${index}`} fill={entry.name === 'Cotisations URSSAF' ? theme.colors.pink[400] : barFillColor} />
               ))}
-              <LabelList dataKey="value" position="insideRight" fill={textColor} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
