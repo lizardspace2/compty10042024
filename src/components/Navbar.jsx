@@ -1,16 +1,17 @@
 import React from 'react';
-import { Box, VStack, Text, Divider, Icon, Button } from '@chakra-ui/react';
+import { Box, VStack, Text, Divider, Icon, Button, Spacer } from '@chakra-ui/react'; // Importez Spacer depuis chakra-ui
 import { FaHome, FaRegListAlt, FaRegCreditCard, FaRegFileAlt, FaUserFriends, FaUserCircle, FaPaperPlane } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Importez le composant Link de React Router
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <Box bg="pink.100" w="100%" p={4} color="black" h="100%" display="flex" flexDirection="column">
+    <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column"> {/* Assurez-vous que la hauteur du conteneur est suffisante pour pousser le contenu vers le bas */}
       <VStack spacing={4} align="stretch" flex="1">
         <Box>
           <Text fontSize="lg" fontWeight="bold">indy</Text>
         </Box>
         <Divider />
+        {/* Les liens existants restent inchangés */}
         <Link to="/profile" style={{ textDecoration: 'none' }}>
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaUserCircle} />
@@ -51,9 +52,9 @@ function Navbar() {
           </Button>
         </Link>
         <Divider />
-        {/* Separated Parrainage button */}
+        <Spacer /> {/* Ce Spacer va pousser tout ce qui se trouve en dessous vers le bas du conteneur. */}
         <Link to="/sponsorship" style={{ textDecoration: 'none' }}>
-          <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full" style={{ marginTop: 'auto' }}>
+          <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaPaperPlane} />
             <Text ml={2}>Parrainage</Text>
           </Button>
