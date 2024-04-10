@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  Box, // Importing the Box component from Chakra UI
-  useColorModeValue, // Hook to handle color mode
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import {
   ResponsiveContainer,
@@ -30,18 +30,35 @@ const data = [
     { name: 'déc.', Revenues: 1890, Expenses: 4800, Result: -2910 }
   ];  
 
+
+// Custom tooltip to match the design
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <Box bg="gray.700" color="white" p="2" borderRadius="md" boxShadow="xl">
+        <p>{`${label}`}</p>
+        <p>{`Revenues: ${payload[0].value}€`}</p>
+        <p>{`Expenses: ${payload[1].value}€`}</p>
+        <p>{`Result: ${payload[2].value}€`}</p>
+      </Box>
+    );
+  }
+
+  return null;
+};
+
 function MyChartComponent() {
   const bgColor = useColorModeValue('white', 'gray.800'); // Conditional background color
   const borderColor = useColorModeValue('gray.200', 'gray.700'); // Conditional border color
   
   return (
     <Box
-      p={4} // Padding from Chakra UI
-      bg={bgColor} // Background color from Chakra UI
-      borderRadius="lg" // Border radius from Chakra UI
-      boxShadow="md" // Shadow from Chakra UI
-      borderColor={borderColor} // Border color from Chakra UI
-      borderWidth={1} // Border width from Chakra UI
+      p={4}
+      bg={bgColor}
+      borderRadius="lg"
+      boxShadow="md"
+      borderColor={borderColor}
+      borderWidth={1}
     >
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
@@ -49,7 +66,7 @@ function MyChartComponent() {
           <XAxis dataKey="name" scale="band" />
           <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
           <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#8884d8" />
           <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#82ca9d" />
