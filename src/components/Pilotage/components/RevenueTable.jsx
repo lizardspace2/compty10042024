@@ -7,7 +7,8 @@ import {
   Tr,
   Th,
   Td,
-  Text,
+  Flex,
+  Icon,
 } from '@chakra-ui/react';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
@@ -15,10 +16,10 @@ function RevenueTable() {
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   
-  // Sample data for 12 months - replace this with your actual data
+  // Example data for 12 months - replace this with your actual data
   const revenues = [
-    10417, 10417, 10417, 10417, 10417, 10417, 
-    10417, 10417, 10417, 10694, 10417, 10417 // 12 months data
+    10417, 10417, 10417, 10417, 10417, 10417,
+    10417, 10417, 10417, 10694, 10417, 10417, // Data for 12 months
   ];
 
   // Calculate the sum of all 12 months
@@ -39,10 +40,10 @@ function RevenueTable() {
         <Thead>
           <Tr>
             <Th>
-              <Box as="span" mr="2">
-                <MdKeyboardArrowRight />
-              </Box>
-              Revenues
+              <Flex align="center">
+                <Icon as={MdKeyboardArrowRight} mr={2} />
+                Revenues
+              </Flex>
             </Th>
             {revenues.map((amount, index) => (
               <Th isNumeric key={index}>{amount.toLocaleString()}</Th>
