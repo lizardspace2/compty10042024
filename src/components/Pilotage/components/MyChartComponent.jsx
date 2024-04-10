@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Box,
   useColorModeValue,
+  Text,
 } from '@chakra-ui/react';
 import {
   ResponsiveContainer,
@@ -76,6 +77,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 function MyChartComponent() {
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const textColor = useColorModeValue('gray.700', 'gray.200'); // This should match the text color in your theme
 
   return (
     <Box
@@ -89,9 +91,31 @@ function MyChartComponent() {
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
           <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey="name" scale="band" />
-          <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-          <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+          <XAxis 
+            dataKey="name" 
+            scale="band" 
+            stroke={textColor} // Axis line color
+            tick={{ fill: textColor }} // Tick text color
+            tickLine={false} // Hide tick line
+            // If you want to rotate the labels:
+            // tick={{ angle: -45, fill: textColor }}
+          />
+          <YAxis 
+            yAxisId="left" 
+            orientation="left" 
+            stroke={textColor} // Axis line color
+            tick={{ fill: textColor }} // Tick text color
+            tickLine={false} // Hide tick line
+            tickFormatter={(value) => `${value}€`} // Add euro sign to tick
+          />
+          <YAxis 
+            yAxisId="right" 
+            orientation="right" 
+            stroke={textColor} // Axis line color
+            tick={{ fill: textColor }} // Tick text color
+            tickLine={false} // Hide tick line
+            tickFormatter={(value) => `${value}€`} // Add euro sign to tick
+          />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#EB6B9D" shape={<CustomBarShape />} />
