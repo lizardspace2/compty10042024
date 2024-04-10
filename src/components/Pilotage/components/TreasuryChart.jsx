@@ -66,23 +66,22 @@ function TreasuryChart() {
       </Flex>
 
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
-        <Box>
-          <Text fontSize="lg" fontWeight="semibold">
+        <Flex align="center">
+          <Text fontSize="lg" fontWeight="semibold" mr={2}>
             Solde bancaire
           </Text>
-          <Text fontSize="3xl" fontWeight="bold" color={theme.colors.teal[600]}>
-            4 973 €
-          </Text>
           <ChakraTooltip label="Information détaillée" hasArrow>
-          <IconButton
-            aria-label="Details"
-            size="sm"
-            variant="ghost"
-            icon={<IoInformationCircleOutline />}
-          />
-        </ChakraTooltip>
-        </Box>
-
+            <IconButton
+              aria-label="Details"
+              variant="ghost"
+              icon={<IoInformationCircleOutline />}
+              size="sm"
+            />
+          </ChakraTooltip>
+        </Flex>
+        <Text fontSize="3xl" fontWeight="bold" color={theme.colors.teal[600]}>
+          4 973 €
+        </Text>
       </Flex>
 
       <ResponsiveContainer width="100%" height={400}>
