@@ -2,13 +2,14 @@
 import React from 'react';
 import MyChartComponent from './components/MyChartComponent';
 import CustomChart from './components/CustomChart';
+import RevenueTable from './components/RevenueTable';
 
 function Pilotage() {
   return (
     <div>
       <h1>Pilotage Page</h1>
       <MyChartComponent/>
-      <CustomChart/>
+      <RevenueTable/>
     </div>
   );
 }
