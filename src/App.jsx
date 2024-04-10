@@ -5,7 +5,7 @@ import Navbar from './components/Navbar'; // Assurez-vous d'importer le composan
 function App() {
   return (
     <ChakraProvider>
-      <Flex>
+      <Flex h="100vh"> {/* Définir la hauteur de l'élément Flex à 100vh */}
         {/* Navbar à gauche */}
         <Box minW="200px">
           <Navbar />
