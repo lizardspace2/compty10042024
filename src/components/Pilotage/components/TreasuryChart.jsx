@@ -3,10 +3,11 @@ import {
   Box,
   Text,
   Flex,
+  Button,
   IconButton,
   useColorModeValue,
   Tooltip as ChakraTooltip,
-  useTheme
+  useTheme,
 } from '@chakra-ui/react';
 import {
   LineChart,
@@ -15,7 +16,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 
@@ -59,32 +60,29 @@ function TreasuryChart() {
         <Text fontSize="xl" fontWeight="bold">
           Trésorerie
         </Text>
+        <Button variant="outline" size="sm">
+          Détail
+        </Button>
       </Flex>
 
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Box>
-        <Text fontSize="lg" fontWeight="semibold">
-          Solde bancaire
-        </Text>
-        <ChakraTooltip label="Information détaillée" hasArrow>
-            <span>
-              <IconButton
-                aria-label="Details"
-                size="sm"
-                variant="ghost"
-                icon={<IoInformationCircleOutline />}
-                ml={2}
-              />
-            </span>
-          </ChakraTooltip>
-        </Box>
-        
-        <Flex>
+          <Text fontSize="lg" fontWeight="semibold">
+            Solde bancaire
+          </Text>
           <Text fontSize="3xl" fontWeight="bold" color={theme.colors.teal[600]}>
             4 973 €
           </Text>
+          <ChakraTooltip label="Information détaillée" hasArrow>
+          <IconButton
+            aria-label="Details"
+            size="sm"
+            variant="ghost"
+            icon={<IoInformationCircleOutline />}
+          />
+        </ChakraTooltip>
+        </Box>
 
-        </Flex>
       </Flex>
 
       <ResponsiveContainer width="100%" height={400}>
