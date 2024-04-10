@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, VStack, Text, Divider, Icon, Button } from '@chakra-ui/react';
 import { FaHome, FaRegListAlt, FaRegCreditCard, FaRegFileAlt, FaUserFriends, FaUserCircle, FaPaperPlane } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Import Link component from React Router
+import { Link } from 'react-router-dom'; // Importez le composant Link de React Router
 
 function Navbar() {
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100%" display="flex" flexDirection="column">
-      <VStack spacing={4} align="stretch">
+      <VStack spacing={4} align="stretch" flex="1">
         <Box>
           <Text fontSize="lg" fontWeight="bold">indy</Text>
         </Box>
@@ -51,14 +51,14 @@ function Navbar() {
           </Button>
         </Link>
         <Divider />
+        {/* Separated Parrainage button */}
+        <Link to="/sponsorship" style={{ textDecoration: 'none' }}>
+          <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full" style={{ marginTop: 'auto' }}>
+            <Icon as={FaPaperPlane} />
+            <Text ml={2}>Parrainage</Text>
+          </Button>
+        </Link>
       </VStack>
-      {/* Separated Parrainage button */}
-      <Link to="/sponsorship" style={{ textDecoration: 'none' }}>
-        <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" mt="auto" rounded="full">
-          <Icon as={FaPaperPlane} />
-          <Text ml={2}>Parrainage</Text>
-        </Button>
-      </Link>
     </Box>
   );
 }
