@@ -32,10 +32,11 @@ function Navbar() {
           Accompagnement
         </Button>
         <Divider />
-        <Button leftIcon={<Icon as={FaPaperPlane} />} justifyContent="flex-start" variant="ghost">
-          Parrainage
-        </Button>
       </VStack>
+      {/* Separated Parrainage button */}
+      <Button leftIcon={<Icon as={FaPaperPlane} />} justifyContent="flex-start" variant="ghost" mt="auto">
+        Parrainage
+      </Button>
     </Box>
   );
 }
