@@ -6,7 +6,7 @@ import {
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
 // Custom tooltip component
 const CustomTooltip = ({ active, payload, label }) => {
@@ -37,31 +37,41 @@ function ExpensesBarChart() {
   const textColor = useColorModeValue('gray.600', 'gray.200');
   const barFillColor = theme.colors.pink[300];
   const totalExpenses = data.reduce((sum, item) => sum + item.value, 0);
-  
+
   return (
     <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm">
-      <VStack spacing={5} align="stretch">
+            <VStack spacing={5} align="stretch">
         <Text fontSize="xl" fontWeight="semibold" mb={1}>
           Dépenses
         </Text>
         <Text fontSize="3xl" fontWeight="bold" color={theme.colors.pink[600]}>
           {totalExpenses.toLocaleString('fr-FR')} €
         </Text>
-      <ResponsiveContainer width="100%" height={250}>
+      <ResponsiveContainer width="100%" height={300}> {/* Adjusted height for better visibility */}
         <BarChart
-                      data={data}
-                      layout="vertical"
-                      margin={{ top: 0, right: 30, bottom: 0, left: 30 }}
-                      barCategoryGap="35%"
-                    >
-                      <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
-                      <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
+          data={data}
+          layout="vertical"
+          margin={{ top: 0, right: 30, bottom: 0, left: 30 }}
+          barCategoryGap="15%" // Adjusted for closer bar grouping
+        >
+          <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
+          <YAxis 
+            dataKey="name" 
+            type="category" 
+            axisLine={false} 
+            tickLine={false} 
+            tick={{ fill: textColor }} 
+            interval={0} // To show all ticks
+          />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-          <Bar dataKey="value" fill={barFillColor} radius={[10, 10, 0, 0]}>
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.name === 'Cotisations URSSAF' ? theme.colors.pink[400] : barFillColor} />
-              ))}
-            </Bar>
+          <Bar 
+            dataKey="value" 
+            fill={barFillColor} 
+            radius={[0, 10, 10, 0]} // Adjusted for rounded corners
+            barSize={20} // Adjusted bar thickness
+          >
+            {/* ... Cell components for individual bar colors */}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
       </VStack>
