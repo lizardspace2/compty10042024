@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box,
   useColorModeValue,
-  Text,
 } from '@chakra-ui/react';
 import {
   ResponsiveContainer,
@@ -14,6 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Text,
 } from 'recharts';
 
 // Define the data array outside of the component for simplicity
@@ -77,14 +77,16 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 // Custom tick component to adjust the label position
 const CustomTick = (props) => {
-  const { x, y, payload } = props;
-  
+  const { x, y, stroke, payload } = props;
+
   return (
-    <Text x={x} y={y} dy={16} textAnchor="middle" fill="#666">
+    <Text x={x} y={y + 16} textAnchor="middle" fill={stroke}>
       {payload.value}
     </Text>
   );
 };
+
+// ... CustomBarShape, CustomTooltip, and data array remain unchanged
 
 function MyChartComponent() {
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -108,33 +110,44 @@ function MyChartComponent() {
       borderWidth={1}
     >
       <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={newData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <ComposedChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 0, // Adjust bottom margin to fit custom tick
+          }}
+          barCategoryGap={30} // Adjust the space between bars
+        >
           <CartesianGrid stroke="#f5f5f5" />
-          <XAxis 
-            dataKey="name" 
-            scale="band" 
+          <XAxis
+            dataKey="name"
             stroke={textColor}
-            tick={<CustomTick />} // Custom tick component
+            tick={<CustomTick stroke={textColor} />} // Apply the custom tick
             tickLine={false}
             interval={0}
+            // Added padding to center the ticks between the bars
+            padding={{ left: barSize, right: barSize }}
           />
-          <YAxis 
-            yAxisId="right" 
-            orientation="right" 
+          <YAxis
+            yAxisId="right"
+            orientation="right"
             stroke={textColor}
             tick={{ fill: textColor }}
             tickLine={false}
             tickFormatter={(value) => `${value}€`}
+            // Hide the axis line
+            axisLine={false}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Bar yAxisId="right" dataKey="Fake" barSize={barSize} fill="transparent" />
           <Bar yAxisId="right" dataKey="Expenses" barSize={barSize} fill="#EB6B9D" shape={<CustomBarShape />} />
           <Bar yAxisId="right" dataKey="Revenues" barSize={barSize} fill="#7DD3FC" shape={<CustomBarShape />} />
-          <Line 
-            yAxisId="right" 
-            type="monotone" 
-            dataKey="Result" 
+          <Line
+            yAxisId="right"
+            type="monotone"
+            dataKey="Result"
             stroke="#333333"
             strokeWidth={2}
             dot={{ fill: '#333333', stroke: '#fff', strokeWidth: 2, r: 5 }}
