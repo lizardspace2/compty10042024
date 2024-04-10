@@ -11,12 +11,20 @@ import {
   Legend
 } from 'recharts';
 
-// Example data
 const data = [
-  { name: 'janv.', Revenues: 4000, Expenses: 2400, Result: 1600 },
-  { name: 'févr.', Revenues: 3000, Expenses: 1398, Result: 1600 },
-  // ... add all other months
-];
+    { name: 'janv.', Revenues: 4000, Expenses: 2400, Result: 1600 },
+    { name: 'févr.', Revenues: 3000, Expenses: 1398, Result: 1602 },
+    { name: 'mars', Revenues: 2000, Expenses: 9800, Result: -7800 },
+    { name: 'avr.', Revenues: 2780, Expenses: 3908, Result: -1128 },
+    { name: 'mai', Revenues: 1890, Expenses: 4800, Result: -2910 },
+    { name: 'juin', Revenues: 2390, Expenses: 3800, Result: -1410 },
+    { name: 'juil.', Revenues: 3490, Expenses: 4300, Result: -810 },
+    { name: 'août', Revenues: 4000, Expenses: 2400, Result: 1600 },
+    { name: 'sept.', Revenues: 3000, Expenses: 1398, Result: 1602 },
+    { name: 'oct.', Revenues: 2000, Expenses: 9800, Result: -7800 },
+    { name: 'nov.', Revenues: 2780, Expenses: 3908, Result: -1128 },
+    { name: 'déc.', Revenues: 1890, Expenses: 4800, Result: -2910 }
+  ];  
 
 function MyChartComponent() {
   return (
