@@ -3,6 +3,7 @@ import React from 'react';
 import MyChartComponent from './components/MyChartComponent';
 import CustomChart from './components/CustomChart';
 import RevenueTable from './components/RevenueTable';
+import DepenseTable from './components/DepenseTable';
 
 function Pilotage() {
   return (
@@ -10,6 +11,7 @@ function Pilotage() {
       <h1>Pilotage Page</h1>
       <MyChartComponent/>
       <RevenueTable/>
+      <DepenseTable/>
     </div>
   );
 }
