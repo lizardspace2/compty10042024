@@ -13,7 +13,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Rectangle,
 } from 'recharts';
 
 const data = [
@@ -29,12 +28,33 @@ const data = [
     { name: 'oct.', Revenues: 2000, Expenses: 9800, Result: -7800 },
     { name: 'nov.', Revenues: 2780, Expenses: 3908, Result: -1128 },
     { name: 'déc.', Revenues: 1890, Expenses: 4800, Result: -2910 }
-  ];  
+  ]; 
 
-const CustomBar = (props) => {
+// Define a custom shape for the bars
+const CustomBarShape = (props) => {
   const { fill, x, y, width, height } = props;
+  
+  // Define the gradient id based on the fill color to ensure uniqueness
+  const gradientId = `gradient-${fill.replace('#', '')}`;
 
-  return <Rectangle radius={[10, 10, 0, 0]} fill={fill} x={x} y={y} width={width} height={height} />;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor={fill} stopOpacity={0.8}/>
+          <stop offset="95%" stopColor={fill} stopOpacity={0.5}/>
+        </linearGradient>
+      </defs>
+      <rect
+        radius={[5, 5, 0, 0]} // Adjust corner radius here
+        fill={`url(#${gradientId})`}
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+      />
+    </g>
+  );
 };
 
 // Custom tooltip to match the design
@@ -54,8 +74,8 @@ const CustomTooltip = ({ active, payload, label }) => {
   };
 
 function MyChartComponent() {
-  const bgColor = useColorModeValue('white', 'gray.800'); // Conditional background color
-  const borderColor = useColorModeValue('gray.200', 'gray.700'); // Conditional border color
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Box
@@ -74,8 +94,8 @@ function MyChartComponent() {
           <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#EB6B9D" shape={<CustomBar />} />
-          <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#7DD3FC" shape={<CustomBar />} />
+          <Bar yAxisId="left" dataKey="Expenses" barSize={20} fill="#EB6B9D" shape={<CustomBarShape />} />
+          <Bar yAxisId="left" dataKey="Revenues" barSize={20} fill="#7DD3FC" shape={<CustomBarShape />} />
           <Line 
             yAxisId="right" 
             type="monotone" 
