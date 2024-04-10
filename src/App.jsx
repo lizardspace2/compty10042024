@@ -4,7 +4,7 @@ import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
-import Transactions from './components/Transactions';
+import Transactions from './components/Transactions/Transactions';
 import Todo from './components/Todo';
 import Documents from './components/Documents';
 import Accompaniment from './components/Accompaniment';
