@@ -11,41 +11,55 @@ import {
   VStack,
   Divider,
   CloseButton,
+  useColorModeValue,
+  Spacer,
 } from '@chakra-ui/react';
-import { FcOvertime } from 'react-icons/fc';
+import { FcClock, FcOvertime } from 'react-icons/fc';
 
 const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) => {
+  const boxBg = useColorModeValue('white', 'gray.700');
+  const boxShadow = useColorModeValue('md', 'dark-lg');
+
   return (
-    <Flex
+    <Box
       p={4}
       borderWidth="1px"
       borderRadius="lg"
-      align="center"
-      justify="space-between"
       w="full"
-      borderLeftWidth="10px" // Add a left border with width of 10px
-      borderColor="gray.200" // Set the border color (adjust as needed)
-      _first={{
-        borderColor: "blue.500", // First item border color
+      bg={boxBg}
+      boxShadow={boxShadow}
+      position="relative"
+      _before={{
+        content: '""',
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: "4px",
+        borderRadius: "1rem 0 0 1rem", // Rounded border on the left
+        bgGradient: "linear(to-b, blue.500, blue.300)", // Gradient for the border
       }}
     >
-      <VStack align="start" spacing={1} flex="1">
-        <Flex align="center">
-          <Box as={FcOvertime} mr={2} />
-          <Text fontSize="sm" color="gray.500">{dateRange}</Text>
+      <VStack align="start" spacing={1}>
+        <Flex align="center" mb={1}>
+          <Box as={FcOvertime} mr={2} color="gray.500" />
+          <Text fontSize="sm">{dateRange}</Text>
+          <Spacer />
+          <Text fontSize="sm" color="gray.500" display="flex" alignItems="center">
+            <Box as={FcClock} mr={2} />
+            {time}
+          </Text>
         </Flex>
-        <Text fontWeight="bold">{title}</Text>
+        <Text fontWeight="bold" mb={1}>{title}</Text>
         <Flex align="center">
-          <Badge colorScheme="green" borderRadius="full">{`Exercice ${exerciseYear}`}</Badge>
-          <Badge ml={2} colorScheme="red" borderRadius="full">{status}</Badge>
+          <Badge colorScheme="green" borderRadius="full" mr={2}>{`Exercice ${exerciseYear}`}</Badge>
+          <Badge colorScheme="red" borderRadius="full">{status}</Badge>
         </Flex>
       </VStack>
-      <VStack align="end">
-        <Box as={FcOvertime} size="20px" />
-        <Text color="gray.500">{time}</Text>
-        <Button colorScheme="teal" size="sm">{buttonText}</Button>
-      </VStack>
-    </Flex>
+      <Button colorScheme="blue" variant="outline" size="sm" position="absolute" right="4" bottom="4">
+        {buttonText}
+      </Button>
+    </Box>
   );
 };
 
