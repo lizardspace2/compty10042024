@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Button, Text, Flex, Spacer, Stack } from '@chakra-ui/react';
-import { FcClock } from 'react-icons/fc';
+import { Box, Button, Text, Flex, Spacer, Stack, Badge } from '@chakra-ui/react';
+import { FcOvertime } from 'react-icons/fc';
 
 const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks, remainingTime }) => {
   const CustomProgress = ({ value, max }) => {
@@ -25,11 +25,14 @@ const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks
       <Flex align="center" mb={4}>
         <Box>
           <Text fontSize="lg" fontWeight="bold">{title}</Text>
-          <Text color="gray.500">Exercice {exerciseYear}</Text>
+          <Badge colorScheme="green">{`Exercice ${exerciseYear}`}</Badge>
         </Box>
         <Spacer />
         <Box>
-          <Text color="gray.500">{dueDate}</Text>
+          <Flex align="center">
+            <Box as={FcOvertime} mr={2} />
+            <Badge colorScheme="blue">{dueDate}</Badge>
+          </Flex>
         </Box>
       </Flex>
       <Stack mb={4} spacing={2}>
@@ -40,7 +43,7 @@ const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks
       </Stack>
       <Flex justify="space-between" align="center">
         <Flex align="center">
-          <Box as={FcClock} size="20px" mr={2} />
+          <Box as={FcOvertime} size="20px" mr={2} />
           <Text color="gray.500">{remainingTime}h</Text>
         </Flex>
         <Button colorScheme="teal">Reprendre</Button>
@@ -56,7 +59,7 @@ const Declaration2035 = () => {
   const dueDate = "18 mai 2024";
   const tasksCompleted = 18;
   const totalTasks = 20;
-  const remainingTime = "1h"; // Or calculate dynamically based on tasks
+  const remainingTime = Math.round((1 - (tasksCompleted / totalTasks)) * 60);
 
   return (
     <Flex align="center" justify="center" p={4}>
