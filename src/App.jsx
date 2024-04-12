@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
+import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
@@ -14,11 +14,11 @@ function App() {
   return (
     <ChakraProvider>
       <Router>
-        <Flex h="100vh">
-          <Box minW="250px">
+        <Flex h="100vh" overflowY="hidden">
+          <Box position="fixed" h="full" w="250px" overflowY="auto">
             <Navbar />
           </Box>
-          <Box flex="1" p={5}>
+          <Box flex="1" pl="270px" pr={5} pt={5} overflowY="auto">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/pilotage" element={<Pilotage />} />
