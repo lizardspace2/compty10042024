@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Text, Button, Badge, Icon, useColorModeValue, Stack } from '@chakra-ui/react';
-import { FcFile } from 'react-icons/fc'; // Using a file icon as a placeholder
+import { FcFolder } from 'react-icons/fc'; // Using a file icon as a placeholder
 import { IoCloudDownloadOutline } from 'react-icons/io5'; // For the download icon
 
 const DossierDocument = () => {
@@ -16,13 +16,12 @@ const DossierDocument = () => {
       borderColor={borderColor}
       p={4}
       shadow="sm"
-      my={4}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
     >
       <Flex align="center">
-        <Icon as={FcFile} boxSize={6} mr={2} />
+        <Icon as={FcFolder} boxSize={6} mr={2} />
         <Text fontWeight="bold" mr={2}>DAS2</Text>
         <Badge colorScheme="green">Clôturée</Badge>
       </Flex>
