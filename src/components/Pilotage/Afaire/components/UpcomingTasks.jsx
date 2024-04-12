@@ -1,4 +1,3 @@
-// UpcomingTasks.js
 import React from 'react';
 import {
   Box,
@@ -75,12 +74,7 @@ const groupTasksByMonthAndYear = (tasks) => {
   const groupedTasks = {};
 
   tasks.forEach(task => {
-    // Create a date object for the start date
-    const dateParts = task.startingDate.split('-');
-    // Adjust month - 1 because months are 0-based in JavaScript Date
-    const startDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
-    
-    // Convert the start date to a month-year string key
+    const startDate = new Date(task.startingDate);
     const monthYearKey = startDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
     if (!groupedTasks[monthYearKey]) {
