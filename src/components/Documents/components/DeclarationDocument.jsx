@@ -12,6 +12,22 @@ import {
 import { FcDocument } from "react-icons/fc";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 
+const DottedBox = ({ children }) => {
+  return (
+    <Flex
+      justify="space-between"
+      align="center"
+      p={2}
+      borderWidth="1px"
+      borderRadius="lg"
+      borderStyle="dotted"
+      borderColor="gray.200"
+    >
+      {children}
+    </Flex>
+  );
+};
+
 const TaskCard = ({
   title,
   status,
@@ -33,7 +49,7 @@ const TaskCard = ({
       shadow="sm"
       position="relative"
     >
-      <Flex justify="space-between" align="center">
+      <Flex justify="space-between" align="center" mb={4}>
         <Flex align="center">
           <Icon as={FcDocument} boxSize={6} mr={3} />
           <Box>
@@ -50,10 +66,10 @@ const TaskCard = ({
           </Button>
         </Stack>
       </Flex>
-      <Flex justify="space-between" align="center">
-        <Text color="gray.600">{detailLabel}</Text>
+      <DottedBox>
+        <Text fontSize="sm" color="gray.500">{detailLabel}</Text>
         <Text fontWeight="bold">{detailValue}</Text>
-      </Flex>
+      </DottedBox>
     </Box>
   );
 };
