@@ -5,7 +5,7 @@ const TitleSubtitleComponent = () => {
   return (
     <Box p={5}>
       <Heading as="h1"fontWeight="bold" mb={3}>
-        Mes premiers pas sur Indy
+        Mes premiers pas sur Compty
       </Heading>
       <Text  color="gray.600">
         Gérer sa comptabilité en toute sérénité
