@@ -25,13 +25,13 @@ const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks
       <Flex align="center" mb={4}>
         <Box>
           <Text fontSize="lg" fontWeight="bold">{title}</Text>
-          <Badge colorScheme="green">{`Exercice ${exerciseYear}`}</Badge>
+          <Badge colorScheme="green" borderRadius="full">{`Exercice ${exerciseYear}`}</Badge>
         </Box>
         <Spacer />
         <Box>
           <Flex align="center">
             <Box as={FcOvertime} mr={2} />
-            <Badge colorScheme="blue">{dueDate}</Badge>
+            <Badge colorScheme="blue" borderRadius="full">{dueDate}</Badge>
           </Flex>
         </Box>
       </Flex>
