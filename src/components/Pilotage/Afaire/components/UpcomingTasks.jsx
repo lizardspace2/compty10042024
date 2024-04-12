@@ -1,7 +1,7 @@
+// UpcomingTasks.js
 import React from 'react';
 import {
   Box,
-  Stack,
   Heading,
   Text,
   Flex,
@@ -70,6 +70,17 @@ const TaskItem = ({
   );
 };
 
+const MonthYearHeading = ({ children }) => {
+  return (
+    <Flex alignItems="center">
+      <Text fontWeight="bold" fontSize="xl" my={4}>
+        {children}
+      </Text>
+      <Divider orientation="horizontal" flexGrow={1} ml={2} />
+    </Flex>
+  );
+};
+
 const groupTasksByMonthAndYear = (tasks) => {
   const groupedTasks = {};
 
@@ -131,25 +142,22 @@ const UpcomingTasks = () => {
       <Heading size="md" mb={4}>
         À venir
       </Heading>
-      <Divider mb={4} />
-      {Object.keys(groupedTasks).map((monthYear) => (
-        <Box key={monthYear}>
-          <Text fontWeight="bold" mb={2}>{monthYear}</Text>
-          <Stack spacing={4}>
-            {groupedTasks[monthYear].map((task, index) => (
-              <TaskItem
-                key={index}
-                title={task.title}
-                startDate={task.startDate}
-                endDate={task.endDate}
-                exerciseYear={task.exerciseYear}
-                status={task.status}
-                time={task.time}
-                buttonText={task.buttonText}
-              />
-            ))}
-          </Stack>
-          <Divider my={4} />
+      {Object.keys(groupedTasks).map((monthYear, index) => (
+        <Box key={index}>
+          <MonthYearHeading>{monthYear}</MonthYearHeading>
+          {groupedTasks[monthYear].map((task, taskIndex) => (
+            <TaskItem
+              key={taskIndex}
+              title={task.title}
+              startDate={task.startDate}
+              endDate={task.endDate}
+              exerciseYear={task.exerciseYear}
+              status={task.status}
+              time={task.time}
+              buttonText={task.buttonText}
+            />
+          ))}
+          {index < Object.keys(groupedTasks).length - 1 && <Divider my={4} />}
         </Box>
       ))}
     </Box>
