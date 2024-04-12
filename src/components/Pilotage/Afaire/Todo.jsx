@@ -1,11 +1,12 @@
 // Todo.js
 import React from 'react';
+import Declaration2035 from './components/Declaration2035';
 
 function Todo() {
   return (
     <div>
       <h1>Todo Page</h1>
-      {/* Add your todo page content here */}
+      <Declaration2035/>
     </div>
   );
 }
