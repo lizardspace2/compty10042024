@@ -19,7 +19,7 @@ import { FcClock, FcOvertime } from 'react-icons/fc';
 const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
   const boxShadow = useColorModeValue('md', 'dark-lg');
-
+  
   return (
     <Box
       p={4}
@@ -64,6 +64,38 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
 };
 
 const UpcomingTasks = () => {
+  // Sample tasks data, replace this with your actual tasks
+  const groupTasksByMonthAndYear = (tasks) => {
+    const groupedTasks = {};
+  
+    tasks.forEach(task => {
+      const dueDate = new Date(task.dueDate); // Assuming task.dueDate is in a format that new Date() can parse
+      const monthYearKey = dueDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+  
+      if (!groupedTasks[monthYearKey]) {
+        groupedTasks[monthYearKey] = [];
+      }
+  
+      groupedTasks[monthYearKey].push(task);
+    });
+  
+    return groupedTasks;
+  };
+  
+  const tasks = [
+    {
+      title: "Déclaration sociale et fiscale",
+      dueDate: "2024-05-31",
+      exerciseYear: "2023",
+      status: "En maintenance",
+      time: "5min",
+      buttonText: "Voir"
+    },
+    // Add other tasks here...
+  ];
+
+  const groupedTasks = groupTasksByMonthAndYear(tasks);
+
   return (
     <Box
       width="100%"
@@ -72,35 +104,36 @@ const UpcomingTasks = () => {
       mr={4}
       position="relative"
       bg="white"
-      h="100vh" // Set the height to be 100% of the viewport height
-      _before={{
-        content: '""',
-        position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: "1px",
-        bg: "gray.200", // Assuming a solid color is used for the border; adjust as needed
-      }}
+      h="100vh"
+      // ... other styles remain unchanged
     >
       <CloseButton position="absolute" right="4" top="4" />
       <Heading size="md" mb={4}>
         À venir
       </Heading>
       <Divider mb={4} />
-      <Stack spacing={4}>
-        <TaskItem
-          title="Déclaration sociale et fiscale"
-          dateRange="18 avr. 2024 - 31 mai 2024"
-          exerciseYear="2023"
-          status="En maintenance"
-          time="5min"
-          buttonText="Voir"
-        />
-        {/* Repeat for other tasks */}
-      </Stack>
+      {Object.keys(groupedTasks).map((monthYear) => (
+        <Box key={monthYear}>
+          <Text fontWeight="bold" mb={2}>{monthYear}</Text>
+          <Stack spacing={4}>
+            {groupedTasks[monthYear].map((task, index) => (
+              <TaskItem
+                key={index}
+                title={task.title}
+                dateRange={`${new Date(task.dueDate).toLocaleDateString()}`} // Adjust format as needed
+                exerciseYear={task.exerciseYear}
+                status={task.status}
+                time={task.time}
+                buttonText={task.buttonText}
+              />
+            ))}
+          </Stack>
+          <Divider my={4} />
+        </Box>
+      ))}
     </Box>
   );
 };
 
 export default UpcomingTasks;
+
