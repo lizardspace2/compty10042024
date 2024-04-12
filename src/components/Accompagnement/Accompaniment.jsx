@@ -1,5 +1,5 @@
-// Accompaniment.js
 import React from 'react';
+import { Grid } from '@chakra-ui/react';
 import SpecialistsComponent from './components/SpecialistsComponent';
 import TitleSubtitleComponent from './components/TitleSubtitleComponent';
 import KnowledgeBaseCard from './components/KnowledgeBaseCard';
@@ -14,11 +14,18 @@ function Accompaniment() {
       <h1>Accompaniment Page</h1>
       <SpecialistsComponent/>
       <TitleSubtitleComponent/>
-      <KnowledgeBaseCard/>
-      <HelpCenterCard/>
+
+      {/* Responsive Grid for Knowledge Base and Help Center Cards */}
+      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+        <KnowledgeBaseCard/>
+        <HelpCenterCard/>
+      </Grid>
+
       <AllerPlusLoin/>
-      <CreerUneSci/>
-      <CreerUneSociete/>
+      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6} my={6}>
+        <CreerUneSci/>
+        <CreerUneSociete/>
+      </Grid>
     </div>
   );
 }
