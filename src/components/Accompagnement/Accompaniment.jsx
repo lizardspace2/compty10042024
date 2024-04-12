@@ -6,6 +6,7 @@ import KnowledgeBaseCard from './components/KnowledgeBaseCard';
 import HelpCenterCard from './components/HelpCenterCard';
 import AllerPlusLoin from './components/AllerPlusLoin';
 import CreerUneSci from './components/CreerUneSci';
+import CreerUneSociete from './components/CreerUneSociete';
 
 function Accompaniment() {
   return (
@@ -17,6 +18,7 @@ function Accompaniment() {
       <HelpCenterCard/>
       <AllerPlusLoin/>
       <CreerUneSci/>
+      <CreerUneSociete/>
     </div>
   );
 }
