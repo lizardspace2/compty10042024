@@ -23,9 +23,12 @@ const DottedBox = ({ label, value, status, buttonText }) => {
       borderStyle="dotted"
       borderColor="gray.200"
     >
-      <Text fontSize="sm" color="gray.500">{label}</Text>
       <Flex align="center">
+        <Text fontSize="sm" color="gray.500">{label}</Text>
+        <Stack w="10px"/>
         <Badge colorScheme="orange" mr={2}>{status}</Badge>
+      </Flex>
+      <Flex align="center">
         <Text fontWeight="bold" mr={4}>{value}</Text>
         <Button colorScheme="blue" variant="outline" size="sm">
           {buttonText}
@@ -61,7 +64,7 @@ const TaskCard = ({
           <Icon as={FcDocument} boxSize={6} mr={3} />
           <Box>
             <Text fontWeight="bold" display="inline-block" mr={3}>{title}</Text>
-          <Badge colorScheme="orange">{status}</Badge>
+            <Badge colorScheme="orange">{status}</Badge>
           </Box>
         </Flex>
         <Stack direction="row" spacing={2}>
@@ -70,7 +73,7 @@ const TaskCard = ({
           </Button>
           <Button colorScheme="blue" variant="solid" size="sm">
             {buttonText}
-        </Button>
+          </Button>
         </Stack>
       </Flex>
       <DottedBox
