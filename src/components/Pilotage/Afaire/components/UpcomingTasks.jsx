@@ -51,7 +51,23 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
 
 const UpcomingTasks = () => {
   return (
-    <Box width="100%" maxW="400px" p={4} mr={4} position="relative">
+    <Box
+      width="100%"
+      maxW="400px"
+      p={4}
+      mr={4}
+      position="relative"
+      bg="white"
+      _before={{
+        content: '""',
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: "1px",
+        bgGradient: "linear(to-b, gray.100, gray.200)", // Use your gradient here
+      }}
+    >
       <CloseButton position="absolute" right="4" top="4" />
       <Heading size="md" mb={4}>
         À venir
