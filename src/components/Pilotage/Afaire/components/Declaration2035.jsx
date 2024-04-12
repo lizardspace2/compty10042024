@@ -2,7 +2,14 @@ import React from 'react';
 import { Box, Button, Text, Flex, Spacer, Stack } from '@chakra-ui/react';
 import { FcClock } from 'react-icons/fc';
 
-const TaskProgress = ({ tasksCompleted, totalTasks, dueDate }) => {
+const TaskProgress = ({ 
+  title, 
+  exerciseYear, 
+  dueDate, 
+  tasksCompleted, 
+  totalTasks, 
+  remainingTime 
+}) => {
   const CustomProgress = ({ value, max }) => {
     return (
       <Flex justify="center" align="center" w="full" overflow="hidden">
@@ -24,8 +31,8 @@ const TaskProgress = ({ tasksCompleted, totalTasks, dueDate }) => {
     <Box p={4} borderWidth="1px" borderRadius="lg" w="full">
       <Flex align="center" mb={4}>
         <Box>
-          <Text fontSize="lg" fontWeight="bold">Déclaration 2035</Text>
-          <Text color="gray.500">Exercice 2023</Text>
+          <Text fontSize="lg" fontWeight="bold">{title}</Text>
+          <Text color="gray.500">{exerciseYear}</Text>
         </Box>
         <Spacer />
         <Box>
@@ -41,7 +48,7 @@ const TaskProgress = ({ tasksCompleted, totalTasks, dueDate }) => {
       <Flex justify="space-between" align="center">
         <Flex align="center">
           <Box as={FcClock} size="20px" mr={2} />
-          <Text color="gray.500">{Math.round((1 - (tasksCompleted / totalTasks)) * 60)}h</Text>
+          <Text color="gray.500">{remainingTime}</Text>
         </Flex>
         <Button colorScheme="teal">Reprendre</Button>
       </Flex>
@@ -51,10 +58,24 @@ const TaskProgress = ({ tasksCompleted, totalTasks, dueDate }) => {
 
 // Usage of TaskProgress component
 const Declaration2035 = () => {
+  const title = "Déclaration 2035";
+  const exerciseYear = "Exercice 2023";
+  const dueDate = "18 mai 2024";
+  const tasksCompleted = 18;
+  const totalTasks = 20;
+  const remainingTime = "1h"; // Or calculate dynamically based on tasks
+
   return (
     <Flex align="center" justify="center" p={4}>
-      <Box width="95%"> {/* Adjusted to 95% of the width */}
-        <TaskProgress tasksCompleted={18} totalTasks={20} dueDate="18 mai 2024" />
+      <Box width="95%">
+        <TaskProgress 
+          title={title}
+          exerciseYear={exerciseYear}
+          dueDate={dueDate}
+          tasksCompleted={tasksCompleted}
+          totalTasks={totalTasks}
+          remainingTime={remainingTime}
+        />
       </Box>
     </Flex>
   );
