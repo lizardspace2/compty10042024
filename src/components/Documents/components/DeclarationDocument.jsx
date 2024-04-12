@@ -7,8 +7,10 @@ import {
   Icon,
   Badge,
   useColorModeValue,
+  Stack,
 } from '@chakra-ui/react';
-import { FcDocument, FcDownload } from "react-icons/fc";
+import { FcDocument } from "react-icons/fc";
+import { IoCloudDownloadOutline } from "react-icons/io5"; // Assuming you want to use an alternative download icon
 
 const TaskCard = ({
   title,
@@ -40,18 +42,19 @@ const TaskCard = ({
           </Box>
         </Flex>
         
-        <Box>
-          <Flex alignItems="center" justifyContent="flex-end">
-            <Text fontSize="sm" color="gray.500" mr={2}>{detailLabel}</Text>
-            <Text fontWeight="bold">{detailValue}</Text>
-          </Flex>
-        </Box>
+        <Flex alignItems="center">
+          <Text fontSize="sm" color="gray.500" mr={2}>{detailLabel}</Text>
+          <Text fontWeight="bold" mr={8}>{detailValue}</Text>
+        </Flex>
 
-        <Box>
-          <Button leftIcon={<Icon as={FcDownload} />} colorScheme="teal" variant="outline" size="sm">
+        <Stack direction="row" spacing={2}>
+          <Button leftIcon={<Icon as={IoCloudDownloadOutline} />} colorScheme="teal" variant="outline" size="sm">
+            {/* This button could be for downloading */}
+          </Button>
+          <Button colorScheme="blue" variant="solid" size="sm">
             {buttonText}
           </Button>
-        </Box>
+        </Stack>
       </Flex>
     </Box>
   );
