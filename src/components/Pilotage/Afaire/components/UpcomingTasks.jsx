@@ -16,10 +16,18 @@ import {
 } from '@chakra-ui/react';
 import { FcClock, FcOvertime } from 'react-icons/fc';
 
-const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) => {
+const TaskItem = ({
+  title,
+  startDate,
+  endDate,
+  exerciseYear,
+  status,
+  time,
+  buttonText
+}) => {
   const boxBg = useColorModeValue('white', 'gray.700');
   const boxShadow = useColorModeValue('md', 'dark-lg');
-  
+
   return (
     <Box
       p={4}
@@ -36,14 +44,14 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
         top: 0,
         bottom: 0,
         width: "4px",
-        borderRadius: "1rem 0 0 1rem", // Rounded border on the left
-        bgGradient: "linear(to-b, blue.500, blue.300)", // Gradient for the border
+        borderRadius: "1rem 0 0 1rem",
+        bgGradient: "linear(to-b, blue.500, blue.300)",
       }}
     >
       <VStack align="start" spacing={1}>
         <Flex align="center" mb={1}>
-          <Box as={FcOvertime} mr={2} color="gray.500" />
-          <Text fontSize="sm">{dateRange}</Text>
+          <Box as={FcClock} mr={2} color="gray.500" />
+          <Text fontSize="sm">{`${startDate} - ${endDate}`}</Text>
           <Spacer w="100px" />
           <Text fontSize="sm" color="gray.500" display="flex" alignItems="center">
             <Box as={FcClock} mr={2} />
@@ -63,28 +71,33 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
   );
 };
 
-const UpcomingTasks = () => {
-  // Sample tasks data, replace this with your actual tasks
-  const groupTasksByMonthAndYear = (tasks) => {
-    const groupedTasks = {};
-  
-    tasks.forEach(task => {
-      const dueDate = new Date(task.dueDate); // Assuming task.dueDate is in a format that new Date() can parse
-      const monthYearKey = dueDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-  
-      if (!groupedTasks[monthYearKey]) {
-        groupedTasks[monthYearKey] = [];
-      }
-  
-      groupedTasks[monthYearKey].push(task);
+const groupTasksByMonthAndYear = (tasks) => {
+  const groupedTasks = {};
+
+  tasks.forEach(task => {
+    const startDate = new Date(task.startingDate);
+    const monthYearKey = startDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    if (!groupedTasks[monthYearKey]) {
+      groupedTasks[monthYearKey] = [];
+    }
+
+    groupedTasks[monthYearKey].push({
+      ...task,
+      startDate: startDate.toLocaleDateString('fr-FR'),
+      endDate: new Date(task.dueDate).toLocaleDateString('fr-FR')
     });
-  
-    return groupedTasks;
-  };
-  
+  });
+
+  return groupedTasks;
+};
+
+const UpcomingTasks = () => {
   const tasks = [
+    // Sample tasks data
     {
       title: "Déclaration sociale et fiscale",
+      startingDate: "2024-04-18",
       dueDate: "2024-05-31",
       exerciseYear: "2023",
       status: "En maintenance",
@@ -105,7 +118,15 @@ const UpcomingTasks = () => {
       position="relative"
       bg="white"
       h="100vh"
-      // ... other styles remain unchanged
+      _before={{
+        content: '""',
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: "1px",
+        bg: "gray.200",
+      }}
     >
       <CloseButton position="absolute" right="4" top="4" />
       <Heading size="md" mb={4}>
@@ -120,7 +141,8 @@ const UpcomingTasks = () => {
               <TaskItem
                 key={index}
                 title={task.title}
-                dateRange={`${new Date(task.dueDate).toLocaleDateString()}`} // Adjust format as needed
+                startDate={task.startDate}
+                endDate={task.endDate}
                 exerciseYear={task.exerciseYear}
                 status={task.status}
                 time={task.time}
@@ -136,4 +158,3 @@ const UpcomingTasks = () => {
 };
 
 export default UpcomingTasks;
-
