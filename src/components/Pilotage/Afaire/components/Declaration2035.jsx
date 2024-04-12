@@ -2,14 +2,7 @@ import React from 'react';
 import { Box, Button, Text, Flex, Spacer, Stack } from '@chakra-ui/react';
 import { FcClock } from 'react-icons/fc';
 
-const TaskProgress = ({ 
-  title, 
-  exerciseYear, 
-  dueDate, 
-  tasksCompleted, 
-  totalTasks, 
-  remainingTime 
-}) => {
+const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks, remainingTime }) => {
   const CustomProgress = ({ value, max }) => {
     return (
       <Flex justify="center" align="center" w="full" overflow="hidden">
@@ -32,7 +25,7 @@ const TaskProgress = ({
       <Flex align="center" mb={4}>
         <Box>
           <Text fontSize="lg" fontWeight="bold">{title}</Text>
-          <Text color="gray.500">{exerciseYear}</Text>
+          <Text color="gray.500">Exercice {exerciseYear}</Text>
         </Box>
         <Spacer />
         <Box>
@@ -48,7 +41,7 @@ const TaskProgress = ({
       <Flex justify="space-between" align="center">
         <Flex align="center">
           <Box as={FcClock} size="20px" mr={2} />
-          <Text color="gray.500">{remainingTime}</Text>
+          <Text color="gray.500">{remainingTime}h</Text>
         </Flex>
         <Button colorScheme="teal">Reprendre</Button>
       </Flex>
@@ -56,10 +49,10 @@ const TaskProgress = ({
   );
 };
 
-// Usage of TaskProgress component
+// Usage of TaskProgress component with props
 const Declaration2035 = () => {
   const title = "Déclaration 2035";
-  const exerciseYear = "Exercice 2023";
+  const exerciseYear = "2023";
   const dueDate = "18 mai 2024";
   const tasksCompleted = 18;
   const totalTasks = 20;
@@ -68,7 +61,7 @@ const Declaration2035 = () => {
   return (
     <Flex align="center" justify="center" p={4}>
       <Box width="95%">
-        <TaskProgress 
+        <TaskProgress
           title={title}
           exerciseYear={exerciseYear}
           dueDate={dueDate}
