@@ -10,6 +10,8 @@ import {
   Button,
   VStack,
   Divider,
+  IconButton,
+  CloseButton,
 } from '@chakra-ui/react';
 import { FcOvertime } from 'react-icons/fc';
 
@@ -21,8 +23,10 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
       borderRadius="lg"
       align="center"
       justify="space-between"
+      // Make sure the container fits the content
+      w="full"
     >
-      <VStack align="start" spacing={1}>
+      <VStack align="start" spacing={1} flex="1">  // flex="1" will allow this stack to expand
         <Flex align="center">
           <Box as={FcOvertime} mr={2} />
           <Text fontSize="sm" color="gray.500">{dateRange}</Text>
@@ -33,18 +37,19 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
           <Badge ml={2} colorScheme="red" borderRadius="full">{status}</Badge>
         </Flex>
       </VStack>
-      <Flex align="center">
-        <Box as={FcOvertime} size="20px" mr={2} />
-        <Text color="gray.500" mr={4}>{time}</Text>
-        <Button colorScheme="teal">{buttonText}</Button>
-      </Flex>
+      <VStack align="end">  // VStack for vertical alignment of time and button
+        <Box as={FcOvertime} size="20px" />
+        <Text color="gray.500">{time}</Text>
+        <Button colorScheme="teal" size="sm">{buttonText}</Button>
+      </VStack>
     </Flex>
   );
 };
 
 const UpcomingTasks = () => {
   return (
-    <Box width="100%" maxW="400px" p={4} mr={4}>
+    <Box width="100%" maxW="400px" p={4} mr={4} position="relative">
+      <CloseButton position="absolute" right="4" top="4" /> 
       <Heading size="md" mb={4}>
         À venir
       </Heading>
