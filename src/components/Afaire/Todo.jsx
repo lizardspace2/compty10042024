@@ -1,10 +1,10 @@
 import React from 'react';
 import Declaration2035 from './components/Declaration2035';
 import UpcomingTasks from './components/UpcomingTasks';
-import { Box, Flex, Button, useDisclosure, Heading } from '@chakra-ui/react';
+import { Box, Flex, Button, useDisclosure, Heading, Icon } from '@chakra-ui/react';
+import { FaChevronRight } from "react-icons/fa";
 
 function Todo() {
-  // Initialize the useDisclosure hook with isOpen true by default
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
   return (
@@ -17,11 +17,10 @@ function Todo() {
           borderColor="gray.700"
           p={4}
         >
-          <Heading>
-            À faire
-          </Heading>
+          <Heading>À faire</Heading>
           {!isOpen && (
-            <Button onClick={onToggle} colorScheme="teal">
+            // Add the icon to the button using the rightIcon prop
+            <Button onClick={onToggle} colorScheme="teal" rightIcon={<Icon as={FaChevronRight} />}>
               À venir
             </Button>
           )}
