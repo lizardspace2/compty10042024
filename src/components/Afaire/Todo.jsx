@@ -9,12 +9,18 @@ function Todo() {
   return (
     <Flex>
       <Box flex="1" p={4}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading  >
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom="1px"
+          borderColor="gray.700"
+          p={4}
+        >
+          <Heading>
             À faire
           </Heading>
           {!isOpen && (
-            <Button onClick={onToggle} mt={4} colorScheme="teal">
+            <Button onClick={onToggle} colorScheme="teal">
               À venir
             </Button>
           )}
