@@ -50,7 +50,7 @@ const TaskItem = ({
     >
       <VStack align="start" spacing={1}>
         <Flex align="center" mb={1}>
-          <Box as={FcClock} mr={2} color="gray.500" />
+          <Box as={FcOvertime} mr={2} color="gray.500" />
           <Text fontSize="sm">{`${startDate} - ${endDate}`}</Text>
           <Spacer w="100px" />
           <Text fontSize="sm" color="gray.500" display="flex" alignItems="center">
@@ -75,7 +75,12 @@ const groupTasksByMonthAndYear = (tasks) => {
   const groupedTasks = {};
 
   tasks.forEach(task => {
-    const startDate = new Date(task.startingDate);
+    // Create a date object for the start date
+    const dateParts = task.startingDate.split('-');
+    // Adjust month - 1 because months are 0-based in JavaScript Date
+    const startDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
+    
+    // Convert the start date to a month-year string key
     const monthYearKey = startDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
     if (!groupedTasks[monthYearKey]) {
