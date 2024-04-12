@@ -5,8 +5,8 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
 import Transactions from './components/Transactions/Transactions';
-import Todo from './components/Pilotage/Afaire/Todo';
-import Documents from './components/Documents';
+import Todo from './components/Afaire/Todo';
+import Documents from './components/Documents/Documents';
 import Accompaniment from './components/Accompaniment';
 import Sponsorship from './components/Sponsorship';
 
