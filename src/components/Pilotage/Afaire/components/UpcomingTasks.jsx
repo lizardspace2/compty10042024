@@ -72,11 +72,11 @@ const TaskItem = ({
 
 const MonthYearHeading = ({ children }) => {
   return (
-    <Flex alignItems="center">
-      <Text fontWeight="bold" fontSize="xl" my={4}>
+    <Flex alignItems="center" mt={4} mb={2}>
+      <Text fontWeight="bold" fontSize="xl">
         {children}
       </Text>
-      <Divider orientation="horizontal" flexGrow={1} ml={2} />
+      <Divider orientation="horizontal" flex="1" ml={2} borderColor="gray.300" />
     </Flex>
   );
 };
