@@ -3,7 +3,7 @@ import { Box, Flex, Text, Button, Badge, Icon, useColorModeValue, Stack } from '
 import { FcFolder } from 'react-icons/fc'; // Using a file icon as a placeholder
 import { IoCloudDownloadOutline } from 'react-icons/io5'; // For the download icon
 
-const DossierDocument = () => {
+const Document = () => {
   const boxBg = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
@@ -37,4 +37,14 @@ const DossierDocument = () => {
   );
 };
 
-export default DossierDocument;
+const DossierDocument = () => {
+    return (
+      <Box p={5}>
+        <Document
+          
+        />
+      </Box>
+    );
+  };
+  
+  export default DossierDocument;
