@@ -1,4 +1,3 @@
-// UpcomingTasks.js
 import React from 'react';
 import {
   Box,
@@ -102,7 +101,7 @@ const groupTasksByMonthAndYear = (tasks) => {
   return groupedTasks;
 };
 
-const UpcomingTasks = () => {
+const UpcomingTasks = ({ onClose }) => {
   const tasks = [
     // Sample tasks data
     {
@@ -120,15 +119,16 @@ const UpcomingTasks = () => {
   const groupedTasks = groupTasksByMonthAndYear(tasks);
 
   return (
+    <Box>
+
     <Box
       width="100%"
       maxW="400px"
       p={4}
-      mr={4}
       position="relative"
       bg="white"
       h="100vh"
-      _before={{
+    _before={{
         content: '""',
         position: "absolute",
         left: 0,
@@ -138,7 +138,7 @@ const UpcomingTasks = () => {
         bg: "gray.200",
       }}
     >
-      <CloseButton position="absolute" right="4" top="4" />
+    <CloseButton position="absolute" right="4" top="4" onClick={onClose} />
       <Heading size="md" mb={4}>
         À venir
       </Heading>
@@ -160,6 +160,7 @@ const UpcomingTasks = () => {
           {index < Object.keys(groupedTasks).length - 1 && <Divider my={4} />}
         </Box>
       ))}
+    </Box>
     </Box>
   );
 };
