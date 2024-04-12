@@ -58,6 +58,7 @@ const UpcomingTasks = () => {
       mr={4}
       position="relative"
       bg="white"
+      h="100vh" // Set the height to be 100% of the viewport height
       _before={{
         content: '""',
         position: "absolute",
@@ -65,7 +66,7 @@ const UpcomingTasks = () => {
         top: 0,
         bottom: 0,
         width: "1px",
-        bgGradient: "linear(to-b, gray.100, gray.200)", // Use your gradient here
+        bg: "gray.200", // Assuming a solid color is used for the border; adjust as needed
       }}
     >
       <CloseButton position="absolute" right="4" top="4" />
