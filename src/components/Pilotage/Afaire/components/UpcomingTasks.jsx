@@ -44,7 +44,7 @@ const TaskItem = ({ title, dateRange, exerciseYear, status, time, buttonText }) 
         <Flex align="center" mb={1}>
           <Box as={FcOvertime} mr={2} color="gray.500" />
           <Text fontSize="sm">{dateRange}</Text>
-          <Spacer />
+          <Spacer w="100px" />
           <Text fontSize="sm" color="gray.500" display="flex" alignItems="center">
             <Box as={FcClock} mr={2} />
             {time}
