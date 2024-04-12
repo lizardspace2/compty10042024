@@ -4,7 +4,8 @@ import UpcomingTasks from './components/UpcomingTasks';
 import { Box, Flex, Button, useDisclosure, Heading } from '@chakra-ui/react';
 
 function Todo() {
-  const { isOpen, onToggle } = useDisclosure();
+  // Initialize the useDisclosure hook with isOpen true by default
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
   return (
     <Flex>
