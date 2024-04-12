@@ -69,7 +69,6 @@ const TaskCard = ({
         </Flex>
         <Stack direction="row" spacing={2}>
           <Button leftIcon={<Icon as={IoCloudDownloadOutline} />} colorScheme="teal" variant="outline" size="sm">
-            {/* This button is for downloading */}
           </Button>
           <Button colorScheme="blue" variant="solid" size="sm">
             {buttonText}
