@@ -4,10 +4,10 @@ import { Box, Heading, Text } from '@chakra-ui/react';
 const TitleSubtitleComponent = () => {
   return (
     <Box p={5}>
-      <Heading as="h1" size="xl" fontWeight="bold" mb={3}>
-        Mes premiers pas sur Compty
+      <Heading as="h1"fontWeight="bold" mb={3}>
+        Mes premiers pas sur Indy
       </Heading>
-      <Text fontSize="lg" color="gray.600">
+      <Text  color="gray.600">
         Gérer sa comptabilité en toute sérénité
       </Text>
     </Box>
