@@ -15,7 +15,7 @@ function App() {
     <ChakraProvider>
       <Router>
         <Flex h="100vh">
-          <Box minW="200px">
+          <Box minW="250px">
             <Navbar />
           </Box>
           <Box flex="1" p={5}>
