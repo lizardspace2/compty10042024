@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   Tooltip,
 } from '@chakra-ui/react';
-import { FcRules, FcInfo } from "react-icons/fc";
+import { FcRules, FcInfo } from 'react-icons/fc';
 
 const JustificatifEnAttente = ({ name, date, amount }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
@@ -30,9 +30,11 @@ const JustificatifEnAttente = ({ name, date, amount }) => {
       <Flex justify="space-between" align="center" mb={4}>
         <Flex align="center">
           <Icon as={FcRules} boxSize={6} mr={2} />
-          <Text fontWeight="bold">Justificatifs en attente</Text>
-          <Tooltip label="Informations supplémentaires" hasArrow>
-            <Icon as={FcInfo} boxSize={6} ml={2} color={infoIconColor} />
+          <Text fontWeight="bold" mr={2}>Justificatifs en attente</Text>
+          <Tooltip label="Informations supplémentaires" hasArrow placement="top">
+            <span>
+              <Icon as={FcInfo} boxSize={6} color={infoIconColor} />
+            </span>
           </Tooltip>
         </Flex>
       </Flex>
