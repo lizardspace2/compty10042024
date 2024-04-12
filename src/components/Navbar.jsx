@@ -1,21 +1,53 @@
 import React from 'react';
-import { Box, VStack, Text, Divider, Icon, Button, Spacer } from '@chakra-ui/react';
-import { FaHome, FaRegListAlt, FaRegCreditCard, FaRegFileAlt, FaUserFriends, FaUserCircle, FaPaperPlane } from 'react-icons/fa';
+import {
+  Box,
+  VStack,
+  Text,
+  Divider,
+  Icon,
+  Button,
+  Spacer,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+  Flex,
+} from '@chakra-ui/react';
+import {
+  FaHome,
+  FaRegListAlt,
+  FaRegCreditCard,
+  FaRegFileAlt,
+  FaUserFriends,
+  FaUserCircle,
+  FaPaperPlane,
+  FaCaretDown,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
-        <Box>
+      <Box>
           <Text fontSize="lg" fontWeight="bold">Compty 🚀</Text>
         </Box>
         <Divider />
-        <Link to="/profile" style={{ textDecoration: 'none' }}> {/* Updated path */}
-          <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
+        <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}
+        <Menu>
+          <MenuButton as={Button} display="flex" justifyContent="flex-start" variant="ghost" rounded="full" rightIcon={<FaCaretDown />}>
+            <Flex>
             <Icon as={FaUserCircle} />
             <Text ml={2}>Bonjour Guillaume</Text>
-          </Button>
+            </Flex>
+          </MenuButton>
+          <MenuList>
+            <MenuItem icon={<Icon as={FaUserCircle} />}>Paramètres</MenuItem>
+            <MenuItem icon={<Icon as={FaRegListAlt} color="red.500" />}>1 mois offert</MenuItem>
+            <MenuItem icon={<Icon as={FaRegCreditCard} />}>Se déconnecter</MenuItem>
+          </MenuList>
+        </Menu>
         </Link>
         <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
