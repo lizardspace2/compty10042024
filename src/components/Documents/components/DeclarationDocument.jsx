@@ -12,7 +12,7 @@ import {
 import { FcDocument } from "react-icons/fc";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 
-const DottedBox = ({ children }) => {
+const DottedBox = ({ label, value, status, buttonText }) => {
   return (
     <Flex
       justify="space-between"
@@ -23,7 +23,14 @@ const DottedBox = ({ children }) => {
       borderStyle="dotted"
       borderColor="gray.200"
     >
-      {children}
+      <Text fontSize="sm" color="gray.500">{label}</Text>
+      <Flex align="center">
+        <Badge colorScheme="orange" mr={2}>{status}</Badge>
+        <Text fontWeight="bold" mr={4}>{value}</Text>
+        <Button colorScheme="blue" variant="outline" size="sm">
+          {buttonText}
+        </Button>
+      </Flex>
     </Flex>
   );
 };
@@ -54,7 +61,7 @@ const TaskCard = ({
           <Icon as={FcDocument} boxSize={6} mr={3} />
           <Box>
             <Text fontWeight="bold" display="inline-block" mr={3}>{title}</Text>
-            <Badge colorScheme="orange">{status}</Badge>
+          <Badge colorScheme="orange">{status}</Badge>
           </Box>
         </Flex>
         <Stack direction="row" spacing={2}>
@@ -63,13 +70,15 @@ const TaskCard = ({
           </Button>
           <Button colorScheme="blue" variant="solid" size="sm">
             {buttonText}
-          </Button>
+        </Button>
         </Stack>
       </Flex>
-      <DottedBox>
-        <Text fontSize="sm" color="gray.500">{detailLabel}</Text>
-        <Text fontWeight="bold">{detailValue}</Text>
-      </DottedBox>
+      <DottedBox
+        label={detailLabel}
+        value={detailValue}
+        status={status}
+        buttonText={buttonText}
+      />
     </Box>
   );
 };
