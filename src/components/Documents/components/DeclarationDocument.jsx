@@ -18,45 +18,42 @@ const TaskCard = ({
   buttonText
 }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
-  const boxShadow = useColorModeValue('md', 'dark-lg');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
-    <Flex
+    <Box
       borderWidth="1px"
       borderRadius="lg"
       w="full"
       bg={boxBg}
-      boxShadow={boxShadow}
       borderColor={borderColor}
-      align="center"
-      justify="space-between"
       p={4}
+      shadow="sm"
+      position="relative"
     >
-      <Flex align="center">
-        <Icon as={FcDocument} boxSize={6} />
-        <Box ml={2}>
-          <Text fontWeight="bold">{title}</Text>
-          <Badge colorScheme="orange" ml={1} mt={1}>
-            {status}
-          </Badge>
+      <Flex justify="space-between" align="center">
+        <Flex align="center">
+          <Icon as={FcDocument} boxSize={6} mr={3} />
+          <Box>
+            <Text fontWeight="bold" display="inline-block" mr={3}>{title}</Text>
+            <Badge colorScheme="orange">{status}</Badge>
+          </Box>
+        </Flex>
+        
+        <Box>
+          <Flex alignItems="center" justifyContent="flex-end">
+            <Text fontSize="sm" color="gray.500" mr={2}>{detailLabel}</Text>
+            <Text fontWeight="bold">{detailValue}</Text>
+          </Flex>
+        </Box>
+
+        <Box>
+          <Button leftIcon={<Icon as={FcDownload} />} colorScheme="teal" variant="outline" size="sm">
+            {buttonText}
+          </Button>
         </Box>
       </Flex>
-      
-      <Flex align="center">
-        <Text>{detailLabel}</Text>
-        <Text fontWeight="bold" ml={1}>
-          {detailValue}
-        </Text>
-      </Flex>
-
-      <Flex align="center">
-        <Button leftIcon={<Icon as={FcDownload} />} colorScheme="teal" variant="outline" size="sm" mr={2}>
-          {buttonText}
-        </Button>
-        <Icon as={FcDownload} boxSize={5} />
-      </Flex>
-    </Flex>
+    </Box>
   );
 };
 
