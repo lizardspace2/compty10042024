@@ -11,7 +11,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  IconButton,
   Flex,
 } from '@chakra-ui/react';
 import {
@@ -24,6 +23,7 @@ import {
   FaPaperPlane,
   FaCaretDown,
 } from 'react-icons/fa';
+import { FcBusinessman, FcImport, FcLike } from "react-icons/fc";
 import { Link } from 'react-router-dom';
 
 function Navbar() {
@@ -43,9 +43,9 @@ function Navbar() {
             </Flex>
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<Icon as={FaUserCircle} />}>Paramètres</MenuItem>
-            <MenuItem icon={<Icon as={FaRegListAlt} color="red.500" />}>1 mois offert</MenuItem>
-            <MenuItem icon={<Icon as={FaRegCreditCard} />}>Se déconnecter</MenuItem>
+            <MenuItem icon={<Icon as={FcBusinessman} />}>Paramètres</MenuItem>
+            <MenuItem icon={<Icon as={FcLike} color="red.500" />}>1 mois offert</MenuItem>
+            <MenuItem icon={<Icon as={FcImport} />}>Se déconnecter</MenuItem>
           </MenuList>
         </Menu>
         </Link>
