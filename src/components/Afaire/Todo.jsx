@@ -9,7 +9,7 @@ function Todo() {
   return (
     <Flex>
       <Box flex="1" p={4}>
-        <Flex p={4} justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center">
           <Heading  >
             À faire
           </Heading>
