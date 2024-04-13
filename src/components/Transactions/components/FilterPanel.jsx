@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
     Box,
     Input,
@@ -22,17 +24,35 @@ import {
   } from '@chakra-ui/react';
   import { MdDateRange, MdEuroSymbol } from 'react-icons/md';
   import { FaChevronDown,FaChevronUp } from "react-icons/fa";
+const useDatePickerStyle = () => {
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const bgColor = useColorModeValue('white', 'gray.700');
+  return {
+    className: "chakra-datepicker",
+    style: {
+      borderColor: borderColor,
+      backgroundColor: bgColor,
+      borderRadius: 'var(--chakra-radii-md)',
+      padding: 'var(--chakra-space-2)',
+      width: '100%',
+      fontSize: 'var(--chakra-fontSizes-md)',
+      lineHeight: 'var(--chakra-lineHeights-normal)',
+    }
+  }
+};
 
 const FilterPanel = () => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const inputBgColor = useColorModeValue('white', 'gray.700');
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const borderColor = useColorModeValue('gray.200', 'gray.600');
+    const inputBgColor = useColorModeValue('white', 'gray.700');
+    const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const datePickerStyle = useDatePickerStyle();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [menuButtonWidth, setMenuButtonWidth] = useState(null);
   const menuButtonRef = useRef(null);
-
-  // Handle category change
+  
   const handleCategoryChange = (value) => {
     setSelectedCategories(value);
   };
@@ -55,15 +75,46 @@ const FilterPanel = () => {
       <Stack spacing={4}>
         <FormControl>
           <FormLabel>Plage de dates</FormLabel>
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Icon as={MdDateRange} color="gray.500" />}
+          <HStack>
+            <DatePicker
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              {...datePickerStyle}
+              // Custom popper placement
+              popperPlacement="bottom-start"
+              popperModifiers={[
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 8],
+                  },
+                },
+              ]}
             />
-            <Input type="text" placeholder="Début - Fin" />
-          </InputGroup>
+            <DatePicker
+              selected={endDate}
+              onChange={date => setEndDate(date)}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+              {...datePickerStyle}
+              // Custom popper placement
+              popperPlacement="bottom-end"
+              popperModifiers={[
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 8],
+                  },
+                },
+              ]}
+            />
+          </HStack>
         </FormControl>
-        
         <FormControl>
           <FormLabel>Plage de montants</FormLabel>
           <HStack>
