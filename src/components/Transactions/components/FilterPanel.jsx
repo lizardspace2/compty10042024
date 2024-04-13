@@ -88,12 +88,12 @@ const FilterPanel = () => {
       
         <FormControl>
           <FormLabel>Catégories</FormLabel>
-          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose}>
-            <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} w="full" borderWidth="1px" borderColor={borderColor}>
+          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose} minWidth="100%" maxWidth="100%">
+            <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} w="full" borderWidth="1px" borderColor={borderColor} minWidth="100%" maxWidth="100%">
               {selectedCategories.length > 0 ? `${selectedCategories.length} selected` : 'Select categories'}
             </MenuButton>
-            <MenuList minWidth="100%" maxWidth="100%">
-              <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange}>
+            <MenuList minWidth="1000px" maxWidth="100%">
+              <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange} >
                 <MenuItemOption value="all">
                   <Checkbox isChecked={selectedCategories.length === 4}>Tout sélectionner</Checkbox>
                 </MenuItemOption>
