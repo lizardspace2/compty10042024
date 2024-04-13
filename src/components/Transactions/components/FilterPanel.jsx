@@ -42,7 +42,7 @@ const useDatePickerStyle = () => {
 };
 
 const FilterPanel = () => {
-    const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
     const inputBgColor = useColorModeValue('white', 'gray.700');
     const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -62,7 +62,11 @@ const FilterPanel = () => {
       setMenuButtonWidth(menuButtonRef.current.offsetWidth);
     }
   }, [menuButtonRef]);
+  const [selectedTransactionTypes, setSelectedTransactionTypes] = useState([]);
 
+  const handleTransactionTypeChange = (value) => {
+    setSelectedTransactionTypes(value);
+  };
   return (
     <Box
       bg={inputBgColor}
@@ -166,10 +170,36 @@ const FilterPanel = () => {
 
         <FormControl>
           <FormLabel>Types de transaction</FormLabel>
-          <Select placeholder="Toutes">
-            {/* Map your transaction types here */}
-          </Select>
+          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose}>
+            <MenuButton
+              as={Button}
+              rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />}
+              w="full"
+              borderWidth="1px"
+              borderColor={borderColor}
+              ref={menuButtonRef} // Reference to get the width
+            >
+              {selectedTransactionTypes.length > 0 ? `${selectedTransactionTypes.length} selected` : 'Types de transaction'}
+            </MenuButton>
+            <MenuList minWidth={`${menuButtonWidth}px`} maxWidth={`${menuButtonWidth}px`}>
+              <MenuOptionGroup defaultValue={selectedTransactionTypes} type="checkbox" onChange={handleTransactionTypeChange}>
+                <MenuItemOption value="boursobank">
+                  <Checkbox isChecked={selectedTransactionTypes.includes('boursobank')}>
+                    1. Boursobank (ex Boursorama)
+                  </Checkbox>
+                </MenuItemOption>
+                <MenuItemOption value="cash">
+                  <Checkbox isChecked={selectedTransactionTypes.includes('cash')}>Caisse</Checkbox>
+                </MenuItemOption>
+                {/* ... add other transaction types as MenuItemOption ... */}
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
         </FormControl>
+        
+
+
+
       </Stack>
     </Box>
   );
