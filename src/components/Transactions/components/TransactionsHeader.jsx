@@ -1,4 +1,3 @@
-// TransactionsHeader.js
 import React from 'react';
 import { Input, InputGroup, InputLeftElement, Button, Flex, Heading, Icon, useColorModeValue } from '@chakra-ui/react';
 import { MdSearch, MdFilterList } from 'react-icons/md';
@@ -22,7 +21,7 @@ const TransactionsHeader = () => {
       boxShadow="sm" // Add a slight shadow to match the design
     >
       <Heading size="md">Transactions</Heading>
-      <Flex>
+      <Flex alignItems="center"> {/* Flex container to center search and filter */}
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
@@ -33,6 +32,7 @@ const TransactionsHeader = () => {
             placeholder="Rechercher"
             bgColor={inputBgColor}
             boxShadow="base" // Add shadow to the input field
+            maxW="400px"
           />
         </InputGroup>
         <Button
@@ -43,16 +43,16 @@ const TransactionsHeader = () => {
         >
           Filtrer
         </Button>
-        <Button
-          rightIcon={<BsPlus />}
-          colorScheme={addButtonColorScheme}
-          ml={2}
-          borderRadius="full"
-          boxShadow="md" // Add a stronger shadow to the 'Add' button
-        >
-          Ajouter
-        </Button>
       </Flex>
+      <Button
+        rightIcon={<BsPlus />}
+        colorScheme={addButtonColorScheme}
+        ml={2}
+        borderRadius="full"
+        boxShadow="md" // Add a stronger shadow to the 'Add' button
+      >
+        Ajouter
+      </Button>
     </Flex>
   );
 };
