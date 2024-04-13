@@ -4,6 +4,7 @@ import TransactionItem from './components/TransactionItem';
 import TransactionsHeader from './components/TransactionsHeader';
 import TransactionDetails from './components/TransactionDetails';
 import AccountSummary from './components/AccountSummary';
+import TransactionDetail from './components/TransactionDetail';
 
 function Transactions() {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false });
@@ -15,6 +16,7 @@ function Transactions() {
         <Box maxWidth="1000px" textAlign="center" mx="auto">
           <AccountSummary/>
           <TransactionItem />
+          <TransactionDetail/>
         </Box>
       </Box>
       {isOpen && (
