@@ -9,8 +9,8 @@ import {
 
 const TransactionDetailHeader = ({ onClose }) => {
   const headerBgColor = useColorModeValue('white', 'gray.800');
-  const textColor = useColorModeValue('gray.800', 'white');
-  const detailBgColor = useColorModeValue('gray.200', 'gray.700');
+  const detailTextColor = useColorModeValue('gray.600', 'gray.200');
+  const buttonBgColor = useColorModeValue('pink.500', 'pink.300'); // Assuming the pink color for the 'Appliquer' button
 
   return (
     <Flex
@@ -24,31 +24,26 @@ const TransactionDetailHeader = ({ onClose }) => {
       <Text
         fontSize="lg"
         fontWeight="semibold"
-        color={textColor}
+        flex="1"
+        color={detailTextColor}
         isTruncated
-        mr={4}
       >
         Ventilation de la transaction
       </Text>
-      <Box
-        flex="1"
-        bg={detailBgColor}
-        p={2}
-        borderRadius="md"
+      <Text
+        fontSize="sm"
+        color={detailTextColor}
+        flex="2"
+        mx={4}
+        isTruncated
       >
-        <Text
-          fontSize="sm"
-          color={textColor}
-          isTruncated
-        >
-          PRLV SEPA SYMAMOBILE PRLVSYMAMOBILE39738720240407-0773020538- CACP.254179616.4496 RUM SYMAGENCRUC39738720221011091753 RECIPON-GUILLAUME MARIE FRANCO
-        </Text>
-      </Box>
+        CARTE 06/04/24 ALIEXPRESSCOM CB*6654
+      </Text>
       <Flex>
-        <Button size="sm" variant="outline" mr={2} onClick={onClose}>
+        <Button size="sm" variant="outline" onClick={onClose} mr={2}>
           Fermer
         </Button>
-        <Button size="sm" colorScheme="pink">
+        <Button size="sm" bg={buttonBgColor} color="white">
           Appliquer
         </Button>
       </Flex>
