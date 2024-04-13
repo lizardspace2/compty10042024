@@ -6,11 +6,12 @@ import DepenseTable from './components/DepenseTable';
 import ThresholdProgressBar from './components/ThresholdProgressBar';
 import ExpensesBarChart from './components/ExpensesBarChart';
 import TreasuryChart from './components/TreasuryChart';
+import PilotageBanner from './components/PilotageBanner';
 
 function Pilotage() {
   return (
     <div>
-      <h1>Pilotage Page</h1>
+      <PilotageBanner/>
       <MyChartComponent/>
       <RevenueTable/>
       <DepenseTable/>
