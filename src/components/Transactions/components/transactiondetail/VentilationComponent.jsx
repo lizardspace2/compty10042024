@@ -11,17 +11,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { FaPlus } from 'react-icons/fa'; // Importing from react-icons
 
 const VentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
     { category: 'Télécom, fournitures, docum.', amount: '-7.99' },
   ]);
-  const bgColor = useColorModeValue('gray.50', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-
   const addVentilation = () => {
-    // Add new ventilation logic
     setVentilations([...ventilations, { category: '', amount: '' }]);
   };
 
@@ -52,7 +48,7 @@ const VentilationComponent = () => {
           </Stack>
         </Box>
       ))}
-      <Button leftIcon={<AddIcon />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
+      <Button leftIcon={<FaPlus />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
         Ajouter une ventilation
       </Button>
     </Box>
