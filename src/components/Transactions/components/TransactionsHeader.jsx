@@ -13,7 +13,7 @@ const TransactionsHeader = () => {
       borderColor="gray.200" // Changed from gray.700 for better visibility on light themes
       p={4}
     >
-      <Heading size="lg">Transactions</Heading>
+      <Heading size="md">Transactions</Heading>
       <Flex>
         <InputGroup>
           <InputLeftElement

@@ -17,7 +17,7 @@ function Todo() {
           borderColor="gray.700"
           p={4}
         >
-          <Heading>À faire</Heading>
+          <Heading size="md">À faire</Heading>
           {!isOpen && (
             // Add the icon to the button using the rightIcon prop
             <Button onClick={onToggle} colorScheme="teal" rightIcon={<Icon as={FaChevronRight} />}>
