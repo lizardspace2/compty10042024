@@ -3,6 +3,7 @@ import { Box, Flex, useDisclosure } from '@chakra-ui/react';
 import TransactionItem from './components/TransactionItem';
 import TransactionsHeader from './components/TransactionsHeader';
 import TransactionDetails from './components/TransactionDetails';
+import AccountSummary from './components/AccountSummary';
 
 function Transactions() {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false });
@@ -12,6 +13,7 @@ function Transactions() {
       <Box flex="1" p={4}>
         <TransactionsHeader onToggleFilter={onToggle} />
         <Box maxWidth="1000px" textAlign="center" mx="auto">
+          <AccountSummary/>
           <TransactionItem />
         </Box>
       </Box>
