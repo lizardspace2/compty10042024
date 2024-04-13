@@ -6,6 +6,7 @@ import {
   Heading,
   useColorModeValue,
 } from '@chakra-ui/react';
+import FilterPanel from './FilterPanel';
 
 const TransactionDetails = ({ onClose }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
@@ -22,7 +23,7 @@ const TransactionDetails = ({ onClose }) => {
       <Heading size="md" mb={4}>
         Transaction Details
       </Heading>
-      {/* You can place more detailed components here */}
+      <FilterPanel/>
     </Box>
   );
 };
