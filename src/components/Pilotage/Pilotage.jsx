@@ -16,7 +16,7 @@ function Pilotage() {
     <div>
       <PilotageBanner />
       <Box maxWidth="1600px" mx="auto" overflow="hidden">
-        <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center">
+        <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center" py={4}>
           <GridItem display="flex" flexDirection="column" justifyContent="space-between">
             <Box mt={2}><RevenueComponent amount={127000} currency="€" /></Box>
             <Box mt={2}><ExpensesComponent amount={85000} currency="€" /></Box>
@@ -26,19 +26,23 @@ function Pilotage() {
             <MyChartComponent />
           </GridItem>
         </Grid>
-        <RevenueTable />
-        <DepenseTable />
-        <Grid templateColumns="1fr 1fr" gap={6}>
-          <GridItem>
+        <Box py={2}>
+        <RevenueTable/>
+        </Box>
+        <Box py={2}>
+        <DepenseTable/>
+        </Box>
+        <Grid templateColumns="1fr 1fr" gap={6} py={4}>
+          <GridItem py={4}> {/* Added padding to create space */}
             <ThresholdProgressBar />
           </GridItem>
-          <GridItem>
+          <GridItem py={4}> {/* Added padding to create space */}
             <ExpensesBarChart />
           </GridItem>
         </Grid>
         <Grid templateColumns="1fr 1fr" gap={6}>
-          <GridItem>
-          <TreasuryChart />
+          <GridItem py={4}> {/* Added padding to create space */}
+            <TreasuryChart />
           </GridItem>
           <GridItem>
           </GridItem>
