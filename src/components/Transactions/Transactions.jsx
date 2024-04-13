@@ -1,27 +1,38 @@
 import React from 'react';
-import { Box, Flex, useDisclosure } from '@chakra-ui/react';
-import TransactionItem from './components/TransactionItem';
+import {
+  Box,
+  Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+} from '@chakra-ui/react';
 import TransactionsHeader from './components/TransactionsHeader';
-import TransactionDetails from './components/TransactionDetails';
-import AccountSummary from './components/AccountSummary';
+import TransactionItem from './components/TransactionItem';
 import TransactionDetail from './components/TransactionDetail';
 
 function Transactions() {
-  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false });
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex>
       <Box flex="1" p={4}>
-        <TransactionsHeader onToggleFilter={onToggle} />
+        <TransactionsHeader onToggleFilter={onOpen} /> {/* Assuming you want the filter to also open the modal */}
         <Box maxWidth="1000px" textAlign="center" mx="auto">
-          <AccountSummary/>
-          <TransactionItem />
-          <TransactionDetail/>
+          {/* Wrap TransactionItem with a div or another element for the onClick event */}
+          <div onClick={onOpen}>
+            <TransactionItem />
+          </div>
         </Box>
       </Box>
-      {isOpen && (
-        <TransactionDetails onClose={onToggle} />
-      )}
+      
+      {/* Modal that will contain the TransactionDetail */}
+      <Modal isOpen={isOpen} onClose={onClose} size="full">
+        <ModalOverlay />
+        <ModalContent m={0} maxW="100vw" maxH="100vh">
+          <TransactionDetail />
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
