@@ -7,12 +7,14 @@ import HelpCenterCard from './components/HelpCenterCard';
 import AllerPlusLoin from './components/AllerPlusLoin';
 import CreerUneSci from './components/CreerUneSci';
 import CreerUneSociete from './components/CreerUneSociete';
+import AccompagnementBanner from './components/AccompagnementBanner';
 
 function Accompaniment() {
   return (
+    <div>
+    <AccompagnementBanner/>
     <Container maxW="container.xl" centerContent>
       <VStack spacing={8} align="stretch">
-        <h1>Accompaniment Page</h1>
         <SpecialistsComponent />
         <TitleSubtitleComponent />
 
@@ -30,6 +32,7 @@ function Accompaniment() {
         </Grid>
       </VStack>
     </Container>
+    </div>
   );
 }
 
