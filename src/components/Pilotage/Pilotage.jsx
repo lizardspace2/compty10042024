@@ -8,12 +8,14 @@ import ExpensesBarChart from './components/ExpensesBarChart';
 import TreasuryChart from './components/TreasuryChart';
 import PilotageBanner from './components/PilotageBanner';
 import { Box } from '@chakra-ui/react';
+import RevenueComponent from './components/surlecote/RevenueComponent';
 
 function Pilotage() {
   return (
     <div>
       <PilotageBanner/>
       <Box maxWidth="1400px" textAlign="center" mx="auto" >
+        <RevenueComponent/>
       <MyChartComponent/>
       <RevenueTable/>
       <DepenseTable/>
