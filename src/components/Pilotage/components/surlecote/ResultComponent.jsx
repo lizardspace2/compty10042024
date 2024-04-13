@@ -18,12 +18,13 @@ const ResultComponent = ({ amount, currency }) => {
       width="auto" // width adjusts to content
       bg="white" // white background
       maxW="200px"
+      minH="90px"
     >
       <Box color="#333333" mr={2}> {/* Color for results icon */}
         <IoMdStats size="1.5em" /> {/* Adjust icon size as needed */}
       </Box>
       <Stat>
-        <StatLabel color="gray.500" fontSize="sm">Result</StatLabel>
+        <StatLabel color="gray.500" fontSize="sm">Resultat</StatLabel>
         <StatNumber fontSize="lg" lineHeight="1.1em" >
           1526 €
         </StatNumber>

@@ -15,12 +15,13 @@ const ExpensesComponent = ({ amount, currency }) => {
       width="auto" // width adjusts to content
       bg="white" // white background
       maxW="200px"
+      minH="90px"
     >
       <Box color="#f195b9" mr={2}> {/* Color for expenses icon */}
         <IoMdRemoveCircleOutline size="1.5em" /> {/* Adjust icon size as needed */}
       </Box>
       <Stat>
-        <StatLabel color="gray.500" fontSize="sm">Expenses</StatLabel>
+        <StatLabel color="gray.500" fontSize="sm">Dépenses</StatLabel>
         <StatNumber fontSize="lg" lineHeight="1.1em">
           1000 €
         </StatNumber>

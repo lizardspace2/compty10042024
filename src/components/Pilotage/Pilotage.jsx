@@ -18,9 +18,9 @@ function Pilotage() {
       <Box maxWidth="1600px" mx="auto" overflow="hidden">
         <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center">
           <GridItem display="flex" flexDirection="column" justifyContent="space-between">
-            <Box mt={4}><RevenueComponent amount={127000} currency="€" /></Box>
-            <Box mt={4}><ExpensesComponent amount={85000} currency="€" /></Box>
-            <Box mb={4}><ResultComponent amount={42000} currency="€" /></Box>
+            <Box mt={2}><RevenueComponent amount={127000} currency="€" /></Box>
+            <Box mt={2}><ExpensesComponent amount={85000} currency="€" /></Box>
+            <Box mt={2} mb={2}><ResultComponent amount={42000} currency="€" /></Box>
           </GridItem>
           <GridItem>
             <MyChartComponent />

@@ -15,12 +15,13 @@ const RevenueComponent = ({ amount, currency }) => {
       width="auto" // width adjusted to content
       bg="white" // white background
       maxW="200px"
+      minH="90px"
     >
       <Box color="#abe3fd" mr={2}>
         <IoIosCash size="1.5em" /> {/* Adjust icon size as needed */}
       </Box>
       <Stat>
-        <StatLabel color="gray.500" fontSize="sm">Revenues</StatLabel>
+        <StatLabel color="gray.500" fontSize="sm">Revenus</StatLabel>
         <StatNumber fontSize="lg" lineHeight="1.1em">
           127 €
         </StatNumber>
