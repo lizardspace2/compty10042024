@@ -1,40 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  Box,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-  Button,
-  Stack,
-  Select,
-  FormControl,
-  FormLabel,
-  useColorModeValue,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItemOption,
-  MenuOptionGroup,
-  Checkbox,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { MdDateRange, MdEuroSymbol } from 'react-icons/md';
-import { FaChevronDown,FaChevronUp } from "react-icons/fa";
+    Box,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Icon,
+    Button,
+    Stack,
+    Select,
+    FormControl,
+    FormLabel,
+    useColorModeValue,
+    HStack,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItemOption,
+    MenuOptionGroup,
+    Checkbox,
+    useDisclosure,
+  } from '@chakra-ui/react';
+  import { MdDateRange, MdEuroSymbol } from 'react-icons/md';
+  import { FaChevronDown,FaChevronUp } from "react-icons/fa";
 
 const FilterPanel = () => {
-    const borderColor = useColorModeValue('gray.200', 'gray.600');
-    const inputBgColor = useColorModeValue('white', 'gray.700');
-    const { isOpen, onOpen, onClose } = useDisclosure();
-  
-    // State for the categories
-    const [selectedCategories, setSelectedCategories] = React.useState([]);
-  
-    // Handle category change
-    const handleCategoryChange = (value) => {
-      setSelectedCategories(value);
-    };
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const inputBgColor = useColorModeValue('white', 'gray.700');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [menuButtonWidth, setMenuButtonWidth] = useState(null);
+  const menuButtonRef = useRef(null);
+
+  // Handle category change
+  const handleCategoryChange = (value) => {
+    setSelectedCategories(value);
+  };
+
+  useEffect(() => {
+    if (menuButtonRef.current) {
+      setMenuButtonWidth(menuButtonRef.current.offsetWidth);
+    }
+  }, [menuButtonRef]);
 
   return (
     <Box
@@ -85,27 +92,32 @@ const FilterPanel = () => {
             <Button flex={1} variant="outline">Sorties</Button>
           </HStack>
         </FormControl>
-      
+
         <FormControl>
           <FormLabel>Catégories</FormLabel>
-          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose} minWidth="100%" maxWidth="100%">
-            <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} w="full" borderWidth="1px" borderColor={borderColor} minWidth="100%" maxWidth="100%">
+          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose}>
+            <MenuButton 
+              as={Button} 
+              rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} 
+              w="full" 
+              borderWidth="1px" 
+              borderColor={borderColor}
+              ref={menuButtonRef} // Reference to get the width
+            >
               {selectedCategories.length > 0 ? `${selectedCategories.length} selected` : 'Select categories'}
             </MenuButton>
-            <MenuList minWidth="1000px" maxWidth="100%">
-              <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange} >
-                <MenuItemOption value="all">
+            <MenuList minWidth={`${menuButtonWidth}px`} maxWidth={`${menuButtonWidth}px`}>
+              <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange}>
+              <MenuItemOption value="all">
                   <Checkbox isChecked={selectedCategories.length === 4}>Tout sélectionner</Checkbox>
                 </MenuItemOption>
               <MenuItemOption value="purchase">
                 <Checkbox isChecked={selectedCategories.includes('purchase')}>Achat</Checkbox>
-              </MenuItemOption>
-              {/* Add other categories as MenuItemOption */}
-            </MenuOptionGroup>
-          </MenuList>
-        </Menu>
-      </FormControl>
-      
+              </MenuItemOption>              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        </FormControl>
+
         <FormControl>
           <FormLabel>Justificatifs</FormLabel>
           <HStack spacing={1}>
