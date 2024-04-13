@@ -28,9 +28,21 @@ function Pilotage() {
         </Grid>
         <RevenueTable />
         <DepenseTable />
-        <ThresholdProgressBar />
-        <ExpensesBarChart />
-        <TreasuryChart />
+        <Grid templateColumns="1fr 1fr" gap={6}>
+          <GridItem>
+            <ThresholdProgressBar />
+          </GridItem>
+          <GridItem>
+            <ExpensesBarChart />
+          </GridItem>
+        </Grid>
+        <Grid templateColumns="1fr 1fr" gap={6}>
+          <GridItem>
+          <TreasuryChart />
+          </GridItem>
+          <GridItem>
+          </GridItem>
+        </Grid>
       </Box>
     </div>
   );
