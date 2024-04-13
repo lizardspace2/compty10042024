@@ -85,14 +85,7 @@ const FilterPanel = () => {
               {...datePickerStyle}
               // Custom popper placement
               popperPlacement="bottom-start"
-              popperModifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 8],
-                  },
-                },
-              ]}
+
             />
             <DatePicker
               selected={endDate}
@@ -104,14 +97,7 @@ const FilterPanel = () => {
               {...datePickerStyle}
               // Custom popper placement
               popperPlacement="bottom-end"
-              popperModifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 8],
-                  },
-                },
-              ]}
+
             />
           </HStack>
         </FormControl>
