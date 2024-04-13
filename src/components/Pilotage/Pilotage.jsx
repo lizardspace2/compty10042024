@@ -17,12 +17,12 @@ function Pilotage() {
       <PilotageBanner />
       <Box maxWidth="1600px" mx="auto" overflow="hidden">
         <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center">
-          <GridItem >
-            <Box mb={4}><RevenueComponent amount={127000} currency="€" /></Box>
-            <Box mb={4}><ExpensesComponent amount={85000} currency="€" /></Box>
-            <Box><ResultComponent amount={42000} currency="€" /></Box>
+          <GridItem display="flex" flexDirection="column" justifyContent="space-between">
+            <Box mt={4}><RevenueComponent amount={127000} currency="€" /></Box>
+            <Box mt={4}><ExpensesComponent amount={85000} currency="€" /></Box>
+            <Box mb={4}><ResultComponent amount={42000} currency="€" /></Box>
           </GridItem>
-          <GridItem >
+          <GridItem>
             <MyChartComponent />
           </GridItem>
         </Grid>
