@@ -71,7 +71,7 @@ const FilterPanel = () => {
     <Box
       bg={inputBgColor}
       p={4}
-      borderWidth="1px"
+
       borderRadius="lg"
       borderColor={borderColor}
       boxShadow="sm"
