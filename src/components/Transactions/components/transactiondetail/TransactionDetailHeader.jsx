@@ -7,9 +7,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-const TransactionDetailHeader = () => {
-  const headerBgColor = useColorModeValue('gray.100', 'gray.700');
-  const textColor = useColorModeValue('gray.600', 'gray.100');
+const TransactionDetailHeader = ({ onClose }) => {
+  const headerBgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
+  const detailBgColor = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Flex
@@ -18,27 +19,33 @@ const TransactionDetailHeader = () => {
       align="center"
       justify="space-between"
       borderBottomWidth="1px"
-      borderColor="gray.200"
+      borderColor="gray.300"
     >
       <Text
         fontSize="lg"
         fontWeight="semibold"
         color={textColor}
         isTruncated
+        mr={4}
       >
         Ventilation de la transaction
       </Text>
-      <Text
-        fontSize="sm"
-        color={textColor}
-        isTruncated
+      <Box
         flex="1"
-        mx={4}
+        bg={detailBgColor}
+        p={2}
+        borderRadius="md"
       >
-        PRLV SEPA SYMAMOBILE PRLVSYMAMOBILE39738720240407-0773020538- CACP.254179616.4496 RUM SYMAGENCRUC39738720221011091753 RECIPON-GUILLAUME MARIE FRANCO
-      </Text>
+        <Text
+          fontSize="sm"
+          color={textColor}
+          isTruncated
+        >
+          PRLV SEPA SYMAMOBILE PRLVSYMAMOBILE39738720240407-0773020538- CACP.254179616.4496 RUM SYMAGENCRUC39738720221011091753 RECIPON-GUILLAUME MARIE FRANCO
+        </Text>
+      </Box>
       <Flex>
-        <Button size="sm" variant="ghost" mr={2}>
+        <Button size="sm" variant="outline" mr={2} onClick={onClose}>
           Fermer
         </Button>
         <Button size="sm" colorScheme="pink">

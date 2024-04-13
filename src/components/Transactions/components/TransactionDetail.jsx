@@ -9,7 +9,6 @@ import VentilationComponent from './transactiondetail/VentilationComponent';
 const TransactionDetail = () => {
   return (
     <VStack spacing={4} align="stretch">
-      <TransactionDetailHeader/>
       <TransactionInformation/>
       <VentilationComponent/>
     </VStack>

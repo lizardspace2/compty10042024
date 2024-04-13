@@ -10,6 +10,7 @@ import {
 import TransactionsHeader from './components/TransactionsHeader';
 import TransactionItem from './components/TransactionItem';
 import TransactionDetail from './components/TransactionDetail';
+import TransactionDetailHeader from './components/transactiondetail/TransactionDetailHeader';
 
 function Transactions() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,6 +31,7 @@ function Transactions() {
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <ModalContent m={0} maxW="100vw" maxH="100vh">
+        <TransactionDetailHeader onClose={onClose} />
           <TransactionDetail />
         </ModalContent>
       </Modal>
