@@ -4,12 +4,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Text,
-  IconButton,
   VStack,
   useColorModeValue,
+  IconButton,
 } from '@chakra-ui/react';
-import { FaPencilAlt } from 'react-icons/fa'; 
+import { FcLock } from 'react-icons/fc'; // Import FcLock icon
 
 const TransactionInformation = () => {
   const inputBg = useColorModeValue('gray.100', 'gray.600');
@@ -18,9 +17,9 @@ const TransactionInformation = () => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
-        {/* ... rest of the form controls ... */}
-        
-        <FormControl id="transaction-label">
+        {/* ... other form controls ... */}
+
+        <FormControl id="transaction-label" position="relative">
           <FormLabel>Libellé</FormLabel>
           <Input
             type="text"
@@ -29,17 +28,18 @@ const TransactionInformation = () => {
             background={inputBg}
           />
           <IconButton
-            aria-label="Edit label"
-            icon={<FaPencilAlt />} // Use the imported icon here
+            aria-label="Locked label"
+            icon={<FcLock />}
             size="sm"
             variant="ghost"
             position="absolute"
             right="4"
-            top="2"
+            top="10"
+            pointerEvents="none" // Icon is for display only, no interaction
           />
         </FormControl>
 
-        <FormControl id="transaction-date">
+        <FormControl id="transaction-date" position="relative">
           <FormLabel>Date</FormLabel>
           <Input
             type="text"
@@ -48,17 +48,18 @@ const TransactionInformation = () => {
             background={inputBg}
           />
           <IconButton
-            aria-label="Edit date"
-            icon={<FaPencilAlt />} 
+            aria-label="Locked date"
+            icon={<FcLock />}
             size="sm"
             variant="ghost"
             position="absolute"
             right="4"
             top="10"
+            pointerEvents="none"
           />
         </FormControl>
 
-        <FormControl id="transaction-amount">
+        <FormControl id="transaction-amount" position="relative">
           <FormLabel>Montant</FormLabel>
           <Input
             type="text"
@@ -67,13 +68,14 @@ const TransactionInformation = () => {
             background={inputBg}
           />
           <IconButton
-            aria-label="Edit amount"
-            icon={<FaPencilAlt />} 
+            aria-label="Locked amount"
+            icon={<FcLock />}
             size="sm"
             variant="ghost"
             position="absolute"
             right="4"
-            top="18"
+            top="10"
+            pointerEvents="none"
           />
         </FormControl>
 
