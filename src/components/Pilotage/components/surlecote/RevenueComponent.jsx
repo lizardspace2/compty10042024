@@ -18,5 +18,3 @@ const RevenueComponent = ({ amount, currency }) => {
 
 export default RevenueComponent;
 
-// Usage example
-// <RevenueComponent amount={127000} currency="€" />
