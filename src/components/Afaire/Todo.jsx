@@ -25,7 +25,9 @@ function Todo() {
             </Button>
           )}
         </Flex>
+        <Box maxWidth="1400px" textAlign="center" mx="auto" >
         <Declaration2035 />
+        </Box>
       </Box>
       {isOpen && <UpcomingTasks onClose={onToggle} />}
     </Flex>
