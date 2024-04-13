@@ -9,7 +9,7 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+import { FaPencilAlt } from 'react-icons/fa'; 
 
 const TransactionInformation = () => {
   const inputBg = useColorModeValue('gray.100', 'gray.600');
@@ -18,6 +18,8 @@ const TransactionInformation = () => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
+        {/* ... rest of the form controls ... */}
+        
         <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
           <Input
@@ -28,7 +30,7 @@ const TransactionInformation = () => {
           />
           <IconButton
             aria-label="Edit label"
-            icon={<EditIcon />}
+            icon={<FaPencilAlt />} // Use the imported icon here
             size="sm"
             variant="ghost"
             position="absolute"
@@ -47,7 +49,7 @@ const TransactionInformation = () => {
           />
           <IconButton
             aria-label="Edit date"
-            icon={<EditIcon />}
+            icon={<FaPencilAlt />} 
             size="sm"
             variant="ghost"
             position="absolute"
@@ -66,7 +68,7 @@ const TransactionInformation = () => {
           />
           <IconButton
             aria-label="Edit amount"
-            icon={<EditIcon />}
+            icon={<FaPencilAlt />} 
             size="sm"
             variant="ghost"
             position="absolute"

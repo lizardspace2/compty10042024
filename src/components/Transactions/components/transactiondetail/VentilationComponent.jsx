@@ -17,6 +17,11 @@ const VentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
     { category: 'Télécom, fournitures, docum.', amount: '-7.99' },
   ]);
+
+  // Define color mode value hooks
+  const bgColor = useColorModeValue('gray.50', 'gray.700');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+
   const addVentilation = () => {
     setVentilations([...ventilations, { category: '', amount: '' }]);
   };
