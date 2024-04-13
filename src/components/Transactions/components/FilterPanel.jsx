@@ -18,21 +18,23 @@ import {
   MenuItemOption,
   MenuOptionGroup,
   Checkbox,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { MdDateRange, MdEuroSymbol } from 'react-icons/md';
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown,FaChevronUp } from "react-icons/fa";
 
 const FilterPanel = () => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const inputBgColor = useColorModeValue('white', 'gray.700');
-
-  // State for the categories
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // Handle category change
-  const handleCategoryChange = (value) => {
-    setSelectedCategories(value);
-  };
+    const borderColor = useColorModeValue('gray.200', 'gray.600');
+    const inputBgColor = useColorModeValue('white', 'gray.700');
+    const { isOpen, onOpen, onClose } = useDisclosure();
+  
+    // State for the categories
+    const [selectedCategories, setSelectedCategories] = React.useState([]);
+  
+    // Handle category change
+    const handleCategoryChange = (value) => {
+      setSelectedCategories(value);
+    };
 
   return (
     <Box
@@ -84,20 +86,17 @@ const FilterPanel = () => {
           </HStack>
         </FormControl>
       
-      <FormControl>
-        <FormLabel>Catégories</FormLabel>
-        <Menu closeOnSelect={false}>
-          <MenuButton as={Button} rightIcon={<FaChevronDown />} w="full" borderWidth="1px" borderColor={borderColor}>
-            {selectedCategories.length > 0 ? `${selectedCategories.length} selected` : 'Select categories'}
-          </MenuButton>
-          <MenuList>
-            <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange}>
-              <MenuItemOption value="all">
-                <Checkbox isChecked={selectedCategories.length === 4}>Tout sélectionner</Checkbox>
-              </MenuItemOption>
-              <MenuItemOption value="subscription">
-                <Checkbox isChecked={selectedCategories.includes('subscription')}>Abonnement logiciel</Checkbox>
-              </MenuItemOption>
+        <FormControl>
+          <FormLabel>Catégories</FormLabel>
+          <Menu closeOnSelect={false} onOpen={onOpen} onClose={onClose}>
+            <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} w="full" borderWidth="1px" borderColor={borderColor}>
+              {selectedCategories.length > 0 ? `${selectedCategories.length} selected` : 'Select categories'}
+            </MenuButton>
+            <MenuList minWidth="100%" maxWidth="100%">
+              <MenuOptionGroup defaultValue={selectedCategories} type="checkbox" onChange={handleCategoryChange}>
+                <MenuItemOption value="all">
+                  <Checkbox isChecked={selectedCategories.length === 4}>Tout sélectionner</Checkbox>
+                </MenuItemOption>
               <MenuItemOption value="purchase">
                 <Checkbox isChecked={selectedCategories.includes('purchase')}>Achat</Checkbox>
               </MenuItemOption>
