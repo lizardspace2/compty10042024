@@ -55,7 +55,8 @@ function TreasuryChart() {
   };
 
   return (
-    <Box p={5} bg={bgColor} borderRadius="lg" boxShadow="md">
+    <Box p={5} bg={bgColor} borderRadius="lg" boxShadow="md"       border="1px" // 1px border
+    borderColor="gray.200" >
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Text fontSize="xl" fontWeight="bold">
           Trésorerie

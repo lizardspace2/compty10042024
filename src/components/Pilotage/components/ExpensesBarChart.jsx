@@ -39,7 +39,8 @@ function ExpensesBarChart() {
   const totalExpenses = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm">
+    <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm" border="1px" // 1px border
+    borderColor="gray.200" >
             <VStack spacing={5} align="stretch">
         <Text fontSize="xl" fontWeight="semibold" mb={1}>
           Dépenses
