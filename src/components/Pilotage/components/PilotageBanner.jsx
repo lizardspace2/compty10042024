@@ -6,7 +6,13 @@ const PilotageBanner = () => {
   const yearOptions = ['Exercice 2024', 'Exercice 2023', 'Exercice 2022'];
 
   return (
-    <Flex justifyContent="space-between" alignItems="center" p={4} boxShadow="sm">
+    <Flex 
+    justifyContent="space-between" 
+    alignItems="center" 
+    boxShadow="sm"           
+    borderBottom="1px"
+    borderColor="gray.700"
+    >
       <Text fontSize="2xl" fontWeight="bold" mr={4}>
         Pilotage
       </Text>
