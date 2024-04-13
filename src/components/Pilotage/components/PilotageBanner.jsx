@@ -1,29 +1,29 @@
-import { Flex, Box, Text, Select } from '@chakra-ui/react';
+import { Flex, Text, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { IoIosArrowDown } from 'react-icons/io';
 
-function PilotageBanner() {
+const PilotageBanner = () => {
   // Hardcoded year options for the dropdown
-  const yearOptions = [
-    { id: 1, label: 'Exercice 2024' },
-    { id: 2, label: 'Exercice 2023' },
-    { id: 3, label: 'Exercice 2022' },
-    // ... add as many years as needed
-  ];
+  const yearOptions = ['Exercice 2024', 'Exercice 2023', 'Exercice 2022'];
 
   return (
-    <Flex direction="column" p={4} boxShadow="md" borderRadius="md">
-      <Box mb={4}>
-        <Text fontSize="xl" mb={2}>Pilotage</Text>
-        <Select placeholder="Choose year" size="md">
-          {yearOptions.map((year) => (
-            <option key={year.id} value={year.label}>
-              {year.label}
-            </option>
+    <Flex justifyContent="space-between" alignItems="center" p={4} boxShadow="sm">
+      <Text fontSize="2xl" fontWeight="bold" mr={4}>
+        Pilotage
+      </Text>
+      <Menu>
+        <MenuButton as={Button} rightIcon={<IoIosArrowDown />} size="lg" rounded="md">
+          {yearOptions[1]} {/* Default selected value */}
+        </MenuButton>
+        <MenuList>
+          {yearOptions.map((year, index) => (
+            <MenuItem key={index} value={year}>
+              {year}
+            </MenuItem>
           ))}
-        </Select>
-      </Box>
-      {/* The rest of your component, such as a chart or other information, would go here */}
+        </MenuList>
+      </Menu>
     </Flex>
   );
-}
+};
 
 export default PilotageBanner;
