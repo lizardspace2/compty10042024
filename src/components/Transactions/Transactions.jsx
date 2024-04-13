@@ -1,19 +1,30 @@
-// Transactions.js
 import React from 'react';
+import { Box, Button, Flex, Heading, Icon, useDisclosure } from '@chakra-ui/react';
+import { FaChevronRight } from 'react-icons/fa';
 import TransactionItem from './components/TransactionItem';
-import { Input, InputGroup, InputLeftElement, Button, Flex, Heading, Icon, Box } from '@chakra-ui/react';
-import { MdSearch, MdFilterList } from 'react-icons/md';
-import { BsPlus } from 'react-icons/bs';
 import TransactionsHeader from './components/TransactionsHeader';
+import TransactionDetails from './components/TransactionDetails'; // Placeholder for detail components
 
 function Transactions() {
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+
   return (
-    <div>
-     <TransactionsHeader/>
-     <Box maxWidth="1000px" textAlign="center" mx="auto" >
-      <TransactionItem/>
+    <Flex>
+      <Box flex="1" p={4}>
+        <TransactionsHeader />
+        <Box maxWidth="1000px" textAlign="center" mx="auto">
+          <TransactionItem />
+        </Box>
       </Box>
-    </div>
+      {!isOpen && (
+        <Button onClick={onToggle} colorScheme="teal" rightIcon={<Icon as={FaChevronRight} />}>
+          Show Details
+        </Button>
+      )}
+      {isOpen && (
+        <TransactionDetails onClose={onToggle} />
+      )}
+    </Flex>
   );
 }
 
