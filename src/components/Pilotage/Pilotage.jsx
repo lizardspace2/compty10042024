@@ -9,6 +9,8 @@ import TreasuryChart from './components/TreasuryChart';
 import PilotageBanner from './components/PilotageBanner';
 import { Box } from '@chakra-ui/react';
 import RevenueComponent from './components/surlecote/RevenueComponent';
+import ExpensesComponent from './components/surlecote/ExpensesComponent';
+import ResultComponent from './components/surlecote/ResultComponent';
 
 function Pilotage() {
   return (
@@ -16,6 +18,8 @@ function Pilotage() {
       <PilotageBanner/>
       <Box maxWidth="1400px" textAlign="center" mx="auto" >
         <RevenueComponent/>
+        <ExpensesComponent/>
+        <ResultComponent/>
       <MyChartComponent/>
       <RevenueTable/>
       <DepenseTable/>
