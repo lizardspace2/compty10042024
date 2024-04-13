@@ -13,18 +13,26 @@ import {
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const AccountSummary = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   return (
     <Box p={4} bg="white" maxW="400px" w="full" mx="auto">
       <Menu isOpen={isOpen} matchWidth>
-        <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle} w="full">
+        {/* Mouse events added here to control the visibility of the dropdown */}
+        <MenuButton 
+          as={Button} 
+          rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} 
+          onMouseEnter={onOpen} // Open dropdown on mouse enter
+          onMouseLeave={onClose} // Close dropdown on mouse leave
+          onClick={onToggle} // Toggle on click as well
+          w="full"
+        >
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontWeight="semibold">Solde total:</Text>
             <Text fontWeight="bold">4 972,79 €</Text>
           </Flex>
         </MenuButton>
-        <MenuList>
+        <MenuList onMouseEnter={onOpen} onMouseLeave={onClose}> {/* Keep dropdown open when hovered */}
           <MenuItem minH="48px">
             <Box w="full">
               <Flex justify="space-between" align="center" w="full">
