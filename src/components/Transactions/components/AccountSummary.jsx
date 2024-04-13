@@ -16,9 +16,9 @@ const AccountSummary = () => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box p={4} bg="white" maxW="500px" w="full" mx="auto">
-      <Menu isOpen={isOpen}>
-        <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle} maxW="300px" minW="300px" >
+    <Box p={4} bg="white" maxW="400px" w="full" mx="auto">
+      <Menu isOpen={isOpen} matchWidth>
+        <MenuButton as={Button} rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle} w="full">
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontWeight="semibold">Solde total:</Text>
             <Text fontWeight="bold">4 972,79 €</Text>
@@ -28,13 +28,13 @@ const AccountSummary = () => {
           <MenuItem minH="48px">
             <Box w="full">
               <Flex justify="space-between" align="center" w="full">
-                <Box>
+                <Box flex="1">
                   <Text fontWeight="bold" noOfLines={1}>
                     1. Boursobank (ex Boursorama)
                   </Text>
                   <Text fontSize="sm">M Recipon Guillaume</Text>
                 </Box>
-                <Box textAlign="right">
+                <Box flex="1" textAlign="right">
                   <Text fontWeight="bold" noOfLines={1}>
                     4 972,79 €
                   </Text>

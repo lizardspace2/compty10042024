@@ -1,12 +1,14 @@
 import React from 'react';
-import { Box, Flex, Text, Icon, useColorModeValue, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, useColorModeValue, Tooltip, Button } from '@chakra-ui/react';
 import { GoPaperclip } from 'react-icons/go';
+import { MdModeEdit } from 'react-icons/md'; // This icon is used for the "Annotate" tooltip
 
 function TransactionItem() {
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
   const hoverBgColor = useColorModeValue('gray.100', 'gray.600');
+  const tooltipLabel = "Cliquer pour Annoter"; // This is the text shown in the tooltip
 
   return (
     <Flex
@@ -27,12 +29,14 @@ function TransactionItem() {
           <Icon as={GoPaperclip} w={5} h={5} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
         </Box>
       </Tooltip>
-      <Box>
-        <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
-        <Text fontSize="sm" color={dateColor}>
-          Guillaume Marie Franco
-        </Text>
-      </Box>
+      <Tooltip hasArrow label={tooltipLabel} placement="top">
+        <Box>
+          <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
+          <Text fontSize="sm" color={dateColor}>
+            Guillaume Marie Franco
+          </Text>
+        </Box>
+      </Tooltip>
       <Text fontSize="lg" color="gray.500">
         Télécom, fournitures, docum.
       </Text>
