@@ -21,9 +21,14 @@ import {
 } from '@chakra-ui/react';
 import { GoPaperclip } from 'react-icons/go';
 import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa';
+import CategoryComponent from './CategoryComponent';
+import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
+import TransactionDetail from './TransactionDetail';
 
 function TransactionItem() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose, onClose } = useDisclosure();
+  const { isOpen: isCategoryOpen, onOpen: onCategoryOpen, onClose: onCategoryClose } = useDisclosure();
+  const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
@@ -41,35 +46,51 @@ function TransactionItem() {
         _hover={{ bg: hoverBgColor, cursor: 'pointer' }}
         transition="background 0.3s ease"
       >
-        <Text fontSize="lg" fontWeight="bold" color={dateColor}>
+        {/* The date text now correctly toggles the detail modal */}
+        <Text fontSize="lg" fontWeight="bold" color={dateColor} onClick={onDetailToggle}>
           09 avr.
         </Text>
+
+        {/* Tooltip for the paperclip icon */}
         <Tooltip hasArrow label="Lier un justificatif à la transaction" placement="top" closeOnClick={false}>
           <Box display="flex" alignItems="center">
-        
-            <Icon as={GoPaperclip} w={5} h={5} onClick={onOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
+            {/* The paperclip icon now correctly opens the upload modal */}
+            <Icon as={GoPaperclip} w={5} h={5} onClick={onUploadOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
           </Box>
         </Tooltip>
+
+        {/* Other texts and tooltips */}
         <Tooltip hasArrow label="Cliquer pour Annoter" placement="top" closeOnClick={false}>
-        <Box>
-          <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
-          <Text fontSize="sm" color={dateColor}>
-            Guillaume Marie Franco
-          </Text>
-        </Box>
+          <Box>
+            <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
+            <Text fontSize="sm" color={dateColor}>
+              Guillaume Marie Franco
+            </Text>
+          </Box>
         </Tooltip>
-        <Text fontSize="lg" color="gray.500">
+
+        {/* The category text now correctly opens the category modal */}
+        <Text
+          fontSize="lg"
+          color="gray.500"
+          onClick={onCategoryOpen}
+          _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+        >
           Télécom, fournitures, docum.
         </Text>
+
+        {/* Amount text */}
         <Text fontSize="lg" fontWeight="bold" color={amountColor}>
           -799 €
         </Text>
       </Flex>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+      {/* Modals */}
+      {/* Upload Modal */}
+      <Modal isOpen={isUploadOpen} onClose={onUploadClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
+        <ModalHeader>
             Prlv Sepa Symamobile Rum Recipon Guillaume Marie Franco
             <IconButton
               aria-label="Close modal"
@@ -110,6 +131,18 @@ function TransactionItem() {
           <ModalFooter>
             <Button colorScheme="pink" onClick={onClose}>Fermer</Button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* CategoryComponent Modal */}
+      <CategoryComponent isOpen={isCategoryOpen} onClose={onCategoryClose} />
+
+      {/* Transaction Detail Modal */}
+      <Modal isOpen={isDetailOpen} onClose={onDetailToggle} size="full" overflow="auto">
+        <ModalOverlay />
+        <ModalContent m={0} maxW="100vw">
+          <TransactionDetailHeader onClose={onDetailToggle} />
+          <TransactionDetail />
         </ModalContent>
       </Modal>
     </>

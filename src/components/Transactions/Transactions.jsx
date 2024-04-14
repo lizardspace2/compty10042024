@@ -48,15 +48,6 @@ function Transactions() {
         <TransactionDetails onClose={onFilterToggle} />
       </Box>
 
-      <CategoryComponent/>
-      {/* Modal for TransactionDetail */}
-      <Modal isOpen={isDetailOpen} onClose={onDetailToggle} size="full" overflow="auto">
-        <ModalOverlay />
-        <ModalContent m={0} maxW="100vw">
-          <TransactionDetailHeader onClose={onDetailToggle} />
-          <TransactionDetail />
-        </ModalContent>
-      </Modal>
     </Flex>
   );
 }
