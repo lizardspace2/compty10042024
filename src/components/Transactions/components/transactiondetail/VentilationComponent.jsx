@@ -39,39 +39,35 @@ const VentilationComponent = () => {
         Ventilation(s)
       </Text>
       {ventilations.map((ventilation, index) => (
-        <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm" position="relative">
-          <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
-            <IconButton
-              aria-label="Remove ventilation"
-              icon={<FcFullTrash />}
-              size="sm"
-              variant="ghost"
-              position="absolute"
-              right="4"
-              top="4"
-              onClick={() => removeVentilation(index)}
-              zIndex="docked"
-            />
-          </Tooltip>
-          <Stack spacing={4} mt="8">
+        <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
+          <Flex justify="space-between" align="center">
             <Text fontWeight="medium">Ventilation {index + 1}</Text>
-            <FormControl>
-              <FormLabel>Catégorie</FormLabel>
-              <Select placeholder="Sélectionnez une catégorie" defaultValue={ventilation.category}>
-                {/* Add category options here */}
-                <option value="personal">Dépense personnelle</option>
-                {/* ... other categories */}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Montant</FormLabel>
-              <Input type="number" value={ventilation.amount} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Pourcentage</FormLabel>
-              <Input type="number" value={ventilation.percentage} />
-            </FormControl>
-          </Stack>
+            <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
+              <IconButton
+                aria-label="Remove ventilation"
+                icon={<FcFullTrash />}
+                size="sm"
+                variant="ghost"
+                onClick={() => removeVentilation(index)}
+              />
+            </Tooltip>
+          </Flex>
+          <FormControl mt={4}>
+            <FormLabel>Catégorie</FormLabel>
+            <Select placeholder="Sélectionnez une catégorie" defaultValue={ventilation.category}>
+              {/* Add category options here */}
+              <option value="personal">Dépense personnelle</option>
+              {/* ... other categories */}
+            </Select>
+          </FormControl>
+          <FormControl mt={4}>
+            <FormLabel>Montant</FormLabel>
+            <Input type="number" value={ventilation.amount} />
+          </FormControl>
+          <FormControl mt={4}>
+            <FormLabel>Pourcentage</FormLabel>
+            <Input type="number" value={ventilation.percentage} />
+          </FormControl>
         </Box>
       ))}
       <Button leftIcon={<FaPlus />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
