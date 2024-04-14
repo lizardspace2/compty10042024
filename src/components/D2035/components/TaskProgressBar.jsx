@@ -1,25 +1,31 @@
 import React from 'react';
-import { Box, Button, Progress, Text } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
+import { FcAlarmClock } from "react-icons/fc";
 
 const TaskProgressBar = ({ completedTasks, totalTasks, timeSpent }) => {
-  const progressValue = (completedTasks / totalTasks) * 100;
-
   return (
     <Box width="full" p={4}>
-      <Button
-        mb={4}
-        size="lg"
-        bg="pink.300"
-        color="white"
-        _hover={{ bg: 'pink.400' }}
-      >
-        Finaliser
-      </Button>
-      <Box mb={4} display="flex" alignItems="center" justifyContent="space-between">
+      {/* Task information and time spent */}
+      <Flex mb={4} justifyContent="space-between" alignItems="center">
         <Text>Tâches effectuées : {completedTasks} / {totalTasks}</Text>
-        <Text>{timeSpent}h</Text>
-      </Box>
-      <Progress value={progressValue} colorScheme="pink" size="lg" />
+        <Flex alignItems="center">
+          <FcAlarmClock />
+          <Text ml={2}>{timeSpent}h</Text>
+        </Flex>
+      </Flex>
+
+      {/* Dotted progress bar */}
+      <Flex height="2px" mb={4}>
+        {Array.from({ length: totalTasks }).map((_, index) => (
+          <Box
+            key={index}
+            flex="1"
+            height="2px"
+            bg={index < completedTasks ? "pink.500" : "gray.300"}
+            mx="2px"
+          />
+        ))}
+      </Flex>
     </Box>
   );
 };

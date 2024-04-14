@@ -10,7 +10,6 @@ const D2035 = () => {
   return <Box>
     <HeaderD2035/>
     <TaskProgressBar completedTasks={19} totalTasks={20} timeSpent={1} />
-    <DottedProgressBar completedTasks={19} totalTasks={20} timeSpent={1} />
    </Box>;
 };
 
