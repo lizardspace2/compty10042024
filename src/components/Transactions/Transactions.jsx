@@ -13,7 +13,7 @@ import TransactionDetail from './components/TransactionDetail';
 import TransactionDetailHeader from './components/transactiondetail/TransactionDetailHeader';
 import TransactionDetails from './components/TransactionDetails';
 import AccountSummary from './components/AccountSummary';
-import FileUploadComponent from './components/FileUploadComponent';
+import CategoryComponent from './components/CategoryComponent';
 
 function Transactions() {
   const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
@@ -48,6 +48,7 @@ function Transactions() {
         <TransactionDetails onClose={onFilterToggle} />
       </Box>
 
+      <CategoryComponent/>
       {/* Modal for TransactionDetail */}
       <Modal isOpen={isDetailOpen} onClose={onDetailToggle} size="full" overflow="auto">
         <ModalOverlay />
