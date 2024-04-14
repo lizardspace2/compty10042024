@@ -2,9 +2,7 @@ import React from 'react';
 import {
   Box,
   Flex,
-  Button,
   useDisclosure,
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,7 +12,6 @@ import TransactionItem from './components/TransactionItem';
 import TransactionDetail from './components/TransactionDetail';
 import TransactionDetailHeader from './components/transactiondetail/TransactionDetailHeader';
 import TransactionDetails from './components/TransactionDetails';
-import { FaChevronRight } from "react-icons/fa";
 
 function Transactions() {
   const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
@@ -43,7 +40,7 @@ function Transactions() {
         zIndex="overlay"
         transition="right 0.3s"
       >
-        <TransactionDetails />
+        <TransactionDetails onClose={onFilterToggle} />
       </Box>
 
       {/* Modal for TransactionDetail */}
