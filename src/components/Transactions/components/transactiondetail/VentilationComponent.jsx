@@ -11,16 +11,16 @@ import {
   Text,
   useColorModeValue,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
-import { FcFullTrash } from 'react-icons/fc'; // Importing FcFullTrash icon
+import { FcFullTrash } from 'react-icons/fc';
 
 const VentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
-    { category: 'Télécom, fournitures, docum.', amount: '-7.99', percentage: 100 },
+    { category: 'Dépense personnelle', amount: '-0.99', percentage: 100 },
   ]);
 
-  // Define color mode value hooks
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
@@ -39,14 +39,27 @@ const VentilationComponent = () => {
         Ventilation(s)
       </Text>
       {ventilations.map((ventilation, index) => (
-        <Flex key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm" align="center">
-          <Stack spacing={4} flex={1}>
+        <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm" position="relative">
+          <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
+            <IconButton
+              aria-label="Remove ventilation"
+              icon={<FcFullTrash />}
+              size="sm"
+              variant="ghost"
+              position="absolute"
+              right="4"
+              top="4"
+              onClick={() => removeVentilation(index)}
+              zIndex="docked"
+            />
+          </Tooltip>
+          <Stack spacing={4} mt="8">
             <Text fontWeight="medium">Ventilation {index + 1}</Text>
             <FormControl>
               <FormLabel>Catégorie</FormLabel>
               <Select placeholder="Sélectionnez une catégorie" defaultValue={ventilation.category}>
                 {/* Add category options here */}
-                <option value="telecom">Télécom, fournitures, docum.</option>
+                <option value="personal">Dépense personnelle</option>
                 {/* ... other categories */}
               </Select>
             </FormControl>
@@ -59,15 +72,7 @@ const VentilationComponent = () => {
               <Input type="number" value={ventilation.percentage} />
             </FormControl>
           </Stack>
-          <IconButton
-            aria-label="Remove ventilation"
-            icon={<FcFullTrash />}
-            size="lg"
-            variant="ghost"
-            onClick={() => removeVentilation(index)}
-            isRound // To give the button a round shape
-          />
-        </Flex>
+        </Box>
       ))}
       <Button leftIcon={<FaPlus />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
         Ajouter une ventilation
