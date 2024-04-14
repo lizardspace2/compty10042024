@@ -3,6 +3,11 @@ import { Box, List, ListItem, ListIcon, Divider, Text } from '@chakra-ui/react';
 import { MdCheckCircle } from 'react-icons/md';
 
 const Sidebar = ({ tasks }) => {
+  const handleClick = (task) => {
+    // Vous pouvez implémenter une fonction pour gérer le clic sur un élément de la liste ici
+    console.log(`Clic sur : ${task}`);
+  };
+
   return (
     <Box
       w="300px"
@@ -23,10 +28,21 @@ const Sidebar = ({ tasks }) => {
             key={index}
             display="flex"
             alignItems="center"
-            fontSize="lg"
+            fontSize="md" // Légèrement plus petit que "lg"
             color="gray.600"
+            _hover={{ cursor: 'pointer', color: 'blue.500', bg: 'blue.50' }}
+            onClick={() => handleClick(task)}
+            transition="background 0.3s, color 0.3s"
+            borderRadius="md"
+            px={2}
+            py={1}
           >
-            <ListIcon as={MdCheckCircle} color="green.500" boxSize={6} />
+            <ListIcon
+              as={MdCheckCircle}
+              color="green.500"
+              boxSize={6}
+              _hover={{ color: 'green.600' }}
+            />
             {task}
           </ListItem>
         ))}
