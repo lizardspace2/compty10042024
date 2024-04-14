@@ -1,25 +1,30 @@
 import React from 'react';
-import { Box, List, ListItem, ListIcon, Text, Icon } from '@chakra-ui/react';
+import { Box, List, ListItem, ListIcon, Text, Icon, useColorModeValue } from '@chakra-ui/react';
 import { CheckCircleIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 const TaskList = ({ tasks }) => {
+  const listItemHoverBg = useColorModeValue('gray.100', 'gray.700');
+
   return (
-    <Box width="full" p={4} bg="white" boxShadow="sm" borderRadius="md">
+    <Box width="full" p={4} bg={useColorModeValue('white', 'gray.800')} boxShadow="sm" borderRadius="md">
       <List spacing={3}>
         {tasks.map((task, index) => (
-          <ListItem 
-            key={index} 
-            display="flex" 
-            justifyContent="space-between" 
-            alignItems="center" 
-            py={2} 
-            borderBottom="1px" 
+          <ListItem
+            key={index}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            py={2}
+            px={4}
+            borderBottom="1px"
             borderColor="gray.200"
-            _last={{ borderBottom: "none" }}
+            _last={{ borderBottom: 'none' }}
+            _hover={{ bg: listItemHoverBg, transition: 'background-color 0.3s' }}
+            cursor="pointer"
           >
             <Box display="flex" alignItems="center">
               <ListIcon as={CheckCircleIcon} color="green.500" mr={4} />
-              <Text fontSize="md">{task}</Text>
+              <Text fontSize="md" fontWeight="medium">{task}</Text>
             </Box>
             <Icon as={ChevronRightIcon} color="gray.500" />
           </ListItem>
@@ -31,13 +36,4 @@ const TaskList = ({ tasks }) => {
 
 export default TaskList;
 
-// Example of usage:
-// const tasks = [
-//   'Catégoriser toutes les transactions',
-//   'Immobilisations, amortissements et cessions',
-//   'Ventiler les repas hors domicile',
-//   'Retraiter les frais de véhicule',
-//   'Ventiler les échéances d'emprunts'
-// ];
-
-// <TaskList tasks={tasks} />
+// Usage example with tasks array.
