@@ -48,7 +48,7 @@ function TransactionItem() {
         transition="background 0.3s ease"
       >
         {/* The date text now correctly toggles the detail modal */}
-        <Text fontSize="lg" fontWeight="bold" color={dateColor} onClick={onDetailToggle}>
+        <Text fontSize="lg" fontWeight="bold" color={dateColor} >
           09 avr.
         </Text>
 
@@ -80,7 +80,7 @@ function TransactionItem() {
         Télécom, fournitures, docum.
       </Text>
 
-      <Text fontSize="lg" fontWeight="bold" color={amountColor}>
+      <Text fontSize="lg" fontWeight="bold" color={amountColor} onClick={onDetailToggle}>
           -799 €
         </Text>
       </Flex>
