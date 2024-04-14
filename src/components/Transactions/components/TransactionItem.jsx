@@ -27,6 +27,7 @@ import TransactionDetail from './TransactionDetail';
 
 function TransactionItem() {
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose, onClose } = useDisclosure();
+  const { isOpen: isCategoryModalOpen, onOpen: onCategoryModalOpen, onClose: onCategoryModalClose } = useDisclosure();
   const { isOpen: isCategoryOpen, onOpen: onCategoryOpen, onClose: onCategoryClose } = useDisclosure();
   const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
@@ -70,23 +71,42 @@ function TransactionItem() {
         </Tooltip>
 
         {/* The category text now correctly opens the category modal */}
-        <Text
-          fontSize="lg"
-          color="gray.500"
-          onClick={onCategoryOpen}
-          _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          Télécom, fournitures, docum.
-        </Text>
+      <Text
+        fontSize="lg"
+        color="gray.500"
+        onClick={onCategoryModalOpen} // This will open the category modal
+        _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+      >
+        Télécom, fournitures, docum.
+      </Text>
 
-        {/* Amount text */}
-        <Text fontSize="lg" fontWeight="bold" color={amountColor}>
+      <Text fontSize="lg" fontWeight="bold" color={amountColor}>
           -799 €
         </Text>
       </Flex>
 
-      {/* Modals */}
-      {/* Upload Modal */}
+      {/* CategoryComponent Modal */}
+      <Modal isOpen={isCategoryModalOpen} onClose={onCategoryModalClose} size="full" overflow="auto">
+        <ModalOverlay />
+        <ModalContent m={0} maxW="100vw">
+          <ModalHeader>
+            Catégories
+            <IconButton
+              aria-label="Close modal"
+              icon={<FaTimes />}
+              onClick={onCategoryModalClose}
+              position="absolute"
+              right="8px"
+              top="8px"
+              size="sm"
+            />
+          </ModalHeader>
+          <ModalBody>
+            <CategoryComponent />
+          </ModalBody>
+          
+        </ModalContent>
+      </Modal>
       <Modal isOpen={isUploadOpen} onClose={onUploadClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
@@ -102,7 +122,7 @@ function TransactionItem() {
               size="sm"
             />
           </ModalHeader>
-          <ModalBody>
+      <ModalBody>
             <VStack spacing={4}>
               <Text>9 avr. 2024 - Montant : -7,99 €</Text>
               <Center
