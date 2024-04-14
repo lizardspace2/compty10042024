@@ -8,12 +8,15 @@ import {
   Input,
   Select,
   Stack,
+  IconButton,
+  InputGroup,
+  InputLeftElement,
   Text,
   useColorModeValue,
-  IconButton,
   Tooltip,
 } from '@chakra-ui/react';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaPercent } from 'react-icons/fa'; // Import FaPercent for percentage
+import { MdEuro } from 'react-icons/md'; // Import MdEuro for euro symbol
 import { FcFullTrash } from 'react-icons/fc';
 
 const VentilationComponent = () => {
@@ -38,8 +41,8 @@ const VentilationComponent = () => {
       <Text fontSize="lg" fontWeight="semibold" mb={4}>
         Ventilation(s)
       </Text>
-      {ventilations.map((ventilation, index) => (
-        <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
+    {ventilations.map((ventilation, index) => (
+      <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
           <Flex justify="space-between" align="center">
             <Text fontWeight="medium">Ventilation {index + 1}</Text>
             <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
@@ -60,16 +63,28 @@ const VentilationComponent = () => {
               {/* ... other categories */}
             </Select>
           </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Montant</FormLabel>
+        <FormControl mt={4}>
+          <FormLabel>Montant</FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<MdEuro />} // Use MdEuro icon here
+            />
             <Input type="number" value={ventilation.amount} />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Pourcentage</FormLabel>
+          </InputGroup>
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>Pourcentage</FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<FaPercent />} // Use FaPercent icon here
+            />
             <Input type="number" value={ventilation.percentage} />
-          </FormControl>
-        </Box>
-      ))}
+          </InputGroup>
+        </FormControl>
+      </Box>
+    ))}
       <Button leftIcon={<FaPlus />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
         Ajouter une ventilation
       </Button>
