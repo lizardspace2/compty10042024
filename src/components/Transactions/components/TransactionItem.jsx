@@ -171,8 +171,6 @@ function TransactionItem() {
       <Modal isOpen={isKeywordModalOpen} onClose={onKeywordModalClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Texte ou #motclé</ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
               <Input
