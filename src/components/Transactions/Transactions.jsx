@@ -43,12 +43,6 @@ function Transactions() {
         zIndex="overlay"
         transition="right 0.3s"
       >
-        <Flex justifyContent="space-between" alignItems="center" p="4" borderBottom="1px solid gray">
-          <Heading size="md">Transaction Filters</Heading>
-          <Button onClick={onFilterToggle} rightIcon={<FaChevronRight />}>
-            Close
-          </Button>
-        </Flex>
         <TransactionDetails />
       </Box>
 
