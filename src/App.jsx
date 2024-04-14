@@ -37,7 +37,7 @@ const LayoutWithSidebar = () => {
       )}
       <Box flex="1" pl={showSidebar ? "270px" : "0"} pr={5} pt={5} overflowY="auto">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Pilotage />} />
           <Route path="/pilotage" element={<Pilotage />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/todo" element={<Todo />} />

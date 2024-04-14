@@ -1,13 +1,28 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
-import HeaderD2035 from './components/HeaderD2035';
-import TaskProgressBar from './components/TaskProgressBar';
-import TaskList from './components/TaskList';
-import FinalizeButton from './components/FinalizeButton';
-import Sidebar from './components/Sidebar';
+import { Box, List, ListItem, ListIcon, Divider, Text } from '@chakra-ui/react';
+import { MdCheckCircle } from 'react-icons/md';
 
-const D2035 = () => {
-  const tasks = [
+const Sidebar = ({ tasks }) => {
+  return (
+    <Box w="450px" bg="gray.50" p={4} boxShadow="md" borderRadius="md">
+      <Text fontSize="lg" fontWeight="bold" mb={3}>
+        {tasks[0]} {/* Assuming the first item is the title */}
+      </Text>
+      <Divider my={3} />
+      <List spacing={2}>
+        {tasks.slice(1).map((task, index) => (
+          <ListItem key={index} display="flex" alignItems="center">
+            <ListIcon as={MdCheckCircle} color="green.500" />
+            {task}
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+};
+
+const tasks = [
+    'Compty',
     'Catégoriser toutes les transactions',
     'Immobilisations, amortissements et cessions',
     'Ventiler les repas hors domicile',
@@ -29,19 +44,7 @@ const D2035 = () => {
     'Informations relatives à l\'exercice fiscal',
     'Valider la clôture',
   ];
-  return (
-    <Box textAlign="center" alignItems="center" justifyContent="center">
-      <HeaderD2035 />
-      <Box m={4} >
-      <FinalizeButton />
-      </Box>
-      <Box textAlign="center" alignItems="center" justifyContent="center" borderRadius="10px" borderWidth={1} m={4} >
-        <TaskProgressBar completedTasks={19} totalTasks={20} timeSpent={1} />
-        <TaskList tasks={tasks} />
-      </Box>
-      <Sidebar/>
-    </Box>
-  );
-};
 
-export default D2035;
+export default function App() {
+  return <Sidebar tasks={tasks} />;
+}
