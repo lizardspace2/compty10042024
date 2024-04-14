@@ -1,17 +1,15 @@
-// TransactionDetail.js or whatever name suits the component
-
 import React from 'react';
-import { VStack } from '@chakra-ui/react';
-import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
+import { SimpleGrid } from '@chakra-ui/react';
 import TransactionInformation from './transactiondetail/TransactionInformation';
 import VentilationComponent from './transactiondetail/VentilationComponent';
 
 const TransactionDetail = () => {
   return (
-    <VStack spacing={4} align="stretch">
-      <TransactionInformation/>
-      <VentilationComponent/>
-    </VStack>
+    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} align="stretch">
+      <TransactionInformation />
+      <VentilationComponent />
+      {/* Other components that you might want to add */}
+    </SimpleGrid>
   );
 };
 
