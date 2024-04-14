@@ -34,8 +34,8 @@ function TransactionItem() {
           09 avr.
         </Text>
         <Tooltip hasArrow label="Lier un justificatif à la transaction" placement="top" closeOnClick={false}>
-          <Box>
-            <Icon as={GoPaperclip} w={5} h={5} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} onClick={onOpen} />
+          <Box position="relative" zIndex="docked">
+            <Icon as={GoPaperclip} w={5} h={5} onClick={onOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
           </Box>
         </Tooltip>
         <Box>
