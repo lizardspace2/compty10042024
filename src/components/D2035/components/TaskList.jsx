@@ -1,19 +1,27 @@
 import React from 'react';
 import { Box, List, ListItem, ListIcon, Text, Icon } from '@chakra-ui/react';
-import { MdCheckCircle, MdKeyboardArrowRight } from 'react-icons/md';
+import { CheckCircleIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 const TaskList = ({ tasks }) => {
-
   return (
     <Box width="full" p={4} bg="white" boxShadow="sm" borderRadius="md">
       <List spacing={3}>
         {tasks.map((task, index) => (
-          <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" py={2} borderBottom="1px" borderColor="gray.200">
+          <ListItem 
+            key={index} 
+            display="flex" 
+            justifyContent="space-between" 
+            alignItems="center" 
+            py={2} 
+            borderBottom="1px" 
+            borderColor="gray.200"
+            _last={{ borderBottom: "none" }}
+          >
             <Box display="flex" alignItems="center">
-              <ListIcon as={MdCheckCircle} color="green.500" mr={4} />
+              <ListIcon as={CheckCircleIcon} color="green.500" mr={4} />
               <Text fontSize="md">{task}</Text>
             </Box>
-            <Icon as={MdKeyboardArrowRight} color="gray.500" />
+            <Icon as={ChevronRightIcon} color="gray.500" />
           </ListItem>
         ))}
       </List>

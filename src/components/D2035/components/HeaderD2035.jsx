@@ -25,7 +25,7 @@ const HeaderD2035 = () => {
       bgColor={bgColor}
     >
       <Box>
-        <Heading size="lg" letterSpacing="wider">indy</Heading>
+        <Heading size="lg" letterSpacing="wider">Compty</Heading>
       </Box>
       <Flex gridGap={4}>
         <Badge colorScheme="green" px={2} py={1} borderRadius="lg">
