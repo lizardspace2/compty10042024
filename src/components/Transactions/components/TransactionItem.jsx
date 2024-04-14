@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Flex,
@@ -9,10 +9,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { GoPaperclip } from 'react-icons/go';
-import FileUploadComponent from './FileUploadComponent'; // Make sure this path is correct
+import FileUploadComponent from './FileUploadComponent';
 
-function TransactionItem() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+function TransactionItem({ onOpenUploadModal }) {
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
@@ -34,8 +33,8 @@ function TransactionItem() {
           09 avr.
         </Text>
         <Tooltip hasArrow label="Lier un justificatif à la transaction" placement="top" closeOnClick={false}>
-          <Box position="relative" zIndex="docked">
-            <Icon as={GoPaperclip} w={5} h={5} onClick={onOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
+          <Box position="relative" zIndex="1">
+            <Icon as={GoPaperclip} w={5} h={5} onClick={onOpenUploadModal} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
           </Box>
         </Tooltip>
         <Box>
@@ -52,8 +51,7 @@ function TransactionItem() {
         </Text>
       </Flex>
 
-      {/* FileUploadComponent is controlled by useDisclosure and opens on click */}
-      {isOpen && <FileUploadComponent isOpen={isOpen} onOpen={onOpen} onClose={onClose} />}
+      {/* No longer controlling the modal here, so no conditional rendering */}
     </>
   );
 }
