@@ -1,8 +1,20 @@
 import React from 'react';
-import { Input, InputGroup, InputLeftElement, Button, Flex, Heading, Icon, useColorModeValue } from '@chakra-ui/react';
-import { MdSearch } from 'react-icons/md';
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Button,
+  Flex,
+  Heading,
+  useColorModeValue,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from '@chakra-ui/react';
+import { MdSearch, MdAdd } from 'react-icons/md';
 import { FcHeatMap } from "react-icons/fc";
-import { BsPlus } from 'react-icons/bs';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const TransactionsHeader = ({ onToggleFilter }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -22,10 +34,9 @@ const TransactionsHeader = ({ onToggleFilter }) => {
       <Heading size="md">Transactions</Heading>
       <Flex alignItems="center">
         <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<MdSearch color="gray.500" />}
-          />
+          <InputLeftElement pointerEvents="none">
+            <MdSearch color="gray.500" />
+          </InputLeftElement>
           <Input
             type="search"
             placeholder="Rechercher"
@@ -44,15 +55,25 @@ const TransactionsHeader = ({ onToggleFilter }) => {
           Filtrer
         </Button>
       </Flex>
-      <Button
-        rightIcon={<BsPlus />}
-        colorScheme={addButtonColorScheme}
-        ml={2}
-        borderRadius="full"
-        boxShadow="md"
-      >
-        Ajouter
-      </Button>
+      <Menu>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          colorScheme={addButtonColorScheme}
+          ml={2}
+          borderRadius="full"
+          boxShadow="md"
+        >
+          Ajouter
+        </MenuButton>
+        <MenuList>
+          <MenuItem>Justificatif</MenuItem>
+          <MenuItem>Autre dépense professionnelle</MenuItem>
+          <MenuItem>Autre recette professionnelle</MenuItem>
+          <MenuItem>Dépense en espèces</MenuItem>
+          <MenuItem>Recette en espèces</MenuItem>
+        </MenuList>
+      </Menu>
     </Flex>
   );
 };
