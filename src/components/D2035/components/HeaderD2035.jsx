@@ -31,12 +31,20 @@ const HeaderD2035 = () => {
         <Badge colorScheme="green" px={2} py={1} borderRadius="lg">
           Exercice 2023
         </Badge>
-        <Badge colorScheme="purple" px={2} py={1} borderRadius="lg">
-          1 fois par an <FcAlarmClock />
-        </Badge>
-        <Badge colorScheme="blue" px={2} py={1} borderRadius="lg">
-          Ouverture le 2 janv. 2024 <TfiReload />
-        </Badge>
+        <Flex align="center">
+          <Badge colorScheme="purple" px={2} py={1} borderRadius="lg">
+            <Flex align="center" gridGap={1}>
+              1 fois par an <FcAlarmClock />
+            </Flex>
+          </Badge>
+        </Flex>
+        <Flex align="center">
+          <Badge colorScheme="blue" px={2} py={1} borderRadius="lg">
+            <Flex align="center" gridGap={1}>
+              Ouverture le 2 janv. 2024 <TfiReload />
+            </Flex>
+          </Badge>
+        </Flex>
         <Badge colorScheme="red" px={2} py={1} borderRadius="lg">
           À clôturer pour le 18 mai 2024
         </Badge>
