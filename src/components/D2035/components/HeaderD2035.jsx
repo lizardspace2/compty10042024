@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Utilisez useNavigate pour la navigation
 import {
   Flex,
   Box,
@@ -14,6 +15,12 @@ import { TfiReload } from "react-icons/tfi";
 const HeaderD2035 = () => {
   const bgColor = useColorModeValue('gray.100', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const navigate = useNavigate(); // Utilisez useNavigate pour la navigation
+
+  // Fonction pour naviguer vers la route '/todo'
+  const handleCloseButtonClick = () => {
+    navigate('/todo');
+  };
 
   return (
     <Flex
@@ -50,7 +57,8 @@ const HeaderD2035 = () => {
         </Badge>
       </Flex>
       <Box>
-        <CloseButton size="lg" />
+        {/* Utilisez la fonction pour la gestion de l'événement onClick */}
+        <CloseButton size="lg" onClick={handleCloseButtonClick} />
       </Box>
     </Flex>
   );
