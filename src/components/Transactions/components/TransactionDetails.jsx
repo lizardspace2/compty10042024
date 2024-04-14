@@ -19,15 +19,6 @@ const TransactionDetails = ({ onClose }) => {
       position="relative"
       bg="white"
       h="100vh"
-    _before={{
-        content: '""',
-        position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: "1px",
-        bg: "gray.200",
-      }}
     >
       <CloseButton position="absolute" right="4" top="4" onClick={onClose} />
       <Heading size="md" mb={4}>
