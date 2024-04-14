@@ -45,17 +45,19 @@ function TransactionItem() {
           09 avr.
         </Text>
         <Tooltip hasArrow label="Lier un justificatif à la transaction" placement="top" closeOnClick={false}>
-        <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center">
         
             <Icon as={GoPaperclip} w={5} h={5} onClick={onOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
-        </Box>
+          </Box>
         </Tooltip>
+        <Tooltip hasArrow label="Cliquer pour Annoter" placement="top" closeOnClick={false}>
         <Box>
           <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
           <Text fontSize="sm" color={dateColor}>
             Guillaume Marie Franco
           </Text>
         </Box>
+        </Tooltip>
         <Text fontSize="lg" color="gray.500">
           Télécom, fournitures, docum.
         </Text>
