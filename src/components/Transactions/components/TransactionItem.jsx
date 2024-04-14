@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Flex,
@@ -14,6 +14,7 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  ModalCloseButton,
   VStack,
   Center,
   Input,
@@ -24,7 +25,6 @@ import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa';
 import CategoryComponent from './CategoryComponent';
 import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
 import TransactionDetail from './TransactionDetail';
-import KeywordModal from './KeywordModal';
 
 function TransactionItem() {
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose, onClose } = useDisclosure();
@@ -36,6 +36,14 @@ function TransactionItem() {
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
   const hoverBgColor = useColorModeValue('gray.100', 'gray.600');
+
+  const [keyword, setKeyword] = useState('');
+
+  const handleConfirm = () => {
+    console.log('Keyword or hashtag:', keyword);
+    // Handle the submit action here
+    onKeywordModalClose(); // Close the modal after action
+  };
 
   return (
     <>
@@ -49,45 +57,47 @@ function TransactionItem() {
         _hover={{ bg: hoverBgColor, cursor: 'pointer' }}
         transition="background 0.3s ease"
       >
-        {/* The date text now correctly toggles the detail modal */}
-        <Text fontSize="lg" fontWeight="bold" color={dateColor} >
+        <Text fontSize="lg" fontWeight="bold" color={dateColor}>
           09 avr.
         </Text>
 
-        {/* Tooltip for the paperclip icon */}
         <Tooltip hasArrow label="Lier un justificatif à la transaction" placement="top" closeOnClick={false}>
           <Box display="flex" alignItems="center">
-            {/* The paperclip icon now correctly opens the upload modal */}
-            <Icon as={GoPaperclip} w={5} h={5} onClick={onUploadOpen} sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }} />
+            <Icon
+              as={GoPaperclip}
+              w={5}
+              h={5}
+              onClick={onUploadOpen}
+              sx={{ _hover: { transform: 'scale(1.2)' }, transition: 'transform 0.2s ease-in-out' }}
+            />
           </Box>
         </Tooltip>
 
-        {/* Other texts and tooltips */}
         <Tooltip hasArrow label="Cliquer pour Annoter" placement="top" closeOnClick={false}>
-          <Box  onClick={onKeywordModalOpen}>
-            <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
-            <Text fontSize="sm" color={dateColor}>
+          <Box onClick={onKeywordModalOpen}>
+            <Text fontWeight="medium" onClick={onKeywordModalOpen}>
+              Prlv Sepa Synamobile Rum Recipon
+            </Text>
+            <Text fontSize="sm" color={dateColor} onClick={onKeywordModalOpen}>
               Guillaume Marie Franco
             </Text>
           </Box>
         </Tooltip>
 
-        {/* The category text now correctly opens the category modal */}
-      <Text
-        fontSize="lg"
-        color="gray.500"
-        onClick={onCategoryModalOpen} // This will open the category modal
-        _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-      >
-        Télécom, fournitures, docum.
-      </Text>
+        <Text
+          fontSize="lg"
+          color="gray.500"
+          onClick={onCategoryModalOpen}
+          _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+        >
+          Télécom, fournitures, docum.
+        </Text>
 
-      <Text fontSize="lg" fontWeight="bold" color={amountColor} onClick={onDetailToggle}>
+        <Text fontSize="lg" fontWeight="bold" color={amountColor} onClick={onDetailToggle}>
           -799 €
         </Text>
       </Flex>
 
-      {/* CategoryComponent Modal */}
       <Modal isOpen={isCategoryModalOpen} onClose={onCategoryModalClose} size="full" overflow="auto">
         <ModalOverlay />
         <ModalContent m={0} maxW="100vw">
@@ -106,13 +116,13 @@ function TransactionItem() {
           <ModalBody>
             <CategoryComponent />
           </ModalBody>
-          
         </ModalContent>
       </Modal>
+
       <Modal isOpen={isUploadOpen} onClose={onUploadClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-        <ModalHeader>
+          <ModalHeader>
             Prlv Sepa Symamobile Rum Recipon Guillaume Marie Franco
             <IconButton
               aria-label="Close modal"
@@ -124,7 +134,7 @@ function TransactionItem() {
               size="sm"
             />
           </ModalHeader>
-      <ModalBody>
+          <ModalBody>
             <VStack spacing={4}>
               <Text>9 avr. 2024 - Montant : -7,99 €</Text>
               <Center
@@ -151,16 +161,36 @@ function TransactionItem() {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="pink" onClick={onClose}>Fermer</Button>
+            <Button colorScheme="pink" onClick={onClose}>
+              Fermer
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
-      {/* CategoryComponent Modal */}
-      <CategoryComponent isOpen={isCategoryOpen} onClose={onCategoryClose} />
-      <KeywordModal isOpen={isKeywordModalOpen} onClose={onKeywordModalClose} />
+      <Modal isOpen={isKeywordModalOpen} onClose={onKeywordModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Texte ou #motclé</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Input
+                placeholder='Texte ou #motclé'
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant='ghost' onClick={onKeywordModalClose}>Annuler</Button>
+            <Button colorScheme='pink' ml={3} onClick={handleConfirm}>
+              Valider
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
-      {/* Transaction Detail Modal */}
       <Modal isOpen={isDetailOpen} onClose={onDetailToggle} size="full" overflow="auto">
         <ModalOverlay />
         <ModalContent m={0} maxW="100vw">
