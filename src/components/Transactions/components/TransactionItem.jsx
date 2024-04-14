@@ -24,12 +24,14 @@ import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa';
 import CategoryComponent from './CategoryComponent';
 import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
 import TransactionDetail from './TransactionDetail';
+import KeywordModal from './KeywordModal';
 
 function TransactionItem() {
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose, onClose } = useDisclosure();
   const { isOpen: isCategoryModalOpen, onOpen: onCategoryModalOpen, onClose: onCategoryModalClose } = useDisclosure();
   const { isOpen: isCategoryOpen, onOpen: onCategoryOpen, onClose: onCategoryClose } = useDisclosure();
   const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
+  const { isOpen: isKeywordModalOpen, onOpen: onKeywordModalOpen, onClose: onKeywordModalClose } = useDisclosure();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
@@ -62,7 +64,7 @@ function TransactionItem() {
 
         {/* Other texts and tooltips */}
         <Tooltip hasArrow label="Cliquer pour Annoter" placement="top" closeOnClick={false}>
-          <Box>
+          <Box  onClick={onKeywordModalOpen}>
             <Text fontWeight="medium">Prlv Sepa Synamobile Rum Recipon</Text>
             <Text fontSize="sm" color={dateColor}>
               Guillaume Marie Franco
@@ -156,6 +158,7 @@ function TransactionItem() {
 
       {/* CategoryComponent Modal */}
       <CategoryComponent isOpen={isCategoryOpen} onClose={onCategoryClose} />
+      <KeywordModal isOpen={isKeywordModalOpen} onClose={onKeywordModalClose} />
 
       {/* Transaction Detail Modal */}
       <Modal isOpen={isDetailOpen} onClose={onDetailToggle} size="full" overflow="auto">
