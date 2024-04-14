@@ -32,7 +32,7 @@ function Transactions() {
         </Box>
       </Box>
 
-      <FileUploadComponent isOpen={isOpen} onClose={onClose} />
+
 
       <Box
         pos="fixed"
