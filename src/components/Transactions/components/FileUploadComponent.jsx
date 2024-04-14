@@ -7,16 +7,14 @@ import {
   ModalFooter,
   ModalBody,
   Button,
-  Input,
   VStack,
   Text,
   Center,
   useDisclosure,
-  Box,
   IconButton,
+  Input,
 } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa'; // Import close icon from react-icons
 
 const FileUploadComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,7 +30,7 @@ const FileUploadComponent = () => {
             Prlv Sepa Symamobile Rum Recipon Guillaume Marie Franco
             <IconButton
               aria-label="Close modal"
-              icon={<CloseIcon />}
+              icon={<FaTimes />} // Replace with react-icons close icon
               onClick={onClose}
               position="absolute"
               right="8px"
