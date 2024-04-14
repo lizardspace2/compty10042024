@@ -28,10 +28,10 @@ function Transactions() {
       </Box>
       
       {/* Modal that will contain the TransactionDetail */}
-      <Modal isOpen={isOpen} onClose={onClose} size="full">
+      <Modal isOpen={isOpen} onClose={onClose} size="full" overflow="auto">
         <ModalOverlay />
-        <ModalContent m={0} maxW="100vw" maxH="100vh">
-        <TransactionDetailHeader onClose={onClose} />
+        <ModalContent m={0} maxW="100vw">
+          <TransactionDetailHeader onClose={onClose} />
           <TransactionDetail />
         </ModalContent>
       </Modal>
