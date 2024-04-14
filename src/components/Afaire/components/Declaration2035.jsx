@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Text, Flex, Spacer, Stack, Badge } from '@chakra-ui/react';
 import { FcOvertime } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom'; // Importez useNavigate depuis react-router-dom
 
 const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks, remainingTime }) => {
   const CustomProgress = ({ value, max }) => {
@@ -18,6 +19,13 @@ const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks
         ))}
       </Flex>
     );
+  };
+
+  const navigate = useNavigate(); // Utilisez useNavigate pour la navigation
+
+  // Fonction pour naviguer vers la route '/d2035'
+  const handleResumeButtonClick = () => {
+    navigate('/d2035');
   };
 
   return (
@@ -46,7 +54,8 @@ const TaskProgress = ({ title, exerciseYear, dueDate, tasksCompleted, totalTasks
           <Box as={FcOvertime} size="20px" mr={2} />
           <Text color="gray.500">{remainingTime}h</Text>
         </Flex>
-        <Button colorScheme="teal">Reprendre</Button>
+        {/* Utilisez la fonction pour la gestion de l'événement onClick */}
+        <Button colorScheme="teal" onClick={handleResumeButtonClick}>Reprendre</Button>
       </Flex>
     </Box>
   );
