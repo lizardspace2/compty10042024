@@ -4,7 +4,7 @@ import { FaCcVisa } from 'react-icons/fa';
 
 export function PaymentMethod() {
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
+    <Box  borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
       <Heading size="md" mb={4}>Moyen de paiement</Heading>
       <Flex align="center" justify="space-between" mb={4}>
         <Flex align="center">
