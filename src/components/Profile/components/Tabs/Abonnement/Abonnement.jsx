@@ -1,11 +1,21 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
+import { PaymentMethod } from './components/PaymentMethod';
+import { ParrainezVosProches } from './components/ParrainezVosProches';
+import { ListeDesFactures } from './components/ListeDesFactures';
+import { ResumeAbonnementPremium } from './components/ResumeAbonnementPremium';
 
 export function Abonnement() {
   return (
-    <Box>
-      <Heading size="md">Abonnement</Heading>
-      {/* Add content for Abonnement here */}
-    </Box>
+    <Grid templateColumns={['1fr', '1fr 1fr']} gap={6}>
+      <GridItem>
+        <PaymentMethod />
+        <ListeDesFactures />
+        <ParrainezVosProches />
+      </GridItem>
+      <GridItem>
+        <ResumeAbonnementPremium />
+      </GridItem>
+    </Grid>
   );
 }
