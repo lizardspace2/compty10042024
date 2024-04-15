@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import { FiPlus } from 'react-icons/fi';
 
 // This component displays individual account information
@@ -34,6 +34,11 @@ const AccountCard = ({ accountName, bankName, amount }) => {
 const AccountSection = ({ accounts }) => {
   return (
     <Box>
+      <Flex justifyContent="space-between" alignItems="center" mb={4}>
+        <Heading as="h2" size="lg">
+          Comptes et cartes
+        </Heading>
+      </Flex>
       {accounts.map((account, index) => (
         <AccountCard
           key={index}
