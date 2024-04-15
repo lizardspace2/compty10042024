@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text, Tooltip, Spacer, VStack, useColorModeValue } from '@chakra-ui/react';
 import { FiPlus } from 'react-icons/fi';
 
 // This component displays individual account information
@@ -33,8 +33,8 @@ const AccountCard = ({ accountName, bankName, amount }) => {
 // This component displays the overall section with the ability to add an account
 const AccountSection = ({ accounts }) => {
   return (
-    <Box>
-      <Flex justifyContent="space-between" alignItems="center" mb={4}>
+    <VStack spacing={4} align="stretch">
+      <Flex justifyContent="space-between" alignItems="center">
         <Heading as="h2" size="lg">
           Comptes et cartes
         </Heading>
@@ -47,18 +47,19 @@ const AccountSection = ({ accounts }) => {
           amount={account.amount}
         />
       ))}
-      <Tooltip label="Ajouter un compte ou une carte" fontSize="md" placement="top" hasArrow>
-        <Button
-          leftIcon={<FiPlus />}
-          mt={4}
-          colorScheme="blue"
-          variant="solid"
-          size="md"
-        >
-          Ajouter
-        </Button>
-      </Tooltip>
-    </Box>
+      <Flex mt="auto" justifyContent="flex-end">
+        <Tooltip label="Ajouter un compte ou une carte" fontSize="md" placement="top" hasArrow>
+          <Button
+            leftIcon={<FiPlus />}
+            variant="solid"
+            size="md"
+            colorScheme="blue"
+          >
+            Ajouter
+          </Button>
+        </Tooltip>
+      </Flex>
+    </VStack>
   );
 };
 
