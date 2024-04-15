@@ -24,31 +24,37 @@ import {
   FaCaretDown,
 } from 'react-icons/fa';
 import { FcBusinessman, FcImport, FcLike } from "react-icons/fc";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import de useHistory
 
 function Navbar() {
+  const navigate = useNavigate(); // Initialisation de useHistory
+
+  // Fonction de redirection vers la route /profile
+  const redirectToProfile = () => {
+    navigate.push('/profile');
+  };
+
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
-      <Box>
+        <Box>
           <Text fontSize="lg" fontWeight="bold">Compty 🚀</Text>
         </Box>
         <Divider />
-        <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}
         <Menu>
           <MenuButton as={Button} display="flex" justifyContent="flex-start" variant="ghost" rounded="full" rightIcon={<FaCaretDown />}>
             <Flex>
-            <Icon as={FaUserCircle} />
-            <Text ml={2}>Bonjour Guillaume</Text>
+              <Icon as={FaUserCircle} />
+              <Text ml={2}>Bonjour Guillaume</Text>
             </Flex>
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<Icon as={FcBusinessman} />}>Paramètres</MenuItem>
+            {/* Utilisation de la fonction redirectToProfile */}
+            <MenuItem icon={<Icon as={FcBusinessman} />} onClick={redirectToProfile}>Paramètres</MenuItem>
             <MenuItem icon={<Icon as={FcLike} color="red.500" />}>1 mois offert</MenuItem>
             <MenuItem icon={<Icon as={FcImport} />}>Se déconnecter</MenuItem>
           </MenuList>
         </Menu>
-        </Link>
         <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaHome} />

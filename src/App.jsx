@@ -65,7 +65,7 @@ const LayoutWithSidebar = () => {
           <Route path="/documents" element={<Documents />} />
           <Route path="/accompaniment" element={<Accompaniment />} />
           <Route path="/sponsorship" element={<Sponsorship />} />
-          <Route path="/profil" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
           {/* La route /d2035 est déjà définie à l'extérieur de ce layout. */}
         </Routes>
       </Box>

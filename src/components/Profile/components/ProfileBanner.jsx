@@ -14,9 +14,7 @@ const ProfileBanner = () => {
     >
       <Heading size="md">Paramètres</Heading>
       <Flex>
-
-      </Flex>
-      
+      </Flex>      
     </Flex>
   );
 };
