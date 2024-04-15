@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, useColorModeValue, IconButton } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import { FiPlus } from 'react-icons/fi';
 
 // This component displays individual account information
@@ -42,13 +42,17 @@ const AccountSection = ({ accounts }) => {
           amount={account.amount}
         />
       ))}
-      <IconButton
-        aria-label="Ajouter un compte ou une carte"
-        icon={<FiPlus />}
-        mt={4}
-        colorScheme="blue"
-        isRound
-      />
+      <Tooltip label="Ajouter un compte ou une carte" fontSize="md" placement="top" hasArrow>
+        <Button
+          leftIcon={<FiPlus />}
+          mt={4}
+          colorScheme="blue"
+          variant="solid"
+          size="md"
+        >
+          Ajouter
+        </Button>
+      </Tooltip>
     </Box>
   );
 };
