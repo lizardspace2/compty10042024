@@ -24,14 +24,14 @@ import {
   FaCaretDown,
 } from 'react-icons/fa';
 import { FcBusinessman, FcImport, FcLike } from "react-icons/fc";
-import { Link, useNavigate } from 'react-router-dom'; // Import de useHistory
+import { Link, useNavigate } from 'react-router-dom'; // Utilisation de useNavigate
 
 function Navbar() {
-  const navigate = useNavigate(); // Initialisation de useHistory
+  const navigate = useNavigate(); // Initialisation de useNavigate
 
   // Fonction de redirection vers la route /profile
   const redirectToProfile = () => {
-    navigate.push('/profile');
+    navigate('/profile');
   };
 
   return (
