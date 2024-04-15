@@ -9,6 +9,7 @@ import Todo from './components/Afaire/Todo';
 import Documents from './components/Documents/Documents';
 import Accompaniment from './components/Accompagnement/Accompaniment';
 import Sponsorship from './components/Sponsorship';
+import Profile from './components/Profile/Profile';
 import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
 
 function App() {
@@ -64,6 +65,7 @@ const LayoutWithSidebar = () => {
           <Route path="/documents" element={<Documents />} />
           <Route path="/accompaniment" element={<Accompaniment />} />
           <Route path="/sponsorship" element={<Sponsorship />} />
+          <Route path="/profil" element={<Profile />} />
           {/* La route /d2035 est déjà définie à l'extérieur de ce layout. */}
         </Routes>
       </Box>
