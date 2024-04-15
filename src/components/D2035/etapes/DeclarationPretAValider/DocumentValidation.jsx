@@ -22,7 +22,7 @@ const DocumentValidation = () => {
         Validation des documents
       </Text>
       <Text mb={4}>
-        Vous avez un document généré par Indy : la déclaration 2035
+        Vous avez un document généré par Compty : la déclaration 2035
       </Text>
       <Button colorScheme="teal" variant="solid">
         Vérifier le document

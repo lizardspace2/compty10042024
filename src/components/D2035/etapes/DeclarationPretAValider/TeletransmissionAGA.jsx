@@ -22,7 +22,7 @@ const TeletransmissionAGA = () => {
           </Text>
         </HStack>
         <Text>
-          Indy peut télètransmettre vos documents. Il ne vous reste qu'à valider l'envoi de votre liasse fiscale à votre AGA. Elle s'occupera par la suite de les télètransmettre au service des impôts.
+          Compty peut télètransmettre vos documents. Il ne vous reste qu'à valider l'envoi de votre liasse fiscale à votre AGA. Elle s'occupera par la suite de les télètransmettre au service des impôts.
         </Text>
         <Button colorScheme="blue" size="sm">
           Clôturer et télètransmettre ma déclaration

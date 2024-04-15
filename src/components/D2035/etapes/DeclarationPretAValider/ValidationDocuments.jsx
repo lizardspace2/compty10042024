@@ -22,7 +22,7 @@ const ValidationDocuments = () => {
           </Text>
         </HStack>
         <Text>
-          Vous avez un document généré par Indy : la déclaration 2035
+          Vous avez un document généré par Compty : la déclaration 2035
         </Text>
         <Button colorScheme="pink" size="sm">
           Afficher le document à valider

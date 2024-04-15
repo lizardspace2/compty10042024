@@ -26,7 +26,7 @@ const ChequeNonEncaisseModification = () => {
         Pour être pris en compte dans votre déclaration 2023, les chèques non encaissés au 31 décembre 2023 doivent être saisis.
         D'une part, saisissez les chèques émis mais non encaissés par le bénéficiaire au 31/12/2023. Vous pouvez comparer votre talon de chéquier avec le résultat du moteur de recherche sur "chq" dans l'onglet <Link color="blue.500" href="/transactions">Transactions</Link>.
         D'autre part, saisissez aussi les chèques reçus en recette en 2023 mais déposés en banque en 2024. Vous pouvez vérifier vos remises de chèques de janvier pour vous en assurer.
-        Indy ajoutera ainsi ces transactions à votre déclaration 2023 et les retirera pour 2024.
+        Compty ajoutera ainsi ces transactions à votre déclaration 2023 et les retirera pour 2024.
       </Text>
       <Text fontSize="xl" fontWeight="semibold" mb={2}>
         Liste des chèques

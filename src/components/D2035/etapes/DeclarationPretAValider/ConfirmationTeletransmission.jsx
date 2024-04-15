@@ -37,7 +37,7 @@ const ConfirmationTeletransmission = () => {
             Prêt pour la télétransmission ?
           </Heading>
           <Text fontSize="sm" mb={3}>
-            Indy va générer un email à destination de votre AGA dont vous recevrez une copie. Il contiendra votre liasse fiscale au format de la télétransmission EDI ainsi qu'une copie PDF de tous les documents de votre comptabilité pour archivage.
+            Compty va générer un email à destination de votre AGA dont vous recevrez une copie. Il contiendra votre liasse fiscale au format de la télétransmission EDI ainsi qu'une copie PDF de tous les documents de votre comptabilité pour archivage.
           </Text>
         </Box>
 

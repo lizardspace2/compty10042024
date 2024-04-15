@@ -27,7 +27,7 @@ export function ResumeAbonnementPremium() {
       shadow="md"
     >
       <Text fontSize="xl" fontWeight="bold">
-        Indy Premium
+        Compty Premium
       </Text>
       <Text fontSize="3xl" fontWeight="bold">
         12€ <Text as="span" fontSize="md">/mois HT</Text>
@@ -37,7 +37,7 @@ export function ResumeAbonnementPremium() {
         Changer de régime d'imposition
       </Button>
       <Text mt={4} mb={2} fontSize="lg" fontWeight="semibold">
-        Toutes les fonctionnalités d'Indy + :
+        Toutes les fonctionnalités d'Compty + :
       </Text>
       <List spacing={2}>
         {['Déclaration de CA à l\'Urssaf', 'Déclaration de TVA', 'Aide à la déclaration du revenu', 'Volet fiscal 2042 C-Pro', 'Volet social SSI / PAMC', 'Pilotage', 'Support client par live-chat et email'].map((feature) => (

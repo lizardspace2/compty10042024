@@ -19,7 +19,7 @@ const SoldeFinancierCoherent = () => {
         Vérifier les comptes financiers
       </Text>
       <Text mb={4}>
-        Nous avons vérifié pour chacun de vos comptes bancaires si les transactions de l'exercice ont bien été récupérées par Indy.
+        Nous avons vérifié pour chacun de vos comptes bancaires si les transactions de l'exercice ont bien été récupérées par Compty.
       </Text>
       <Table variant="simple">
         <Thead>

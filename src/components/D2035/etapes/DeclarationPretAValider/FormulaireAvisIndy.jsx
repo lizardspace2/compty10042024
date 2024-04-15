@@ -12,7 +12,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-const FormulaireAvisIndy = () => {
+const FormulaireAvisCompty = () => {
     const [rating, setRating] = useState(0);
     const [suggestion, setSuggestion] = useState('');
 
@@ -33,16 +33,16 @@ const FormulaireAvisIndy = () => {
         >
             <VStack spacing={6}>
                 <Text fontSize="lg" fontWeight="bold">
-                    Votre avis sur Indy
+                    Votre avis sur Compty
                 </Text>
 
                 <Text>
-                    Avant de continuer votre compte sur Indy, nous aimerions avoir votre ressenti.
+                    Avant de continuer votre compte sur Compty, nous aimerions avoir votre ressenti.
                 </Text>
 
                 <Box w="full">
                     <Text mb={2}>
-                        Recommanderiez-vous Indy à un ami ?
+                        Recommanderiez-vous Compty à un ami ?
                     </Text>
                     <Slider
                         defaultValue={0}
@@ -64,7 +64,7 @@ const FormulaireAvisIndy = () => {
 
                 <Box w="full">
                     <Text mb={2}>
-                        Si vous aviez une baguette magique, comment amélioreriez-vous Indy ?
+                        Si vous aviez une baguette magique, comment amélioreriez-vous Compty ?
                     </Text>
                     <Textarea
                         placeholder="Votre liste au père noël ici."
@@ -74,7 +74,7 @@ const FormulaireAvisIndy = () => {
                     />
                 </Box>
                 <Text fontSize="sm">
-                    Pour aider Indy à grandir et à s'épanouir, parlez-en autour de vous, et soyez son ambassadeur sur les forums ou les groupes Facebook.
+                    Pour aider Compty à grandir et à s'épanouir, parlez-en autour de vous, et soyez son ambassadeur sur les forums ou les groupes Facebook.
                 </Text>
                 <Box w="full" d="flex" justifyContent="space-between" mt={4}>
                     <Button colorScheme="red" variant="outline" onClick={() => setRating(0)}>
@@ -89,4 +89,4 @@ const FormulaireAvisIndy = () => {
     );
 };
 
-export default FormulaireAvisIndy;
+export default FormulaireAvisCompty;

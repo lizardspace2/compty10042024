@@ -14,7 +14,7 @@ const CessionImmobilisation = () => {
   return (
     <Box maxWidth="container.xl" mx="auto" p={5} overflowX="auto">
       <Text mb={4}>
-        Si vous vendez ou si vous mettez au rebut un actif immobilisé, saisissez les informations de cession pour permettre à Indy de calculer les plus ou moins-values.
+        Si vous vendez ou si vous mettez au rebut un actif immobilisé, saisissez les informations de cession pour permettre à Compty de calculer les plus ou moins-values.
       </Text>
       <Table variant="simple">
         <Thead>

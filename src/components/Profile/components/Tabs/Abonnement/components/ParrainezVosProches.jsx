@@ -7,7 +7,7 @@ export function ParrainezVosProches() {
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} textAlign="center">
       <Icon as={AiOutlineHeart} boxSize={6} color="gray.600" mb={2} />
       <Text mb={4}>
-        Parlez d'Indy autour de vous et faites-vous rembourser votre prochaine facture.
+        Parlez d'Compty autour de vous et faites-vous rembourser votre prochaine facture.
       </Text>
       <Button colorScheme="teal" variant="outline">
         Parrainez vos proches

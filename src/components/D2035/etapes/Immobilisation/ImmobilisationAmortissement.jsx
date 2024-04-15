@@ -9,7 +9,7 @@ const ImmobilisationAmortissement = () => {
         Immobilisations, amortissements et cessions
       </Heading>
       <Text mb={6}>
-        Ajoutez l'ensemble de vos immobilisations à votre registre. Indy calculera les amortissements à appliquer et les plus-values en cas de cession.
+        Ajoutez l'ensemble de vos immobilisations à votre registre. Compty calculera les amortissements à appliquer et les plus-values en cas de cession.
       </Text>
       <Alert status="info" variant="left-accent" mb={4}>
         <AlertIcon />
