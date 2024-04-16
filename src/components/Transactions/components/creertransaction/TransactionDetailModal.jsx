@@ -1,3 +1,4 @@
+// TransactionDetailModal.jsx
 import React from 'react';
 import {
   Modal,
@@ -12,7 +13,6 @@ import {
 import ExpenseInformation from './ExpenseInformation';
 import ExpenseVentilationComponent from './ExpenseVentilationComponent';
 
-// Define ExpenseFormHeader directly inside TransactionDetailModal
 const ExpenseFormHeader = ({ onToggle }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" p={4} bg="white" boxShadow="md">
@@ -31,7 +31,6 @@ const ExpenseFormHeader = ({ onToggle }) => {
   );
 };
 
-// Define ExpenseTransactionDetail directly inside TransactionDetailModal
 const ExpenseTransactionDetail = ({ onToggle }) => {
   return (
     <>
@@ -55,7 +54,6 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
         >
           <ExpenseInformation />
           <ExpenseVentilationComponent />
-          {/* Insert additional components if needed */}
         </SimpleGrid>
       </Box>
     </>
