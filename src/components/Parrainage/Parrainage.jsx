@@ -4,6 +4,8 @@ import ComposantParrainage from './components/ComposantParrainage';
 import CompteurFilleulsInvites from './components/CompteurFilleulsInvites';
 import InformationsLegales from './components/InformationsLegales';
 import OffreParrainage from './components/OffreParrainage';
+import CompteurFilleulsInscrits from './components/CompteurFilleulsInscrits';
+import CompteurFilleulsAbonnes from './components/CompteurFilleulsAbonnes';
 
 const Parrainage = () => {
     return (
@@ -15,9 +17,9 @@ const Parrainage = () => {
                     <ComposantParrainage />
                 </Grid>
                 <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                    {[...Array(3)].map((_, index) => (
-                        <CompteurFilleulsInvites key={index} />
-                    ))}
+                        <CompteurFilleulsInvites />
+                        <CompteurFilleulsInscrits/>
+                        <CompteurFilleulsAbonnes/>
                 </Grid>
                 <InformationsLegales />
             </Box>
