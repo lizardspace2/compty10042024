@@ -17,11 +17,19 @@ const Parrainage = () => {
                     <ComposantParrainage />
                 </Grid>
                 <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                    <Box mt={4}>
                         <CompteurFilleulsInvites />
-                        <CompteurFilleulsInscrits/>
-                        <CompteurFilleulsAbonnes/>
+                    </Box>
+                    <Box mt={4}>
+                        <CompteurFilleulsInscrits />
+                    </Box>
+                    <Box mt={4}>
+                        <CompteurFilleulsAbonnes />
+                    </Box>
                 </Grid>
-                <InformationsLegales />
+                <Box mt={4}>
+                    <InformationsLegales />
+                </Box>
             </Box>
         </div>
     );
