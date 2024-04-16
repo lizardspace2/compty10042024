@@ -42,7 +42,7 @@ function Navbar() {
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
-        <Box>
+        <Box textAlign="center">
           <Text fontSize="lg" fontWeight="bold">Compty 🚀</Text>
         </Box>
         <Divider />
