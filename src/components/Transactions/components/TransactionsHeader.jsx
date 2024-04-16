@@ -89,9 +89,9 @@ return (
             {/* Utilise des fonctions distinctes pour ouvrir les modals */}
             <MenuItem onClick={handleOpenJustificatifModal}>Justificatif</MenuItem>
             <MenuItem onClick={handleOpenDepenseModal}>Autre dépense professionnelle</MenuItem>
-            <MenuItem>Autre recette professionnelle</MenuItem>
-            <MenuItem>Dépense en espèces</MenuItem>
-            <MenuItem>Recette en espèces</MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal}>Autre recette professionnelle</MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal}>Dépense en espèces</MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal}>Recette en espèces</MenuItem>
           </MenuList>
         </Menu>
       </Flex>
