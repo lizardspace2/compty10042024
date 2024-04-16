@@ -15,7 +15,7 @@ import {
 import { MdSearch, MdAdd } from 'react-icons/md';
 import { FcHeatMap } from "react-icons/fc";
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import FileUploadModal from './ajouter/FileUploadModal'; // Importez le composant du modal
+import FileUploadModal from './ajouter/FileUploadModal'; // Importe le composant du modal
 import FileUploadComponent from './FileUploadComponent';
 
 const TransactionsHeader = ({ onToggleFilter }) => {
@@ -23,15 +23,20 @@ const TransactionsHeader = ({ onToggleFilter }) => {
   const inputBgColor = useColorModeValue('white', 'gray.700');
   const filterButtonColorScheme = useColorModeValue('gray', 'blue');
   const addButtonColorScheme = useColorModeValue('pink', 'green');
-  const [showModal, setShowModal] = useState(false); 
-  const [showModalDepense, setShowModalDepense] = useState(false); 
+  const [showJustificatifModal, setShowJustificatifModal] = useState(false); // État pour le modal justificatif
+  const [showDepenseModal, setShowDepenseModal] = useState(false); // État pour le modal de dépense
 
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const handleOpenJustificatifModal = () => {
+    setShowJustificatifModal(true);
   };
 
-  const handleOpenModalDepense = () => {
-    setShowModalDepense(true);
+  const handleOpenDepenseModal = () => {
+    setShowDepenseModal(true);
+  };
+
+  const handleCloseModals = () => {
+    setShowJustificatifModal(false);
+    setShowDepenseModal(false);
   };
 
   return (
@@ -80,18 +85,18 @@ const TransactionsHeader = ({ onToggleFilter }) => {
             Ajouter
           </MenuButton>
           <MenuList>
-            {/* Utilisez la fonction handleOpenModal pour ouvrir le modal */}
-            <MenuItem onClick={handleOpenModal}>Justificatif</MenuItem>
-            <MenuItem onClick={handleOpenModalDepense}>Autre dépense professionnelle</MenuItem>
+            {/* Utilise des fonctions distinctes pour ouvrir les modals */}
+            <MenuItem onClick={handleOpenJustificatifModal}>Justificatif</MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal}>Autre dépense professionnelle</MenuItem>
             <MenuItem>Autre recette professionnelle</MenuItem>
             <MenuItem>Dépense en espèces</MenuItem>
             <MenuItem>Recette en espèces</MenuItem>
           </MenuList>
         </Menu>
       </Flex>
-      {/* Affichez le modal si showModal est vrai */}
-      {showModal && <FileUploadModal onClose={() => setShowModal(false)} />}
-      {showModal && <FileUploadComponent onClose={() => setShowModalDepense(false)} />}
+      {/* Affiche les modals correspondants */}
+      {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
+      {showDepenseModal && <FileUploadComponent onClose={handleCloseModals} />}
     </>
   );
 };
