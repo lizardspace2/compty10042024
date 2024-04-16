@@ -16,7 +16,6 @@ const Parrainage = () => {
                 <ComposantParrainage />
                 <CompteurFilleulsInvites />
                 <InformationsLegales />
-
             </Box>
         </div>
     );
