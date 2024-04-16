@@ -24,7 +24,7 @@ import { GoPaperclip } from 'react-icons/go';
 import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa';
 import CategoryComponent from './CategoryComponent';
 import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
-import TransactionDetail from './TransactionDetail';
+import TransactionDetail from './transactiondetail/TransactionDetail';
 
 function TransactionItem() {
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose, onClose } = useDisclosure();

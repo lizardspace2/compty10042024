@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import TransactionsHeader from './components/TransactionsHeader';
 import TransactionItem from './components/TransactionItem';
-import TransactionDetail from './components/TransactionDetail';
+import TransactionDetail from './components/transactiondetail/TransactionDetail';
 import TransactionDetailHeader from './components/transactiondetail/TransactionDetailHeader';
 import TransactionDetails from './components/TransactionDetails';
 import AccountSummary from './components/AccountSummary';

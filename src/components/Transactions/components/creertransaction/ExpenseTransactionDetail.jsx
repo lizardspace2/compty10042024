@@ -1,9 +1,9 @@
 import React from 'react';
 import { SimpleGrid, Box } from '@chakra-ui/react';
-import TransactionInformation from './transactiondetail/TransactionInformation';
-import VentilationComponent from './transactiondetail/VentilationComponent';
+import ExpenseInformation from './ExpenseInformation';
+import ExpenseVentilationComponent from './ExpenseVentilationComponent';
 
-const TransactionDetail = () => {
+const ExpenseTransactionDetail = () => {
   return (
     <Box 
       p={4} 
@@ -22,12 +22,12 @@ const TransactionDetail = () => {
         maxWidth="1400px" // Set maximum width for the grid
         margin="0 auto" // Center the grid within the Box
       >
-        <TransactionInformation />
-        <VentilationComponent />
+        <ExpenseInformation />
+        <ExpenseVentilationComponent />
         {/* Other components that you might want to add */}
       </SimpleGrid>
     </Box>
   );
 };
 
-export default TransactionDetail;
+export default ExpenseTransactionDetail;

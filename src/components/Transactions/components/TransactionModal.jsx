@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { FaTimes, FaCloudUploadAlt } from 'react-icons/fa';
 import TransactionDetailHeader from './transactiondetail/TransactionDetailHeader';
-import TransactionDetail from './TransactionDetail';
+import TransactionDetail from './transactiondetail/TransactionDetail';
 
 const TransactionModal = ({ isOpen, onClose, modalType, onOpen, isDetailOpen, onDetailToggle }) => {
   let modalTitle = '';

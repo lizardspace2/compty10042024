@@ -1,4 +1,4 @@
-const { default: TransactionDetail } = require("./TransactionDetail");
+const { default: TransactionDetail } = require("./transactiondetail/TransactionDetail");
 const { default: TransactionDetailHeader } = require("./transactiondetail/TransactionDetailHeader");
 
 const FileUploadModal = ({ onClose, modalType }) => {
