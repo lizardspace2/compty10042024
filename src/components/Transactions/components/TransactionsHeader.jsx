@@ -17,6 +17,7 @@ import { FcHeatMap } from "react-icons/fc";
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import FileUploadModal from './ajouter/FileUploadModal';
 import TransactionDetailModal from './creertransaction/TransactionDetailModal';
+import ExpenseTransactionDetail from './creertransaction/ExpenseTransactionDetail';
 
 const TransactionsHeader = ({ onToggleFilter }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -96,7 +97,7 @@ const TransactionsHeader = ({ onToggleFilter }) => {
       </Flex>
       {/* Affiche les modals correspondants */}
       {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
-      {showDepenseModal && <TransactionDetailModal onClose={handleCloseModals} modalType="depense" />}
+      {showDepenseModal && <ExpenseTransactionDetail onClose={handleCloseModals} modalType="depense" />}
     </>
   );
 };

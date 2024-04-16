@@ -2,10 +2,13 @@ import React from 'react';
 import { SimpleGrid, Box } from '@chakra-ui/react';
 import ExpenseInformation from './ExpenseInformation';
 import ExpenseVentilationComponent from './ExpenseVentilationComponent';
+import ExpenseFormHeader from './ExpenseFormHeader';
 
 const ExpenseTransactionDetail = () => {
   return (
-    <Box 
+    <>
+    <ExpenseFormHeader/>
+        <Box 
       p={4} 
       display="flex"
       flexDirection="column"
@@ -27,6 +30,7 @@ const ExpenseTransactionDetail = () => {
         {/* Other components that you might want to add */}
       </SimpleGrid>
     </Box>
+    </>
   );
 };
 
