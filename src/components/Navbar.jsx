@@ -34,6 +34,11 @@ function Navbar() {
     navigate('/profile');
   };
 
+  // Fonction de redirection vers la route /parrainage
+  const redirectToParrainage = () => {
+    navigate('/parrainage');
+  };
+
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
@@ -49,9 +54,8 @@ function Navbar() {
             </Flex>
           </MenuButton>
           <MenuList>
-            {/* Utilisation de la fonction redirectToProfile */}
             <MenuItem icon={<Icon as={FcBusinessman} />} onClick={redirectToProfile}>Paramètres</MenuItem>
-            <MenuItem icon={<Icon as={FcLike} color="red.500" />}>1 mois offert</MenuItem>
+            <MenuItem icon={<Icon as={FcLike} color="red.500" />} onClick={redirectToParrainage}>1 mois offert</MenuItem>
             <MenuItem icon={<Icon as={FcImport} />}>Se déconnecter</MenuItem>
           </MenuList>
         </Menu>

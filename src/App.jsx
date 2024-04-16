@@ -11,6 +11,7 @@ import Accompaniment from './components/Accompagnement/Accompaniment';
 import Sponsorship from './components/Sponsorship';
 import Profile from './components/Profile/Profile';
 import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
+import Parrainage from './components/Parrainage/Parrainage';
 
 function App() {
   return (
@@ -66,6 +67,7 @@ const LayoutWithSidebar = () => {
           <Route path="/accompaniment" element={<Accompaniment />} />
           <Route path="/sponsorship" element={<Sponsorship />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/parrainage" element={<Parrainage />} />
           {/* La route /d2035 est déjà définie à l'extérieur de ce layout. */}
         </Routes>
       </Box>
