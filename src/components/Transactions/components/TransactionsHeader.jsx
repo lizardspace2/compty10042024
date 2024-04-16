@@ -98,9 +98,9 @@ return (
 
     {/* Use TransactionDetailModal to display ExpenseTransactionDetail as a modal */}
     <TransactionDetailModal
-      isDetailOpen={showDepenseModal}
-      onDetailToggle={handleCloseModals}
-    />
+    isDetailOpen={showDepenseModal}
+    onToggle={handleCloseModals}
+  />
     {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
   </>
 );
