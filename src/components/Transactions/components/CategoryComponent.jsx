@@ -1,13 +1,6 @@
 import React from 'react';
-import { Box, Heading, Tag, VStack, SimpleGrid, Container } from '@chakra-ui/react';
-import {
-  FcBullish, // for Revenues
-  FcDebt, // for Remunerations
-  FcFactory, // for Functionnement
-  FcAutomotive, // for Deplacements
-  FcAlarmClock, // for FraisFixes
-  FcDonate // for CotisationsEtTaxes
-} from 'react-icons/fc';
+import { Box, Flex, Heading, Tag, VStack, SimpleGrid, Container, LinkBox, LinkOverlay, useColorModeValue  } from '@chakra-ui/react';
+import { FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
 
 const categories = {
   Revenues: ['Apport personnel', 'Recette', 'Recette secondaire', 'Redevance de collaboration perçue', 'Autre gain divers', 'Vente d’une immobilisation', 'Emprunt', 'Caution reçue'],
@@ -28,24 +21,38 @@ const icons = {
 };
 
 const CategoryComponent = () => {
+  const hoverBg = useColorModeValue("gray.100", "gray.700"); // Light or dark mode friendly
+
   return (
     <Container maxW="container.xxl">
       <SimpleGrid columns={6} spacing={5}>
         {Object.keys(categories).map((categoryKey) => (
-          <Box p={5} shadow="md" borderWidth="1px" key={categoryKey}>
-            <Heading fontSize="xl">
-              {icons[categoryKey]}
-              {' '}
-              {categoryKey}
-            </Heading>
-            <VStack align="start">
-              {categories[categoryKey].map((item) => (
-                <Tag size="md" variant="solid" key={item}>
-                  {item}
-                </Tag>
-              ))}
-            </VStack>
-          </Box>
+          <LinkBox as="article" key={categoryKey}>
+            <Box
+              p={5}
+              borderWidth="1px"
+              borderRadius="lg"
+              _hover={{
+                bg: hoverBg,
+                transform: 'scale(1.05)',
+                transition: 'background-color 0.2s, transform 0.2s'
+              }}
+            >
+              <Flex align="center" fontSize="xl">
+                {icons[categoryKey]}
+                <LinkOverlay href={`#${categoryKey.toLowerCase()}`} style={{ marginLeft: 8 }}>
+                  <Heading as="h3" fontSize="xl">{categoryKey}</Heading>
+                </LinkOverlay>
+              </Flex>
+              <VStack align="start">
+                {categories[categoryKey].map((item, index) => (
+                  <Tag size="md" variant="solid" key={index}>
+                    {item}
+                  </Tag>
+                ))}
+              </VStack>
+            </Box>
+          </LinkBox>
         ))}
       </SimpleGrid>
     </Container>
