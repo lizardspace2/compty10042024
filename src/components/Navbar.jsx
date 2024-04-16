@@ -94,7 +94,7 @@ function Navbar() {
         </Link>
         <Divider />
         <Spacer />
-        <Link to="/sponsorship" style={{ textDecoration: 'none' }}>
+        <Link to="/parrainage" style={{ textDecoration: 'none' }}>
           <Button as="button" display="flex" justifyContent="flex-start" variant="ghost" rounded="full">
             <Icon as={FaPaperPlane} />
             <Text ml={2}>Parrainage</Text>
