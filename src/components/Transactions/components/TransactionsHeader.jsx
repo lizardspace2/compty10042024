@@ -15,17 +15,22 @@ import {
 import { MdSearch, MdAdd } from 'react-icons/md';
 import { FcHeatMap } from "react-icons/fc";
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import FileUploadModal from './ajouter/FileUploadModal'; // Importez le composant du modal
-
+import FileUploadModal from './ajouter/FileUploadModal';
 const TransactionsHeader = ({ onToggleFilter }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.700');
   const filterButtonColorScheme = useColorModeValue('gray', 'blue');
   const addButtonColorScheme = useColorModeValue('pink', 'green');
-  const [showModal, setShowModal] = useState(false); // État pour contrôler l'affichage du modal
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(null); // New state to determine which modal to open
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (type) => {
+    setModalType(type);
     setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -62,29 +67,34 @@ const TransactionsHeader = ({ onToggleFilter }) => {
             Filtrer
           </Button>
         </Flex>
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            colorScheme={addButtonColorScheme}
-            ml={2}
-            borderRadius="full"
-            boxShadow="md"
-          >
-            Ajouter
-          </MenuButton>
-          <MenuList>
-            {/* Utilisez la fonction handleOpenModal pour ouvrir le modal */}
-            <MenuItem onClick={handleOpenModal}>Justificatif</MenuItem>
-            <MenuItem>Autre dépense professionnelle</MenuItem>
-            <MenuItem>Autre recette professionnelle</MenuItem>
-            <MenuItem>Dépense en espèces</MenuItem>
-            <MenuItem>Recette en espèces</MenuItem>
-          </MenuList>
-        </Menu>
+      <Menu>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          colorScheme={addButtonColorScheme}
+          ml={2}
+          borderRadius="full"
+          boxShadow="md"
+        >
+          Ajouter
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => handleOpenModal('justificatif')}>Justificatif</MenuItem>
+          <MenuItem onClick={() => handleOpenModal('autre_depense')}>Autre dépense professionnelle</MenuItem>
+          <MenuItem onClick={() => handleOpenModal('autre_recette')}>Autre recette professionnelle</MenuItem>
+          <MenuItem onClick={() => handleOpenModal('depense_especes')}>Dépense en espèces</MenuItem>
+          <MenuItem onClick={() => handleOpenModal('recette_especes')}>Recette en espèces</MenuItem>
+        </MenuList>
+      </Menu>
       </Flex>
       {/* Affichez le modal si showModal est vrai */}
       {showModal && <FileUploadModal onClose={() => setShowModal(false)} />}
+      {showModal && modalType && (
+        <FileUploadModal
+          onClose={handleCloseModal}
+          modalType={modalType} // Pass the modalType to the modal component
+        />
+      )}
     </>
   );
 };
