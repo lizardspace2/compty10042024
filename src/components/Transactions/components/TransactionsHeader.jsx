@@ -40,17 +40,17 @@ const TransactionsHeader = ({ onToggleFilter }) => {
     setShowDepenseModal(false);
   };
 
-  return (
-    <>
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom="1px"
-        borderColor={borderColor}
-        p={4}
-        boxShadow="sm"
-      >
-        <Heading size="md">Transactions</Heading>
+return (
+  <>
+    <Flex
+      justifyContent="space-between"
+      alignItems="center"
+      borderBottom="1px"
+      borderColor={borderColor}
+      p={4}
+      boxShadow="sm"
+    >
+      <Heading size="md">Transactions</Heading>
         <Flex alignItems="center">
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -95,11 +95,15 @@ const TransactionsHeader = ({ onToggleFilter }) => {
           </MenuList>
         </Menu>
       </Flex>
-      {/* Affiche les modals correspondants */}
-      {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
-      {showDepenseModal && <ExpenseTransactionDetail onClose={handleCloseModals} modalType="depense" />}
-    </>
-  );
+
+    {/* Use TransactionDetailModal to display ExpenseTransactionDetail as a modal */}
+    <TransactionDetailModal
+      isDetailOpen={showDepenseModal}
+      onDetailToggle={handleCloseModals}
+    />
+    {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
+  </>
+);
 };
 
 export default TransactionsHeader;
