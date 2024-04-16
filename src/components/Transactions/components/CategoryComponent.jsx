@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Box, Flex, Heading, Tag, VStack, SimpleGrid, Container, LinkBox, LinkOverlay, useColorModeValue
+  Box, Flex, Heading, Tag, VStack, SimpleGrid, Container, Input, useColorModeValue
 } from '@chakra-ui/react';
 import {
   FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate
@@ -25,38 +25,44 @@ const icons = {
 };
 
 const CategoryComponent = () => {
-  const hoverBg = useColorModeValue("green.100", "green.700") // Light or dark mode friendly hover background
+  const [selectedItem, setSelectedItem] = useState('');
+  const hoverBg = useColorModeValue("green.100", "green.700"); // Light or dark mode friendly hover background
   const activeBg = useColorModeValue("blue.300", "blue.800"); // Click effect background
 
   return (
     <Container maxW="container.xxl">
+      <Input
+        value={selectedItem}
+        placeholder="Click on an item to see it here..."
+        readOnly
+        mb={4}
+      />
       <SimpleGrid columns={6} spacing={5}>
         {Object.keys(categories).map((categoryKey) => (
-          <LinkBox as="article" key={categoryKey}>
-            <Box p={5} borderWidth="1px" borderRadius="lg">
-              <Flex align="center" fontSize="xl">
-                {icons[categoryKey]}
-                <LinkOverlay href={`#${categoryKey.toLowerCase()}`} style={{ marginLeft: 8 }}>
-                  <Heading as="h3" fontSize="xl">{categoryKey}</Heading>
-                </LinkOverlay>
-              </Flex>
-              <VStack align="start">
-                {categories[categoryKey].map((item, index) => (
-                  <Tag size="md" variant="solid" key={index} _hover={{
-                    background: hoverBg,
-                    transform: 'scale(1.1)',
-                    transition: 'background-color 0.2s, transform 0.2s'
-                  }} _active={{
-                    background: activeBg,
-                    transform: 'scale(0.9)',
-                    transition: 'background-color 0.1s, transform 0.1s'
-                  }}>
-                    {item}
-                  </Tag>
-                ))}
-              </VStack>
-            </Box>
-          </LinkBox>
+          <Box p={5} borderWidth="1px" borderRadius="lg" key={categoryKey}>
+            <Flex align="center" fontSize="xl">
+              {icons[categoryKey]}
+              <Heading as="h3" ml={3} fontSize="xl">{categoryKey}</Heading>
+            </Flex>
+            <VStack align="start">
+              {categories[categoryKey].map((item, index) => (
+                <Tag size="md" variant="solid" key={index} _hover={{
+                  background: hoverBg,
+                  transform: 'scale(1.1)',
+                  transition: 'background-color 0.2s, transform 0.2s'
+                }} _active={{
+                  background: activeBg,
+                  transform: 'scale(0.9)',
+                  transition: 'background-color 0.1s, transform 0.1s'
+                }} onClick={(event) => {
+                  event.preventDefault(); // Prevent default link behavior
+                  setSelectedItem(item);
+                }}>
+                  {item}
+                </Tag>
+              ))}
+            </VStack>
+          </Box>
         ))}
       </SimpleGrid>
     </Container>
