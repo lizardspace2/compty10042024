@@ -102,7 +102,7 @@ function TransactionItem() {
         <ModalOverlay />
         <ModalContent m={0} maxW="100vw">
           <ModalHeader>
-            Catégories
+            Affecter une Catégories
             <IconButton
               aria-label="Close modal"
               icon={<FaTimes />}

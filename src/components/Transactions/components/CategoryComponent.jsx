@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Heading, Tag, VStack, SimpleGrid, Container } from '@chakra-ui/react';
 
 const categories = {
-    Revenues: [
+  Revenues: [
       'Apport personnel',
       'Recette',
       'Recette secondaire',
@@ -11,9 +11,9 @@ const categories = {
       'Vente d’une immobilisation',
       'Emprunt',
       'Caution reçue'
-      // Add other items as necessary
-    ],
-    Remunerations: [
+    // Add other items as necessary
+  ],
+  Remunerations: [
       'Prélèvement personnel',
       'Dépense personnelle',
       'Rétrocession versée',
@@ -22,9 +22,9 @@ const categories = {
       '[Salariés] Salaire net',
       '[Salariés] Impôt à la source',
       '[Salariés] Charge sociale',
-      // Add other items as necessary
-    ],
-    Functionnement: [
+    // Add other items as necessary
+  ],
+  Functionnement: [
       'Immobilisation',
       'Matériel et outillage',
       'Achat',
@@ -33,9 +33,9 @@ const categories = {
       'Frais d’acte et de contentieux',
       'Débours pour vos clients',
       'Virement interne',
-      // Add other items as necessary
-    ],
-    Deplacements: [
+    // Add other items as necessary
+  ],
+  Deplacements: [
       'À catégoriser',
       'Formation',
       'Réception et congrès',
@@ -44,9 +44,9 @@ const categories = {
       'Frais de déplacement',
       'Véhicule et carburant',
       'Location de matériel',
-      // Add other items as necessary
-    ],
-    FraisFixes: [
+    // Add other items as necessary
+  ],
+  FraisFixes: [
       'Emprunt',
       'Compte commun ou SCM',
       'Loyer et charge locative',
@@ -55,9 +55,9 @@ const categories = {
       'Abonnement logiciel',
       'Eau, gaz, électricité',
       'Assurance professionnelle',
-      // Add other items as necessary
-    ],
-    CotisationsEtTaxes: [
+    // Add other items as necessary
+  ],
+  CotisationsEtTaxes: [
       'Cotisation sociale Urssaf',
       'Cotisation retraite',
       'Cotisation facultative',
@@ -65,16 +65,15 @@ const categories = {
       'CFE',
       'Autre impôt',
       'Amende et pénalité',
-      // Add other items as necessary
-    ]
-    // Add more categories as needed
-  };
-  
+    // Add other items as necessary
+  ]
+  // Add more categories as needed
+};
 
 const CategoryComponent = () => {
   return (
-    <Container maxW="container.xl">
-      <SimpleGrid columns={4} spacing={5}>
+    <Container maxW="container.xxl">
+      <SimpleGrid columns={6} spacing={5}>
         {Object.keys(categories).map((categoryKey) => (
           <Box p={5} shadow="md" borderWidth="1px" key={categoryKey}>
             <Heading fontSize="xl">{categoryKey}</Heading>
