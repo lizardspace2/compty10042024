@@ -16,16 +16,22 @@ import { MdSearch, MdAdd } from 'react-icons/md';
 import { FcHeatMap } from "react-icons/fc";
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import FileUploadModal from './ajouter/FileUploadModal'; // Importez le composant du modal
+import FileUploadComponent from './FileUploadComponent';
 
 const TransactionsHeader = ({ onToggleFilter }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.700');
   const filterButtonColorScheme = useColorModeValue('gray', 'blue');
   const addButtonColorScheme = useColorModeValue('pink', 'green');
-  const [showModal, setShowModal] = useState(false); // État pour contrôler l'affichage du modal
+  const [showModal, setShowModal] = useState(false); 
+  const [showModalDepense, setShowModalDepense] = useState(false); 
 
   const handleOpenModal = () => {
     setShowModal(true);
+  };
+
+  const handleOpenModalDepense = () => {
+    setShowModalDepense(true);
   };
 
   return (
@@ -76,7 +82,7 @@ const TransactionsHeader = ({ onToggleFilter }) => {
           <MenuList>
             {/* Utilisez la fonction handleOpenModal pour ouvrir le modal */}
             <MenuItem onClick={handleOpenModal}>Justificatif</MenuItem>
-            <MenuItem>Autre dépense professionnelle</MenuItem>
+            <MenuItem onClick={handleOpenModalDepense}>Autre dépense professionnelle</MenuItem>
             <MenuItem>Autre recette professionnelle</MenuItem>
             <MenuItem>Dépense en espèces</MenuItem>
             <MenuItem>Recette en espèces</MenuItem>
@@ -85,6 +91,7 @@ const TransactionsHeader = ({ onToggleFilter }) => {
       </Flex>
       {/* Affichez le modal si showModal est vrai */}
       {showModal && <FileUploadModal onClose={() => setShowModal(false)} />}
+      {showModal && <FileUploadComponent onClose={() => setShowModalDepense(false)} />}
     </>
   );
 };
