@@ -15,14 +15,15 @@ import {
 import { MdSearch, MdAdd } from 'react-icons/md';
 import { FcHeatMap } from "react-icons/fc";
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import FileUploadModal from './ajouter/FileUploadModal';
+import TransactionModal from './TransactionModal';
+
 const TransactionsHeader = ({ onToggleFilter }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.700');
   const filterButtonColorScheme = useColorModeValue('gray', 'blue');
   const addButtonColorScheme = useColorModeValue('pink', 'green');
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(null); // New state to determine which modal to open
+  const [modalType, setModalType] = useState(null);
 
   const handleOpenModal = (type) => {
     setModalType(type);
@@ -31,6 +32,7 @@ const TransactionsHeader = ({ onToggleFilter }) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setModalType(null);
   };
 
   return (
@@ -71,7 +73,7 @@ const TransactionsHeader = ({ onToggleFilter }) => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme={addButtonColorScheme}
+          colorScheme="pink"
           ml={2}
           borderRadius="full"
           boxShadow="md"
@@ -87,14 +89,8 @@ const TransactionsHeader = ({ onToggleFilter }) => {
         </MenuList>
       </Menu>
       </Flex>
-      {/* Affichez le modal si showModal est vrai */}
-      {showModal && <FileUploadModal onClose={() => setShowModal(false)} />}
-      {showModal && modalType && (
-        <FileUploadModal
-          onClose={handleCloseModal}
-          modalType={modalType} // Pass the modalType to the modal component
-        />
-      )}
+      {/* Afficher le modal correspondant */}
+      <TransactionModal isOpen={showModal} onClose={handleCloseModal} modalType={modalType} />
     </>
   );
 };

@@ -6,9 +6,6 @@ const FileUploadModal = ({ onClose, modalType }) => {
     // For simplicity, I'll just demonstrate how you can handle different titles for each modal type
     let modalTitle = '';
     switch (modalType) {
-        case 'justificatif':
-            modalTitle = 'Justificatif';
-            break;
         case 'autre_depense':
             modalTitle = 'Autre dépense professionnelle';
             break;
