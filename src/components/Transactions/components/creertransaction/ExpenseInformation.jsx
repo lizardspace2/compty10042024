@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { CloseIcon } from '@chakra-ui/icons';
 import {
   Box,
   FormControl,
@@ -6,7 +7,10 @@ import {
   Input,
   VStack,
   useColorModeValue,
-  chakra
+  chakra,
+  InputGroup, 
+  InputRightElement, 
+  IconButton, 
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for react-datepicker
@@ -15,6 +19,7 @@ import { fr } from 'date-fns/locale'; // Import the French locale
 const ChakraDatePicker = chakra(DatePicker);
 
 const ExpenseInformation = () => {
+  const [annotations, setAnnotations] = useState('');
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
 
@@ -56,10 +61,23 @@ const ExpenseInformation = () => {
 
         <FormControl id="transaction-annotations">
           <FormLabel>Annotations</FormLabel>
-          <Input
-            placeholder="Ajouter des mots clés"
-            background={inputBg}
-          />
+          <InputGroup>
+            <Input
+              placeholder="Ajouter des mots clés"
+              background={inputBg}
+              value={annotations} // This state should hold the value of the input
+              onChange={(e) => setAnnotations(e.target.value)}
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label="Clear annotations"
+                icon={<CloseIcon />}
+                size="sm"
+                onClick={() => setAnnotations('')} // This function will clear the input
+                isRound={true}
+              />
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
 
         <FormControl id="transaction-justifications">
