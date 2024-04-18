@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { CloseIcon, AttachmentIcon } from '@chakra-ui/icons';
+import React, { useState, useEffect } from 'react';
+import { AttachmentIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -18,7 +18,9 @@ import {
   InputGroup, 
   InputRightElement, 
   IconButton, 
-  Text
+  Image,
+  Text,
+  Link
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,6 +28,29 @@ import { useDropzone } from 'react-dropzone';
 import { fr } from 'date-fns/locale';
 
 const ChakraDatePicker = chakra(DatePicker);
+
+const FilePreview = ({ file, onDelete }) => {
+  const isImage = file.type.startsWith('image/');
+
+  return (
+    <Box borderWidth="1px" borderRadius="lg" p={4} d="flex" alignItems="center" justifyContent="space-between">
+      <Box d="flex" alignItems="center">
+        {isImage ? (
+          <Image src={file.preview} maxW="50px" maxH="50px" mr={2} />
+        ) : (
+          <AttachmentIcon mr={2} />
+        )}
+        <Text>{file.name}</Text>
+      </Box>
+      <IconButton
+        icon={<CloseIcon />}
+        onClick={() => onDelete(file)}
+        aria-label="Delete file"
+        isRound={true}
+      />
+    </Box>
+  );
+};
 
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
@@ -47,6 +72,17 @@ const ExpenseInformation = () => {
 
   // Function to clear the selected file
   const clearFile = () => setFiles([]);
+  const deleteFile = (fileToDelete) => {
+    setFiles(files.filter(file => file !== fileToDelete));
+    // Revoke the object URL to avoid memory leaks
+    URL.revokeObjectURL(fileToDelete.preview);
+  };
+  const clearFiles = () => {
+    // Revoke the object URLs to avoid memory leaks
+    files.forEach(file => URL.revokeObjectURL(file.preview));
+    setFiles([]);
+  };
+
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
@@ -111,22 +147,25 @@ const ExpenseInformation = () => {
             <Input
               placeholder="Ajouter des justificatifs"
               background={inputBg}
-              value={files.length > 0 ? files[0].name : ""}
+              value={files.map(file => file.name).join(', ')}
               onClick={() => setIsFileModalOpen(true)} // Open modal on input click
               readOnly // Prevent manual input
             />
             {files.length > 0 && (
               <InputRightElement>
                 <IconButton
-                  aria-label="Clear file"
+                  aria-label="Clear files"
                   icon={<CloseIcon />}
                   size="sm"
-                  onClick={clearFile}
+                  onClick={clearFiles} // Clear all files
                   isRound={true}
                 />
               </InputRightElement>
             )}
           </InputGroup>
+          {files.map((file, index) => (
+            <FilePreview key={index} file={file} onDelete={deleteFile} />
+          ))}
         </FormControl>
 
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
