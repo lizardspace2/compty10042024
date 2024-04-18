@@ -30,6 +30,7 @@ const ChakraDatePicker = chakra(DatePicker);
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [files, setFiles] = useState([]);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
@@ -37,12 +38,20 @@ const ExpenseInformation = () => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/png, image/jpeg, application/pdf',
     maxSize: 10 * 1024 * 1024, // 10MB max size
+    onDrop: acceptedFiles => {
+      setFiles(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
+    }
   });
+
+  // Function to clear the selected file
+  const clearFile = () => setFiles([]);
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
-        <FormControl id="transaction-label">
+      <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
           <Input
             type="text"
@@ -98,12 +107,26 @@ const ExpenseInformation = () => {
 
         <FormControl id="transaction-justifications">
           <FormLabel>Justificatifs</FormLabel>
-          <Input
-            placeholder="Ajouter des justificatifs"
-            background={inputBg}
-            onClick={() => setIsFileModalOpen(true)} // Open modal on input click
-            readOnly // Prevent manual input
-          />
+          <InputGroup>
+            <Input
+              placeholder="Ajouter des justificatifs"
+              background={inputBg}
+              value={files.length > 0 ? files[0].name : ""}
+              onClick={() => setIsFileModalOpen(true)} // Open modal on input click
+              readOnly // Prevent manual input
+            />
+            {files.length > 0 && (
+              <InputRightElement>
+                <IconButton
+                  aria-label="Clear file"
+                  icon={<CloseIcon />}
+                  size="sm"
+                  onClick={clearFile}
+                  isRound={true}
+                />
+              </InputRightElement>
+            )}
+          </InputGroup>
         </FormControl>
 
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
