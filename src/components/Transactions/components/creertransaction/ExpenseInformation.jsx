@@ -1,28 +1,43 @@
 import React, { useState } from 'react';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, AttachmentIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   Input,
   VStack,
   useColorModeValue,
   chakra,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
   InputGroup, 
   InputRightElement, 
   IconButton, 
+  Text
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useDropzone } from 'react-dropzone';
 import { fr } from 'date-fns/locale';
 
 const ChakraDatePicker = chakra(DatePicker);
 
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Ajout de l'état pour la date sélectionnée
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/png, image/jpeg, application/pdf',
+    maxSize: 10 * 1024 * 1024, // 10MB max size
+  });
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
@@ -86,8 +101,30 @@ const ExpenseInformation = () => {
           <Input
             placeholder="Ajouter des justificatifs"
             background={inputBg}
+            onClick={() => setIsFileModalOpen(true)} // Open modal on input click
+            readOnly // Prevent manual input
           />
         </FormControl>
+
+        <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Nouvelle transaction</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing={4}>
+                <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+                  <input {...getInputProps()} />
+                  <AttachmentIcon w={12} h={12} color='gray.500' />
+                  <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+                  <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+                  <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+                </div>
+                <Button onClick={() => setIsFileModalOpen(false)}>Valider</Button>
+              </VStack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </VStack>
     </Box>
   );
