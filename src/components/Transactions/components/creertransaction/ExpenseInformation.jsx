@@ -5,10 +5,8 @@ import {
   FormLabel,
   Input,
   VStack,
-  useColorModeValue,
-  IconButton,
+  useColorModeValue
 } from '@chakra-ui/react';
-import { FcLock } from 'react-icons/fc'; // Import FcLock icon
 
 const ExpenseInformation = () => {
   const inputBg = useColorModeValue('gray.100', 'gray.600');
@@ -17,65 +15,32 @@ const ExpenseInformation = () => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
-        {/* ... other form controls ... */}
+        {/* You can add other form controls as needed here */}
 
-        <FormControl id="transaction-label" position="relative">
+        <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
           <Input
             type="text"
-            value="Prlv Sepa Symamobile Rum Recipon Guillaume Mari"
-            isReadOnly
+            defaultValue="Prlv Sepa Symamobile Rum Recipon Guillaume Mari"
             background={inputBg}
-          />
-          <IconButton
-            aria-label="Locked label"
-            icon={<FcLock />}
-            size="sm"
-            variant="ghost"
-            position="absolute"
-            right="4"
-            top="10"
-            pointerEvents="none" // Icon is for display only, no interaction
           />
         </FormControl>
 
-        <FormControl id="transaction-date" position="relative">
+        <FormControl id="transaction-date">
           <FormLabel>Date</FormLabel>
           <Input
             type="text"
-            value="09/04/2024"
-            isReadOnly
+            defaultValue="09/04/2024"
             background={inputBg}
-          />
-          <IconButton
-            aria-label="Locked date"
-            icon={<FcLock />}
-            size="sm"
-            variant="ghost"
-            position="absolute"
-            right="4"
-            top="10"
-            pointerEvents="none"
           />
         </FormControl>
 
-        <FormControl id="transaction-amount" position="relative">
+        <FormControl id="transaction-amount">
           <FormLabel>Montant</FormLabel>
           <Input
             type="text"
-            value="-7,99"
-            isReadOnly
+            defaultValue="-7,99"
             background={inputBg}
-          />
-          <IconButton
-            aria-label="Locked amount"
-            icon={<FcLock />}
-            size="sm"
-            variant="ghost"
-            position="absolute"
-            right="4"
-            top="10"
-            pointerEvents="none"
           />
         </FormControl>
 
