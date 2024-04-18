@@ -13,13 +13,14 @@ import {
   IconButton, 
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for react-datepicker
-import { fr } from 'date-fns/locale'; // Import the French locale
+import 'react-datepicker/dist/react-datepicker.css';
+import { fr } from 'date-fns/locale';
 
 const ChakraDatePicker = chakra(DatePicker);
 
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Ajout de l'état pour la date sélectionnée
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
 
@@ -38,14 +39,14 @@ const ExpenseInformation = () => {
         <FormControl id="transaction-date">
           <FormLabel>Date</FormLabel>
           <ChakraDatePicker
-            selected={new Date()}
-            onChange={(date) => {}}
+            selected={selectedDate}  // Utilisation de l'état pour la date sélectionnée
+            onChange={(date) => setSelectedDate(date)}  // Mise à jour de l'état lors du choix d'une date
             dateFormat="dd/MM/yyyy"
-            locale={fr}  // Set the locale to French
+            locale={fr}
             customInput={<Input background={inputBg} readOnly />}
             popperPlacement="bottom-start"
             showWeekNumbers
-            calendarStartDay={1} // Start week on Monday
+            calendarStartDay={1}
           />
         </FormControl>
 
@@ -55,7 +56,7 @@ const ExpenseInformation = () => {
             type="number"
             defaultValue="-7.99"
             background={inputBg}
-            step="0.01"  // Allow decimal places for the amount
+            step="0.01"
           />
         </FormControl>
 
@@ -65,7 +66,7 @@ const ExpenseInformation = () => {
             <Input
               placeholder="Ajouter des mots clés"
               background={inputBg}
-              value={annotations} // This state should hold the value of the input
+              value={annotations}
               onChange={(e) => setAnnotations(e.target.value)}
             />
             <InputRightElement>
@@ -73,7 +74,7 @@ const ExpenseInformation = () => {
                 aria-label="Clear annotations"
                 icon={<CloseIcon />}
                 size="sm"
-                onClick={() => setAnnotations('')} // This function will clear the input
+                onClick={() => setAnnotations('')}
                 isRound={true}
               />
             </InputRightElement>
