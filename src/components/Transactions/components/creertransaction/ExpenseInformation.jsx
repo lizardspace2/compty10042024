@@ -47,9 +47,10 @@ const ExpenseInformation = () => {
         <FormControl id="transaction-amount">
           <FormLabel>Montant</FormLabel>
           <Input
-            type="text"
-            defaultValue="-7,99"
+            type="number"
+            defaultValue="-7.99"
             background={inputBg}
+            step="0.01"  // Allow decimal places for the amount
           />
         </FormControl>
 
