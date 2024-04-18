@@ -15,9 +15,9 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  InputGroup, 
-  InputRightElement, 
-  IconButton, 
+  InputGroup,
+  InputRightElement,
+  IconButton,
   Image,
   Text,
   Link
@@ -82,12 +82,16 @@ const ExpenseInformation = () => {
     files.forEach(file => URL.revokeObjectURL(file.preview));
     setFiles([]);
   };
-
+  const closeButtonStyle = {
+    opacity: annotations ? 1 : 0,
+    transition: 'opacity 0.3s ease-out',
+    cursor: 'pointer'
+  };
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
-      <FormControl id="transaction-label">
+        <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
           <Input
             type="text"
@@ -119,7 +123,6 @@ const ExpenseInformation = () => {
             step="0.01"
           />
         </FormControl>
-
         <FormControl id="transaction-annotations">
           <FormLabel>Annotations</FormLabel>
           <InputGroup>
@@ -129,18 +132,20 @@ const ExpenseInformation = () => {
               value={annotations}
               onChange={(e) => setAnnotations(e.target.value)}
             />
-            <InputRightElement>
-              <IconButton
-                aria-label="Clear annotations"
-                icon={<CloseIcon />}
-                size="sm"
-                onClick={() => setAnnotations('')}
-                isRound={true}
-              />
-            </InputRightElement>
+            {annotations && (
+              <InputRightElement>
+                <IconButton
+                  aria-label="Clear annotations"
+                  icon={<CloseIcon />}
+                  size="sm"
+                  onClick={() => setAnnotations('')}
+                  isRound={true}
+                  style={closeButtonStyle} // Apply the transition effect style
+                />
+              </InputRightElement>
+            )}
           </InputGroup>
         </FormControl>
-
         <FormControl id="transaction-justifications">
           <FormLabel>Justificatifs</FormLabel>
           <InputGroup>
