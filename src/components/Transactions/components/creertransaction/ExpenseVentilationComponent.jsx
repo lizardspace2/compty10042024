@@ -103,6 +103,12 @@ const ExpenseVentilationComponent = () => {
               <Button onClick={openCategoryModal} variant="outline">
                 Sélectionnez une catégorie
               </Button>
+              <Input
+                value={selectedItem}
+                placeholder="Click on an item to see it here..."
+                readOnly
+                mb={4}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Montant</FormLabel>
@@ -142,12 +148,7 @@ const ExpenseVentilationComponent = () => {
           </ModalHeader>
           <ModalBody>
             <Container maxW="container.xxl">
-              <Input
-                value={selectedItem}
-                placeholder="Click on an item to see it here..."
-                readOnly
-                mb={4}
-              />
+
               <SimpleGrid columns={6} spacing={5}>
                 {Object.keys(categories).map((categoryKey) => (
                   <Box p={5} borderWidth="1px" borderRadius="lg" key={categoryKey}>
