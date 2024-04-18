@@ -5,11 +5,12 @@ import {
   FormLabel,
   Input,
   VStack,
-  useColorModeValue
+  useColorModeValue,
+  chakra
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for react-datepicker
-import { chakra } from "@chakra-ui/react";
+import { fr } from 'date-fns/locale'; // Import the French locale
 
 const ChakraDatePicker = chakra(DatePicker);
 
@@ -20,8 +21,6 @@ const ExpenseInformation = () => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
       <VStack spacing={4} align="stretch">
-        {/* You can add other form controls as needed here */}
-
         <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
           <Input
@@ -37,8 +36,11 @@ const ExpenseInformation = () => {
             selected={new Date()}
             onChange={(date) => {}}
             dateFormat="dd/MM/yyyy"
+            locale={fr}  // Set the locale to French
             customInput={<Input background={inputBg} readOnly />}
             popperPlacement="bottom-start"
+            showWeekNumbers
+            calendarStartDay={1} // Start week on Monday
           />
         </FormControl>
 
