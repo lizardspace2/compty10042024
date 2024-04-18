@@ -7,6 +7,11 @@ import {
   VStack,
   useColorModeValue
 } from '@chakra-ui/react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for react-datepicker
+import { chakra } from "@chakra-ui/react";
+
+const ChakraDatePicker = chakra(DatePicker);
 
 const ExpenseInformation = () => {
   const inputBg = useColorModeValue('gray.100', 'gray.600');
@@ -28,10 +33,12 @@ const ExpenseInformation = () => {
 
         <FormControl id="transaction-date">
           <FormLabel>Date</FormLabel>
-          <Input
-            type="text"
-            defaultValue="09/04/2024"
-            background={inputBg}
+          <ChakraDatePicker
+            selected={new Date()}
+            onChange={(date) => {}}
+            dateFormat="dd/MM/yyyy"
+            customInput={<Input background={inputBg} readOnly />}
+            popperPlacement="bottom-start"
           />
         </FormControl>
 
