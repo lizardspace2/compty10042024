@@ -31,11 +31,11 @@ import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, 
 
 const ExpenseVentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
-    { category: 'Dépense personnelle', amount: '-0.99', percentage: 100 },
+    { id: 1, category: 'Dépense personnelle', amount: '-0.99', percentage: 100, selectedCategory: '' },
   ]);
-  const [selectedItem, setSelectedItem] = useState('');
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-
+  const [activeVentilationIndex, setActiveVentilationIndex] = useState(null);
+  
   const categories = {
     Revenues: ['Apport personnel', 'Recette', 'Recette secondaire', 'Redevance de collaboration perçue', 'Autre gain divers', 'Vente d’une immobilisation', 'Emprunt', 'Caution reçue'],
     Remunerations: ['Prélèvement personnel', 'Dépense personnelle', 'Rétrocession versée', 'Redevance de collaboration versée', 'Honoraires payés', '[Salariés] Salaire net', '[Salariés] Impôt à la source', '[Salariés] Charge sociale'],
@@ -68,21 +68,23 @@ const ExpenseVentilationComponent = () => {
 
   const handlePercentageChange = (index, value) => {
     if (value >= 0 && value <= 100) {
-      const newVentilations = [...ventilations];
-      newVentilations[index].percentage = value;
-      setVentilations(newVentilations);
+    const newVentilations = [...ventilations];
+    newVentilations[index].percentage = value;
+    setVentilations(newVentilations);
     }
   };
 
   const addVentilation = () => {
-    setVentilations([...ventilations, { category: '', amount: '', percentage: 0 }]);
+    const newId = ventilations.length + 1;
+    setVentilations([...ventilations, { id: newId, category: '', amount: '', percentage: 0, selectedCategory: '' }]);
   };
 
   const removeVentilation = index => {
     setVentilations(ventilations.filter((_, i) => i !== index));
   };
 
-  const openCategoryModal = () => {
+  const openCategoryModal = (index) => {
+    setActiveVentilationIndex(index);
     setIsCategoryModalOpen(true);
   };
 
@@ -90,11 +92,18 @@ const ExpenseVentilationComponent = () => {
     setIsCategoryModalOpen(false);
   };
 
+  const handleCategorySelect = (category) => {
+    const newVentilations = [...ventilations];
+    newVentilations[activeVentilationIndex].selectedCategory = category;
+    setVentilations(newVentilations);
+    onCategoryModalClose();
+  };
+
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
       {ventilations.map((ventilation, index) => (
-        <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
+        <Box key={ventilation.id} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
           <Flex justify="space-between" align="center">
             <Text fontWeight="medium">Ventilation {index + 1}</Text>
             <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
@@ -114,8 +123,8 @@ const ExpenseVentilationComponent = () => {
               <Input
                 placeholder="Sélectionnez une catégorie..."
                 readOnly
-                onClick={openCategoryModal}
-                value={selectedItem}
+                onClick={() => openCategoryModal(index)}
+                value={ventilation.selectedCategory}
                 mb={4}
               />
             </FormControl>
@@ -176,8 +185,7 @@ const ExpenseVentilationComponent = () => {
                           transition: 'background-color 0.1s, transform 0.1s'
                         }} onClick={(event) => {
                           event.preventDefault();
-                          setSelectedItem(item);
-                          onCategoryModalClose();
+                          handleCategorySelect(item);
                         }}>
                           {item}
                         </Tag>
