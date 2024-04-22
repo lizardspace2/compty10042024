@@ -11,6 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useDropzone } from 'react-dropzone';
 import { chakra } from '@chakra-ui/react';
 import { fr } from 'date-fns/locale';
+import { LiaCloudUploadAltSolid } from "react-icons/lia";
 
 const ChakraDatePicker = chakra(DatePicker);
 
@@ -67,6 +68,28 @@ const ExpenseInformation = () => {
     opacity: annotations ? 1 : 0,
     transition: 'opacity 0.3s ease-out',
     cursor: 'pointer'
+  };
+
+  const CustomCloseButton = ({ onClose }) => {
+    const bg = useColorModeValue('white', 'gray.800'); // Change color based on the theme
+    const color = useColorModeValue('gray.600', 'white');
+    const hoverBg = useColorModeValue('gray.100', 'gray.700');
+    
+    return (
+      <Button
+        leftIcon={<LiaCloudUploadAltSolid />} // This is just an example icon, you can replace it with any icon you want
+        colorScheme="teal" // This is an example color scheme, you can customize it
+        variant="outline"
+        onClick={onClose}
+        bg={bg}
+        color={color}
+        _hover={{
+          bg: hoverBg,
+        }}
+      >
+        Ajouter d'autres fichiers
+      </Button>
+    );
   };
 
   return (
@@ -171,7 +194,7 @@ const ExpenseInformation = () => {
                 {files.map((file, index) => (
                   <FilePreview key={index} file={file} onDelete={deleteFile} />
                 ))}
-                <Button onClick={() => setIsFileModalOpen(false)}>Fermer</Button>
+                <CustomCloseButton/>
               </VStack>
             </ModalBody>
           </ModalContent>
