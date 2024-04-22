@@ -28,12 +28,13 @@ import {
 import { FaPlus, FaPercent, FaTimes } from 'react-icons/fa';
 import { MdEuro } from 'react-icons/md';
 import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
+
 const ExpenseVentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
     { category: 'Dépense personnelle', amount: '-0.99', percentage: 100 },
   ]);
   const [selectedItem, setSelectedItem] = useState('');
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false); // State to control modal visibility
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const categories = {
     Revenues: ['Apport personnel', 'Recette', 'Recette secondaire', 'Redevance de collaboration perçue', 'Autre gain divers', 'Vente d’une immobilisation', 'Emprunt', 'Caution reçue'],
@@ -56,16 +57,15 @@ const ExpenseVentilationComponent = () => {
   const iconColor = useColorModeValue('gray.200', 'gray.300');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const hoverBg = useColorModeValue("green.100", "green.700"); // Light or dark mode friendly hover background
-  const activeBg = useColorModeValue("blue.300", "blue.800"); // Click effect background
+  const hoverBg = useColorModeValue("green.100", "green.700");
+  const activeBg = useColorModeValue("blue.300", "blue.800");
 
   const addVentilation = () => {
     setVentilations([...ventilations, { category: '', amount: '', percentage: 0 }]);
   };
 
   const removeVentilation = index => {
-    const newVentilations = ventilations.filter((_, i) => i !== index);
-    setVentilations(newVentilations);
+    setVentilations(ventilations.filter((_, i) => i !== index));
   };
 
   const openCategoryModal = () => {
@@ -78,9 +78,7 @@ const ExpenseVentilationComponent = () => {
 
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
-      <Text fontSize="lg" fontWeight="semibold" mb={4}>
-        Ventilation(s)
-      </Text>
+      <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
       {ventilations.map((ventilation, index) => (
         <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
           <Flex justify="space-between" align="center">
@@ -99,14 +97,11 @@ const ExpenseVentilationComponent = () => {
           <Stack spacing={4} mt={4}>
             <FormControl>
               <FormLabel>Catégorie</FormLabel>
-              {/* Replace Select with Button */}
-              <Button onClick={openCategoryModal} variant="outline">
-                Sélectionnez une catégorie
-              </Button>
               <Input
-                value={selectedItem}
-                placeholder="Click on an item to see it here..."
+                placeholder="Sélectionnez une catégorie..."
                 readOnly
+                onClick={openCategoryModal}
+                value={selectedItem}
                 mb={4}
               />
             </FormControl>
@@ -166,9 +161,9 @@ const ExpenseVentilationComponent = () => {
                           transform: 'scale(0.9)',
                           transition: 'background-color 0.1s, transform 0.1s'
                         }} onClick={(event) => {
-                          event.preventDefault(); // Prevent default link behavior
+                          event.preventDefault();
                           setSelectedItem(item);
-                          onCategoryModalClose(); // Close the modal when an item is selected
+                          onCategoryModalClose();
                         }}>
                           {item}
                         </Tag>
