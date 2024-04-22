@@ -44,15 +44,23 @@ const ExpenseInformation = () => {
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
+  const maxFiles = 10;
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragReject, fileRejections } = useDropzone({
     accept: 'image/png, image/jpeg, application/pdf',
     maxSize: 10 * 1024 * 1024, // 10MB max size
     onDrop: acceptedFiles => {
-      setFiles(prevFiles => [...prevFiles, ...acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      }))]);
-    }
+      setFiles(prevFiles => {
+        // Combine the old files with the new ones and slice the array to keep only 10
+        const updatedFiles = prevFiles.concat(acceptedFiles).slice(0, maxFiles);
+        // Update the previews for the new files
+        return updatedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        }));
+      });
+    },
+    noClick: files.length >= maxFiles, // Disables the dropzone click if the limit is reached
+    noKeyboard: files.length >= maxFiles, // Disables the dropzone keyboard behavior if the limit is reached
   });
 
   const deleteFile = (fileToDelete) => {
@@ -178,44 +186,49 @@ const ExpenseInformation = () => {
         </FormControl>
 
         // Inside the ExpenseInformation component...
-<Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
+    <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
   <ModalOverlay />
   <ModalContent>
     <ModalHeader>Ajouter des justificatifs</ModalHeader>
     <ModalCloseButton />
-    <ModalBody>
-      <VStack spacing={4}>
+      <ModalBody>
+        <VStack spacing={4}>
         {files.length === 0 ? (
-          <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-            <input {...getInputProps()} />
-            <AttachmentIcon w={12} h={12} color='gray.500' />
-            <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-            <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-            <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-          </div>
+            <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+              <input {...getInputProps()} />
+              <AttachmentIcon w={12} h={12} color='gray.500' />
+              <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+              <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+              <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+            </div>
         ) : (
           <>
-            {files.map((file, index) => (
-              <FilePreview key={index} file={file} onDelete={deleteFile} />
-            ))}
-            <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '20px', textAlign: 'center' }}>
-              <input {...getInputProps()} />
-              <Button
-                leftIcon={<LiaCloudUploadAltSolid />} 
-                colorScheme="teal" 
-                variant="outline"
-                bg={useColorModeValue('white', 'gray.800')}
-                color={useColorModeValue('gray.600', 'white')}
-                _hover={{
-                  bg: useColorModeValue('gray.100', 'gray.700'),
-                }}
-              >
-                Ajouter d'autres fichiers
-              </Button>
-            </div>
-          </>
-        )}
-      </VStack>
+          {files.map((file, index) => (
+            <FilePreview key={index} file={file} onDelete={deleteFile} />
+          ))}
+            <>
+                <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
+                <input {...getInputProps()} />
+                <Button
+                  leftIcon={<LiaCloudUploadAltSolid />}
+                  colorScheme="teal"
+                  variant="outline"
+                  bg={useColorModeValue('white', 'gray.800')}
+                  color={useColorModeValue('gray.600', 'white')}
+                  _hover={{
+                    bg: useColorModeValue('gray.100', 'gray.700'),
+                  }}
+                >
+                  Ajouter d'autres fichiers
+                </Button>
+                </div>
+                <Text fontSize='sm'>
+                {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
+              </Text>
+                </>
+            </>
+          )}
+        </VStack>
     </ModalBody>
   </ModalContent>
 </Modal>
