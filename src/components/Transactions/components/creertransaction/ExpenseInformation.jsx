@@ -19,22 +19,40 @@ const ChakraDatePicker = chakra(DatePicker);
 
 const FilePreview = ({ file, onDelete }) => {
   const isImage = file.type.startsWith('image/');
+  const fileBg = useColorModeValue('pink.50', 'gray.700'); // Adjust the color to match your theme
+  const fileBorderColor = useColorModeValue('pink.200', 'gray.600'); // Adjust the border color to match your theme
+  const fileNameColor = useColorModeValue('gray.700', 'pink.50'); // Adjust the text color to match your theme
+
   return (
-    <Box borderWidth="1px" borderRadius="lg" p={4} d="flex" alignItems="center" justifyContent="space-between">
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      p={2}
+      d="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      bg={fileBg}
+      borderColor={fileBorderColor}
+      mt={2}
+    >
       <Box d="flex" alignItems="center">
-        {isImage ? (
+      {isImage ? (
           <Image src={file.preview} maxW="50px" maxH="50px" mr={2} />
         ) : (
-          <AttachmentIcon mr={2} />
+          <AttachmentIcon mr={2} color={fileNameColor}/>
         )}
-        <Text>{file.name}</Text>
+        <Text color={fileNameColor} isTruncated maxW="150px">
+          {file.name}
+        </Text>
       </Box>
       <Tooltip label="Supprimer le fichier" hasArrow>
         <IconButton
           icon={<FcFullTrash />}
           onClick={() => onDelete(file)}
           aria-label="Delete file"
+          size="sm"
           isRound={true}
+          variant="ghost"
         />
       </Tooltip>
     </Box>
