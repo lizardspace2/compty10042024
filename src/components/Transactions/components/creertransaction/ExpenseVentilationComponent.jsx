@@ -60,6 +60,20 @@ const ExpenseVentilationComponent = () => {
   const hoverBg = useColorModeValue("green.100", "green.700");
   const activeBg = useColorModeValue("blue.300", "blue.800");
 
+  const handleAmountChange = (index, value) => {
+    const newVentilations = [...ventilations];
+    newVentilations[index].amount = value;
+    setVentilations(newVentilations);
+  };
+
+  const handlePercentageChange = (index, value) => {
+    if (value >= 0 && value <= 100) {
+      const newVentilations = [...ventilations];
+      newVentilations[index].percentage = value;
+      setVentilations(newVentilations);
+    }
+  };
+
   const addVentilation = () => {
     setVentilations([...ventilations, { category: '', amount: '', percentage: 0 }]);
   };
@@ -108,14 +122,14 @@ const ExpenseVentilationComponent = () => {
             <FormControl>
               <FormLabel>Montant</FormLabel>
               <InputGroup>
-                <Input type="number" value={ventilation.amount} />
+                <Input type="number" value={ventilation.amount} onChange={(e) => handleAmountChange(index, e.target.value)} />
                 <InputRightElement pointerEvents="none" children={<MdEuro color={iconColor} />} />
               </InputGroup>
             </FormControl>
             <FormControl>
               <FormLabel>Pourcentage</FormLabel>
               <InputGroup>
-                <Input type="number" value={ventilation.percentage} />
+                <Input type="number" value={ventilation.percentage} onChange={(e) => handlePercentageChange(index, e.target.value)} />
                 <InputRightElement pointerEvents="none" children={<FaPercent color={iconColor} />} />
               </InputGroup>
             </FormControl>
