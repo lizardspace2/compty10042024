@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import {
   Box, Button, FormControl, FormLabel, Input, VStack,
-  useColorModeValue, chakra, Modal, ModalOverlay, ModalContent,
-  ModalHeader, ModalCloseButton, ModalBody, InputGroup,
-  InputRightElement, IconButton, Image, Text
+  IconButton, InputGroup, InputRightElement, Modal,useColorModeValue,
+  ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
+  ModalBody, Text, Image
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDropzone } from 'react-dropzone';
+import { chakra } from '@chakra-ui/react';
 import { fr } from 'date-fns/locale';
 
 const ChakraDatePicker = chakra(DatePicker);
 
 const FilePreview = ({ file, onDelete }) => {
   const isImage = file.type.startsWith('image/');
-
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} d="flex" alignItems="center" justifyContent="space-between">
       <Box d="flex" alignItems="center">
@@ -134,8 +134,8 @@ const ExpenseInformation = () => {
               placeholder="Ajouter des justificatifs"
               background={inputBg}
               value={files.map(file => file.name).join(', ')}
-              onClick={() => setIsFileModalOpen(true)} // Open modal on input click
-              readOnly // Prevent manual input
+              onClick={() => setIsFileModalOpen(true)}
+              readOnly
             />
             {files.length > 0 && (
               <InputRightElement>
@@ -143,7 +143,7 @@ const ExpenseInformation = () => {
                   aria-label="Clear files"
                   icon={<CloseIcon />}
                   size="sm"
-                  onClick={clearFiles} // Clear all files
+                  onClick={clearFiles}
                   isRound={true}
                 />
               </InputRightElement>
@@ -157,7 +157,7 @@ const ExpenseInformation = () => {
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Nouvelle transaction</ModalHeader>
+            <ModalHeader>Ajouter des justificatifs</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <VStack spacing={4}>
@@ -168,7 +168,10 @@ const ExpenseInformation = () => {
                   <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
                   <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
                 </div>
-                <Button onClick={() => setIsFileModalOpen(false)}>Valider</Button>
+                {files.map((file, index) => (
+                  <FilePreview key={index} file={file} onDelete={deleteFile} />
+                ))}
+                <Button onClick={() => setIsFileModalOpen(false)}>Fermer</Button>
               </VStack>
             </ModalBody>
           </ModalContent>
