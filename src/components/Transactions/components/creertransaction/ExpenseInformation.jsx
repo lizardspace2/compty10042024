@@ -4,7 +4,7 @@ import {
   Box, Button, FormControl, FormLabel, Input, VStack,
   IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
-  ModalBody, Text, Image
+  ModalBody, Text, Image, HStack
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -19,32 +19,31 @@ const ChakraDatePicker = chakra(DatePicker);
 
 const FilePreview = ({ file, onDelete }) => {
   const isImage = file.type.startsWith('image/');
-  const fileBg = useColorModeValue('pink.50', 'gray.700'); // Adjust the color to match your theme
-  const fileBorderColor = useColorModeValue('pink.200', 'gray.600'); // Adjust the border color to match your theme
-  const fileNameColor = useColorModeValue('gray.700', 'pink.50'); // Adjust the text color to match your theme
+  const fileBg = useColorModeValue('red.50', 'gray.700'); // Update the colors based on your theme
+  const fileBorderColor = useColorModeValue('red.200', 'gray.600');
+  const textColor = useColorModeValue('gray.700', 'red.50');
 
   return (
-    <Box
+    <HStack
       borderWidth="1px"
       borderRadius="lg"
       p={2}
-      d="flex"
-      alignItems="center"
       justifyContent="space-between"
+      alignItems="center"
       bg={fileBg}
       borderColor={fileBorderColor}
-      mt={2}
+      width="full"
     >
-      <Box d="flex" alignItems="center">
-      {isImage ? (
-          <Image src={file.preview} maxW="50px" maxH="50px" mr={2} />
+      <HStack spacing={2}>
+        {isImage ? (
+          <Image src={file.preview} boxSize="50px" />
         ) : (
-          <AttachmentIcon mr={2} color={fileNameColor}/>
+          <AttachmentIcon color={textColor} />
         )}
-        <Text color={fileNameColor} isTruncated maxW="150px">
+        <Text color={textColor} isTruncated maxWidth="calc(100% - 3rem)" title={file.name}>
           {file.name}
         </Text>
-      </Box>
+      </HStack>
       <Tooltip label="Supprimer le fichier" hasArrow>
         <IconButton
           icon={<FcFullTrash />}
@@ -55,9 +54,10 @@ const FilePreview = ({ file, onDelete }) => {
           variant="ghost"
         />
       </Tooltip>
-    </Box>
+    </HStack>
   );
 };
+
 
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
