@@ -27,8 +27,8 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
     <HStack
       borderWidth="1px"
       borderRadius="lg"
-      p={1} 
-      m={1} 
+      p={1}
+      m={1}
       justifyContent="space-between"
       alignItems="center"
       bg={fileBg}
@@ -207,6 +207,11 @@ const ExpenseInformation = () => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Ajouter des justificatifs</ModalHeader>
+            <Box
+              borderBottomWidth="1px"
+              borderColor="gray.200"
+              width="full"
+            />
             <ModalCloseButton />
             <ModalBody>
               <Flex>
@@ -221,10 +226,10 @@ const ExpenseInformation = () => {
                     </div>
                   ) : (
                     <>
-                    <Box w="95%">
-                      {files.map((file, index) => (
-                        <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
-                      ))}
+                      <Box w="95%">
+                        {files.map((file, index) => (
+                          <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
+                        ))}
                       </Box>
                       <>
                         <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
