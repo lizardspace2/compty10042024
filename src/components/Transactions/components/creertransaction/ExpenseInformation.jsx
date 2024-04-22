@@ -215,17 +215,17 @@ const ExpenseInformation = () => {
             <ModalCloseButton />
             <ModalBody>
               <Flex>
-                <VStack width="50%" spacing={4}>
+                <>
                   {files.length === 0 ? (
-                    <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-                      <input {...getInputProps()} />
-                      <AttachmentIcon w={12} h={12} color='gray.500' />
-                      <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-                      <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-                      <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-                    </div>
+                    <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', minHeight: '69vh', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+                    <input {...getInputProps()} />
+                    <AttachmentIcon w={12} h={12} color='gray.500' />
+                    <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+                    <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+                    <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+                  </div>                  
                   ) : (
-                    <>
+                    <VStack width="50%" spacing={4}>
                       <Box w="95%">
                         {files.map((file, index) => (
                           <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
@@ -251,9 +251,9 @@ const ExpenseInformation = () => {
                           {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
                         </Text>
                       </>
-                    </>
+                      </VStack>
                   )}
-                </VStack>
+                </>
                 {selectedFile && selectedFile.type.startsWith('image/') && (
                   <Box width="50%" height="100%">
                     <Image
