@@ -17,9 +17,9 @@ import { FcFullTrash } from "react-icons/fc";
 
 const ChakraDatePicker = chakra(DatePicker);
 
-const FilePreview = ({ file, onDelete }) => {
+const FilePreview = ({ file, onDelete, onSelect }) => {
   const isImage = file.type.startsWith('image/');
-  const fileBg = useColorModeValue('red.50', 'gray.700'); // Update the colors based on your theme
+  const fileBg = useColorModeValue('red.50', 'gray.700');
   const fileBorderColor = useColorModeValue('red.200', 'gray.600');
   const textColor = useColorModeValue('gray.700', 'red.50');
 
@@ -33,6 +33,7 @@ const FilePreview = ({ file, onDelete }) => {
       bg={fileBg}
       borderColor={fileBorderColor}
       width="full"
+      onClick={() => onSelect(file)}  // Make sure onSelect is being called here
     >
       <HStack spacing={2}>
         {isImage ? (
@@ -47,7 +48,10 @@ const FilePreview = ({ file, onDelete }) => {
       <Tooltip label="Supprimer le fichier" hasArrow>
         <IconButton
           icon={<FcFullTrash />}
-          onClick={() => onDelete(file)}
+          onClick={(e) => {
+            e.stopPropagation();  // Prevent onSelect from being called when deleting
+            onDelete(file);
+          }}
           aria-label="Delete file"
           size="sm"
           isRound={true}
@@ -57,6 +61,7 @@ const FilePreview = ({ file, onDelete }) => {
     </HStack>
   );
 };
+
 
 
 const ExpenseInformation = () => {
@@ -99,6 +104,9 @@ const ExpenseInformation = () => {
     opacity: annotations ? 1 : 0,
     transition: 'opacity 0.3s ease-out',
     cursor: 'pointer'
+  };
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
   };
 
   useEffect(() => {
@@ -195,63 +203,64 @@ const ExpenseInformation = () => {
 
         // Inside the ExpenseInformation component...
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} size="4xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Ajouter des justificatifs</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex>
-              <VStack width="50%" spacing={4}>
-              {files.length === 0 ? (
-            <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-              <input {...getInputProps()} />
-              <AttachmentIcon w={12} h={12} color='gray.500' />
-              <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-              <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-              <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-            </div>
-        ) : (
-          <>
-          {files.map((file, index) => (
-            <FilePreview key={index} file={file} onDelete={deleteFile} />
-          ))}
-            <>
-                <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
-                <input {...getInputProps()} />
-                <Button
-                  leftIcon={<LiaCloudUploadAltSolid />}
-                  colorScheme="teal"
-                  variant="outline"
-                  bg={useColorModeValue('white', 'gray.800')}
-                  color={useColorModeValue('gray.600', 'white')}
-                  _hover={{
-                    bg: useColorModeValue('gray.100', 'gray.700'),
-                  }}
-                >
-                  Ajouter d'autres fichiers
-                </Button>
-                </div>
-                <Text fontSize='sm'>
-                {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
-              </Text>
-                </>
-            </>
-          )}
-              </VStack>
-              {selectedFile && isImage(selectedFile) && (
-                <Box width="50%">
-                  <Image
-                    src={selectedFile.preview}
-                    alt={`Preview of ${selectedFile.name}`}
-                    objectFit="cover"
-                    height="100%"
-                  />
-                </Box>
-              )}
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Ajouter des justificatifs</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex>
+                <VStack width="50%" spacing={4}>
+                  {files.length === 0 ? (
+                    <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+                      <input {...getInputProps()} />
+                      <AttachmentIcon w={12} h={12} color='gray.500' />
+                      <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+                      <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+                      <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+                    </div>
+                  ) : (
+                    <>
+                      {files.map((file, index) => (
+                        <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
+                      ))}
+                      <>
+                        <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
+                          <input {...getInputProps()} />
+                          <Button
+                            leftIcon={<LiaCloudUploadAltSolid />}
+                            colorScheme="teal"
+                            variant="outline"
+                            bg={useColorModeValue('white', 'gray.800')}
+                            color={useColorModeValue('gray.600', 'white')}
+                            _hover={{
+                              bg: useColorModeValue('gray.100', 'gray.700'),
+                            }}
+                          >
+                            Ajouter d'autres fichiers
+                          </Button>
+                        </div>
+                        <Text fontSize='sm'>
+                          {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
+                        </Text>
+                      </>
+                    </>
+                  )}
+                </VStack>
+                {selectedFile && selectedFile.type.startsWith('image/') && (
+                  <Box width="50%" height="100%">
+                    <Image
+                      src={selectedFile.preview}
+                      alt={`Preview of ${selectedFile.name}`}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  </Box>
+                )}
+              </Flex>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </VStack>
     </Box>
   );
