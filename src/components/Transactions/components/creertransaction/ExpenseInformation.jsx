@@ -12,6 +12,8 @@ import { useDropzone } from 'react-dropzone';
 import { chakra } from '@chakra-ui/react';
 import { fr } from 'date-fns/locale';
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
+import { Tooltip } from '@chakra-ui/react';
+import { FcFullTrash } from "react-icons/fc";
 
 const ChakraDatePicker = chakra(DatePicker);
 
@@ -27,12 +29,14 @@ const FilePreview = ({ file, onDelete }) => {
         )}
         <Text>{file.name}</Text>
       </Box>
-      <IconButton
-        icon={<CloseIcon />}
-        onClick={() => onDelete(file)}
-        aria-label="Delete file"
-        isRound={true}
-      />
+      <Tooltip label="Supprimer le fichier" hasArrow>
+        <IconButton
+          icon={<FcFullTrash />}
+          onClick={() => onDelete(file)}
+          aria-label="Delete file"
+          isRound={true}
+        />
+      </Tooltip>
     </Box>
   );
 };
@@ -78,27 +82,6 @@ const ExpenseInformation = () => {
     cursor: 'pointer'
   };
 
-  const CustomAddMoreThanOneFileButton = ({ onClose }) => {
-    const bg = useColorModeValue('white', 'gray.800'); // Change color based on the theme
-    const color = useColorModeValue('gray.600', 'white');
-    const hoverBg = useColorModeValue('gray.100', 'gray.700');
-
-    return (
-      <Button
-        leftIcon={<LiaCloudUploadAltSolid />} // This is just an example icon, you can replace it with any icon you want
-        colorScheme="teal" // This is an example color scheme, you can customize it
-        variant="outline"
-        onClick={onClose}
-        bg={bg}
-        color={color}
-        _hover={{
-          bg: hoverBg,
-        }}
-      >
-        Ajouter d'autres fichiers
-      </Button>
-    );
-  };
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
