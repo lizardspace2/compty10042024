@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import {
   Box, Button, FormControl, FormLabel, Input, VStack,
-  IconButton, InputGroup, InputRightElement, Modal,useColorModeValue,
+  IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, Text, Image
 } from '@chakra-ui/react';
@@ -70,11 +70,11 @@ const ExpenseInformation = () => {
     cursor: 'pointer'
   };
 
-  const CustomCloseButton = ({ onClose }) => {
+  const CustomAddMoreThanOneFileButton = ({ onClose }) => {
     const bg = useColorModeValue('white', 'gray.800'); // Change color based on the theme
     const color = useColorModeValue('gray.600', 'white');
     const hoverBg = useColorModeValue('gray.100', 'gray.700');
-    
+
     return (
       <Button
         leftIcon={<LiaCloudUploadAltSolid />} // This is just an example icon, you can replace it with any icon you want
@@ -177,28 +177,48 @@ const ExpenseInformation = () => {
           ))}
         </FormControl>
 
-        <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Ajouter des justificatifs</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <VStack spacing={4}>
-                <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-                  <input {...getInputProps()} />
-                  <AttachmentIcon w={12} h={12} color='gray.500' />
-                  <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-                  <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-                  <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-                </div>
-                {files.map((file, index) => (
-                  <FilePreview key={index} file={file} onDelete={deleteFile} />
-                ))}
-                <CustomCloseButton/>
-              </VStack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+        // Inside the ExpenseInformation component...
+<Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Ajouter des justificatifs</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <VStack spacing={4}>
+        {files.length === 0 ? (
+          <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+            <input {...getInputProps()} />
+            <AttachmentIcon w={12} h={12} color='gray.500' />
+            <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+            <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+            <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+          </div>
+        ) : (
+          <>
+            {files.map((file, index) => (
+              <FilePreview key={index} file={file} onDelete={deleteFile} />
+            ))}
+            <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '20px', textAlign: 'center' }}>
+              <input {...getInputProps()} />
+              <Button
+                leftIcon={<LiaCloudUploadAltSolid />} 
+                colorScheme="teal" 
+                variant="outline"
+                bg={useColorModeValue('white', 'gray.800')}
+                color={useColorModeValue('gray.600', 'white')}
+                _hover={{
+                  bg: useColorModeValue('gray.100', 'gray.700'),
+                }}
+              >
+                Ajouter d'autres fichiers
+              </Button>
+            </div>
+          </>
+        )}
+      </VStack>
+    </ModalBody>
+  </ModalContent>
+</Modal>
       </VStack>
     </Box>
   );
