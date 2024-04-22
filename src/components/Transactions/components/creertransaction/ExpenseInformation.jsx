@@ -205,7 +205,7 @@ const ExpenseInformation = () => {
         // Inside the ExpenseInformation component...
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} size="4xl">
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent minH="80vh">
             <ModalHeader>Ajouter des justificatifs</ModalHeader>
             <Box
               borderBottomWidth="1px"
