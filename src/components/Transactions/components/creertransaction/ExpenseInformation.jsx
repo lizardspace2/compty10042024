@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { AttachmentIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons';
+import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  useColorModeValue,
-  chakra,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  InputGroup,
-  InputRightElement,
-  IconButton,
-  Image,
-  Text,
-  Link
+  Box, Button, FormControl, FormLabel, Input, VStack,
+  useColorModeValue, chakra, Modal, ModalOverlay, ModalContent,
+  ModalHeader, ModalCloseButton, ModalBody, InputGroup,
+  InputRightElement, IconButton, Image, Text
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -64,21 +48,18 @@ const ExpenseInformation = () => {
     accept: 'image/png, image/jpeg, application/pdf',
     maxSize: 10 * 1024 * 1024, // 10MB max size
     onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
+      setFiles(prevFiles => [...prevFiles, ...acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
-      })));
+      }))]);
     }
   });
 
-  // Function to clear the selected file
-  const clearFile = () => setFiles([]);
   const deleteFile = (fileToDelete) => {
     setFiles(files.filter(file => file !== fileToDelete));
-    // Revoke the object URL to avoid memory leaks
     URL.revokeObjectURL(fileToDelete.preview);
   };
+
   const clearFiles = () => {
-    // Revoke the object URLs to avoid memory leaks
     files.forEach(file => URL.revokeObjectURL(file.preview));
     setFiles([]);
   };
