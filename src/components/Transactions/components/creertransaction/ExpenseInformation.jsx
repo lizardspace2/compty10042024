@@ -27,13 +27,14 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
     <HStack
       borderWidth="1px"
       borderRadius="lg"
-      p={2}
+      p={1} 
+      m={1} 
       justifyContent="space-between"
       alignItems="center"
       bg={fileBg}
       borderColor={fileBorderColor}
       width="full"
-      onClick={() => onSelect(file)}  // Make sure onSelect is being called here
+      onClick={() => onSelect(file)}
     >
       <HStack spacing={2}>
         {isImage ? (
@@ -220,9 +221,11 @@ const ExpenseInformation = () => {
                     </div>
                   ) : (
                     <>
+                    <Box w="95%">
                       {files.map((file, index) => (
                         <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
                       ))}
+                      </Box>
                       <>
                         <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
                           <input {...getInputProps()} />
