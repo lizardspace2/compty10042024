@@ -4,7 +4,7 @@ import {
   Box, Button, FormControl, FormLabel, Input, VStack,
   IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
-  ModalBody, Text, Image, HStack
+  ModalBody, Text, Image, HStack, Flex,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -66,6 +66,7 @@ const ExpenseInformation = () => {
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
+  const [selectedFile, setSelectedFile] = useState(null);
   const maxFiles = 10;
 
   const { getRootProps, getInputProps, isDragReject, fileRejections } = useDropzone({
@@ -99,6 +100,12 @@ const ExpenseInformation = () => {
     transition: 'opacity 0.3s ease-out',
     cursor: 'pointer'
   };
+
+  useEffect(() => {
+    if (files.length === 0) {
+      setSelectedFile(null);
+    }
+  }, [files]);
 
 
   return (
@@ -187,14 +194,15 @@ const ExpenseInformation = () => {
         </FormControl>
 
         // Inside the ExpenseInformation component...
-    <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader>Ajouter des justificatifs</ModalHeader>
-    <ModalCloseButton />
-      <ModalBody>
-        <VStack spacing={4}>
-        {files.length === 0 ? (
+        <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} size="4xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Ajouter des justificatifs</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex>
+              <VStack width="50%" spacing={4}>
+              {files.length === 0 ? (
             <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
               <input {...getInputProps()} />
               <AttachmentIcon w={12} h={12} color='gray.500' />
@@ -229,10 +237,21 @@ const ExpenseInformation = () => {
                 </>
             </>
           )}
-        </VStack>
-    </ModalBody>
-  </ModalContent>
-</Modal>
+              </VStack>
+              {selectedFile && isImage(selectedFile) && (
+                <Box width="50%">
+                  <Image
+                    src={selectedFile.preview}
+                    alt={`Preview of ${selectedFile.name}`}
+                    objectFit="cover"
+                    height="100%"
+                  />
+                </Box>
+              )}
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       </VStack>
     </Box>
   );
