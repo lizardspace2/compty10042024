@@ -40,7 +40,7 @@ const VentilationComponent = () => {
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>
-        Ventilation(s)
+        Ventilation(s) 
       </Text>
     {ventilations.map((ventilation, index) => (
       <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
