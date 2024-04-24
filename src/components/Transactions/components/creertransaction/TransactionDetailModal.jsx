@@ -297,10 +297,11 @@ const ExpenseInformation = ({ formData, onChange }) => {
   );
 };
 
-const ExpenseVentilationComponent = () => {
-  const [ventilations, setVentilations] = useState([
-    { id: 1, category: 'Dépense personnelle', amount: '', percentage: 100, selectedCategory: '' },
+const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddVentilation, onRemoveVentilation }) => {
+  const [ventilationsState, setVentilations] = useState([
+    { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' },
   ]);
+  
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [activeVentilationIndex, setActiveVentilationIndex] = useState(null);
 
@@ -343,9 +344,10 @@ const ExpenseVentilationComponent = () => {
   };
 
   const addVentilation = () => {
-    const newId = ventilations.length + 1;
-    setVentilations([...ventilations, { id: newId, category: '', amount: '', percentage: 0, selectedCategory: '' }]);
+    const newId = ventilationsState.length + 1;
+    setVentilations([...ventilationsState, { id: newId, amount: '', percentage: 0, selectedCategory: '' }]);
   };
+  
 
   const removeVentilation = index => {
     setVentilations(ventilations.filter((_, i) => i !== index));
@@ -361,59 +363,64 @@ const ExpenseVentilationComponent = () => {
   };
 
   const handleCategorySelect = (category) => {
-    const newVentilations = [...ventilations];
+    const newVentilations = [...ventilationsState];
     newVentilations[activeVentilationIndex].selectedCategory = category;
     setVentilations(newVentilations);
+    onVentilationChange(activeVentilationIndex, 'selectedCategory', category); // Mettre à jour la catégorie dans le formulaire parent
     onCategoryModalClose();
   };
 
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
-      {ventilations.map((ventilation, index) => (
-        <Box key={ventilation.id} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
-          <Flex justify="space-between" align="center">
-            <Text fontWeight="medium">Ventilation {index + 1}</Text>
-            <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
-              <IconButton
-                aria-label="Remove ventilation"
-                icon={<FcFullTrash />}
-                size="sm"
-                variant="ghost"
-                onClick={() => removeVentilation(index)}
-                color={iconColor}
-              />
-            </Tooltip>
+      {ventilations.map((vent, index) => (
+        <Box key={vent.id} p={4} bg="white" shadow="sm" mb={4} rounded="md">
+          <Flex alignItems="center" justifyContent="space-between">
+            <Heading size="md" mb={4}>Ventilation {index + 1}</Heading>
+            <IconButton
+              icon={<FaTimes />}
+              onClick={() => onRemoveVentilation(index)}
+              aria-label="Remove ventilation"
+            />
           </Flex>
-          <Stack spacing={4} mt={4}>
+          <Stack spacing={3}>
             <FormControl>
               <FormLabel>Catégorie</FormLabel>
               <Input
-                placeholder="Sélectionnez une catégorie..."
+                value={vent.selectedCategory}
+                onChange={(e) => onVentilationChange(index, 'selectedCategory', e.target.value)}
+                placeholder="Select Category"
                 readOnly
                 onClick={() => openCategoryModal(index)}
-                value={ventilation.selectedCategory}
-                mb={4}
+
               />
             </FormControl>
             <FormControl>
               <FormLabel>Montant</FormLabel>
               <InputGroup>
-                <Input type="number" value={ventilation.amount} onChange={(e) => handleAmountChange(index, e.target.value)} />
-                <InputRightElement pointerEvents="none" children={<MdEuro color={iconColor} />} />
+                <Input
+                  type="number"
+                  value={vent.amount}
+                  onChange={(e) => onVentilationChange(index, 'amount', e.target.value)}
+                />
+                <InputRightElement children={<MdEuro />} />
               </InputGroup>
             </FormControl>
             <FormControl>
               <FormLabel>Pourcentage</FormLabel>
               <InputGroup>
-                <Input type="number" value={ventilation.percentage} onChange={(e) => handlePercentageChange(index, e.target.value)} />
-                <InputRightElement pointerEvents="none" children={<FaPercent color={iconColor} />} />
+                <Input
+                  type="number"
+                  value={vent.percentage}
+                  onChange={(e) => onVentilationChange(index, 'percentage', e.target.value)}
+                />
+                <InputRightElement children={<FaPercent />} />
               </InputGroup>
             </FormControl>
           </Stack>
         </Box>
       ))}
-      <Button leftIcon={<FaPlus />} colorScheme="blue" variant="outline" onClick={addVentilation} mt={2}>
+      <Button leftIcon={<FaPlus />} onClick={onAddVentilation} colorScheme="blue">
         Ajouter une ventilation
       </Button>
       {/* Modal for category selection */}
@@ -476,29 +483,49 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
     date_transaction: new Date(),
     montant_total: 0,
     annotations: '',
-    justificatifs: [], // Ensure this is formatted correctly for your backend
+    justificatifs: [],
     moyen: '',
     compte_bancaire: '',
-    ventilations: []  // Ensure this is what your backend expects
+    ventilations: [
+      { id: 1, category: 'Dépense personnelle', amount: '', percentage: 100, selectedCategory: '' }
+    ]
   });
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("Field changed:", name, "Value:", value); // Debugging output
     setFormData(prev => ({ ...prev, [name]: value }));
-};
+  };
+
+  const handleVentilationChange = (index, field, value) => {
+    const newVentilations = [...formData.ventilations];
+    newVentilations[index][field] = value;
+    setFormData(prev => ({ ...prev, ventilations: newVentilations }));
+  };
+
+  const addVentilation = () => {
+    setFormData(prev => ({
+      ...prev,
+      ventilations: [...prev.ventilations, { id: prev.ventilations.length + 1, category: '', amount: '', percentage: 0, selectedCategory: '' }]
+    }));
+  };
+
+  const removeVentilation = (index) => {
+    const newVentilations = formData.ventilations.filter((_, i) => i !== index);
+    setFormData(prev => ({ ...prev, ventilations: newVentilations }));
+  };
 
   const handleSubmitTransaction = async () => {
     const transactionData = {
       ...formData,
-      ventilations: JSON.stringify(formData.ventilations) // Ensuring it's stringified if your backend expects JSON string
+      ventilations: formData.ventilations.map(({ id, amount, percentage, selectedCategory }) => ({
+        id, amount, percentage, category: selectedCategory
+      }))
     };
-
+  
     const { data, error } = await supabase
       .from('transactions')
       .insert([transactionData]);
-
+  
     if (error) {
       console.error("Erreur lors de l'ajout de la transaction :", error.message);
     } else {
@@ -506,6 +533,7 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
       onToggle();  // Close modal after addition
     }
   };
+  
 
   return (
     <>
@@ -528,7 +556,12 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
           margin="0 auto"
         >
           <ExpenseInformation formData={formData} onChange={handleInputChange} />
-          <ExpenseVentilationComponent />
+          <ExpenseVentilationComponent
+            ventilations={formData.ventilations}
+            onVentilationChange={handleVentilationChange}
+            onAddVentilation={addVentilation}
+            onRemoveVentilation={removeVentilation}
+          />
         </SimpleGrid>
       </Box>
     </>
