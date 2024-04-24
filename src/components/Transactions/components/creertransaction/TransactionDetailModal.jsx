@@ -84,7 +84,7 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
   );
 };
 
-const ExpenseInformation = () => {
+const ExpenseInformation = ({ formData, onChange }) => {
   const [annotations, setAnnotations] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [files, setFiles] = useState([]);
@@ -134,6 +134,12 @@ const ExpenseInformation = () => {
       setSelectedFile(null);
     }
   }, [files]);
+  
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    };
+  
 
 
   return (
@@ -141,17 +147,14 @@ const ExpenseInformation = () => {
       <VStack spacing={4} align="stretch">
         <FormControl id="transaction-label">
           <FormLabel>Libellé</FormLabel>
-          <Input
-            type="text"
-            background={inputBg}
-          />
+          <Input value={formData.libelle} onChange={onChange} name="libelle" />
         </FormControl>
 
         <FormControl id="transaction-date">
           <FormLabel>Date</FormLabel>
           <ChakraDatePicker
-            selected={selectedDate}  // Utilisation de l'état pour la date sélectionnée
-            onChange={(date) => setSelectedDate(date)}  // Mise à jour de l'état lors du choix d'une date
+            selected={formData.date_transaction}
+              onChange={(date) => setFormData(prev => ({ ...prev, date_transaction: date }))}
             dateFormat="dd/MM/yyyy"
             locale={fr}
             customInput={<Input background={inputBg} readOnly />}
@@ -167,6 +170,8 @@ const ExpenseInformation = () => {
             type="number"
             background={inputBg}
             step="0.01"
+            value={formData.montant_total}
+            onChange={handleInputChange}
           />
         </FormControl>
         <FormControl id="transaction-annotations">
@@ -175,8 +180,8 @@ const ExpenseInformation = () => {
             <Input
               placeholder="Ajouter des mots clés"
               background={inputBg}
-              value={annotations}
-              onChange={(e) => setAnnotations(e.target.value)}
+              value={formData.annotations}
+              onChange={handleInputChange}
             />
             {annotations && (
               <InputRightElement>
@@ -469,31 +474,36 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
     libelle: '',
     date_transaction: new Date(),
     montant_total: 0,
-    ventilations: JSON.stringify([])
-  });
+    annotations: '',
+    justificatifs: [], // Ensure this is formatted correctly for your backend
+    moyen: '',
+    compte_bancaire: '',
+    ventilations: []  // Ensure this is what your backend expects
+});
+
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmitTransaction = async () => {
-    const { data, error } = await supabase
-      .from('transactions')
-      .insert([
-        {
-          libelle: formData.libelle,
-          date_transaction: formData.date_transaction,
-          montant_total: formData.montant_total,
-          ventilations: formData.ventilations
-        }
-      ]);
+    const transactionData = {
+        ...formData,
+        ventilations: JSON.stringify(formData.ventilations) // Ensuring it's stringified if your backend expects JSON string
+    };
 
-    if (error) console.error("Erreur lors de l'ajout de la transaction :", error);
-    else {
-      console.log('Transaction ajoutée avec succès !', data);
-      onToggle();  // Fermer le modal après l'ajout
+    const { data, error } = await supabase
+        .from('transactions')
+        .insert([transactionData]);
+
+    if (error) {
+        console.error("Erreur lors de l'ajout de la transaction :", error.message);
+    } else {
+        console.log('Transaction ajoutée avec succès !', data);
+        onToggle();  // Close modal after addition
     }
-  };
+};
 
   return (
     <>
@@ -516,12 +526,13 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
           margin="0 auto"
         >
           <ExpenseInformation formData={formData} onChange={handleInputChange} />
-          <ExpenseVentilationComponent />
+                <ExpenseVentilationComponent />
         </SimpleGrid>
       </Box>
     </>
   );
 };
+
 
 const TransactionDetailModal = ({ isDetailOpen, onToggle }) => {
   return (
