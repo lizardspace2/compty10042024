@@ -13,6 +13,7 @@ import Profile from './components/Profile/Profile';
 import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
 import Parrainage from './components/Parrainage/Parrainage';
 import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from './supabaseClient';
 import PrivateRoute from './PrivateRoute';
 import Logout from './Logout';
@@ -40,10 +41,10 @@ function App() {
           <Routes>
             <Route path="/login" element={
               <Auth
-                supabaseClient={supabase}
-                appearance={{ theme: 'default' }}
-                providers={['google', 'facebook']}
-              />
+              supabaseClient={supabase}
+              appearance={{ theme: ThemeSupa }}
+              providers={['google', 'facebook', 'twitter']}  // Ajoutez les fournisseurs que vous souhaitez supporter
+            />
             } />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
