@@ -39,6 +39,11 @@ function Navbar() {
     navigate('/parrainage');
   };
 
+    // Fonction de redirection vers la route /parrainage
+    const redirectToSeDeconnecter = () => {
+      navigate('/sedeconnecter');
+    };
+
   return (
     <Box bg="pink.100" w="100%" p={4} color="black" h="100vh" display="flex" flexDirection="column">
       <VStack spacing={4} align="stretch" flex="1">
@@ -56,7 +61,7 @@ function Navbar() {
           <MenuList>
             <MenuItem icon={<Icon as={FcBusinessman} />} onClick={redirectToProfile}>Paramètres</MenuItem>
             <MenuItem icon={<Icon as={FcLike} color="red.500" />} onClick={redirectToParrainage}>1 mois offert</MenuItem>
-            <MenuItem icon={<Icon as={FcImport} />}>Se déconnecter</MenuItem>
+            <MenuItem icon={<Icon as={FcImport} />} onClick={redirectToSeDeconnecter}>Se déconnecter</MenuItem>
           </MenuList>
         </Menu>
         <Link to="/pilotage" style={{ textDecoration: 'none' }}> {/* Updated path */}

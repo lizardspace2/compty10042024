@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -13,22 +13,69 @@ import Profile from './components/Profile/Profile';
 import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
 import Parrainage from './components/Parrainage/Parrainage';
 import { Auth } from '@supabase/auth-ui-react';
-import {supabase} from './supabaseClient';
+import { supabase } from './supabaseClient';
 import PrivateRoute from './PrivateRoute';
-
+import Logout from './Logout';
 
 function App() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+    };
+
+    fetchSession();
+  }, []);
+
   return (
     <ChakraProvider>
       <Router>
+        {session ? (
+          <Routes>
+            <Route path="*" element={<LayoutWithSidebar />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/login" element={
+              <Auth
+                supabaseClient={supabase}
+                appearance={{ theme: 'default' }}
+                providers={['google', 'facebook']}
+              />
+            } />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        )}
+      </Router>
+    </ChakraProvider>
+  );
+}
+
+const LayoutWithSidebar = () => {
+  const location = useLocation(); // Utilisez le hook useLocation pour obtenir l'emplacement actuel
+  const showSidebar = location.pathname !== '/d2035'; // Condition pour montrer la barre latérale
+
+  return (
+    <Flex h="100vh" overflowY="hidden">
+      {showSidebar && (
+        <Box position="fixed" h="full" w="250px" overflowY="auto">
+          <Navbar />
+        </Box>
+      )}
+      <Box flex="1" pl={showSidebar ? "270px" : "0"} pr={5} pt={5} overflowY="auto">
         <Routes>
-          <Route path="/login" element={
-            <Auth
-              supabaseClient={supabase}
-              appearance={{ theme: 'default' }}
-              providers={['google', 'facebook']} // Ajoutez ou retirez des fournisseurs selon vos besoins
-            />
-          } />
+
+                    <Route path="/" element={<Pilotage />} />
+          <Route path="/pilotage" element={<Pilotage />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/todo" element={<Todo />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/accompaniment" element={<Accompaniment />} />
+          <Route path="/sponsorship" element={<Sponsorship />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/parrainage" element={<Parrainage />} />
           <Route path="/d2035" element={<D2035 />} />
           <Route path="/catégoriser-toutes-les-transactions" element={<CatégoriserToutesLesTransactions />} />
           <Route path="/immobilisations-amortissements-et-cessions" element={<ImmobilisationsAmortissementsEtCessions />} />
@@ -50,40 +97,7 @@ function App() {
           <Route path="/informations-relatives-à-l-activité" element={<InformationsRelativesÀLActivité />} />
           <Route path="/informations-relatives-à-l-exercice-fiscal" element={<InformationsRelativesÀLExerciceFiscal />} />
           <Route path="/valider-la-clôture" element={<ValiderLaClôture />} />
-          <Route path="*" element={<LayoutWithSidebar />} />
-        </Routes>
-      </Router>
-    </ChakraProvider>
-  );
-}
-
-const LayoutWithSidebar = () => {
-  const location = useLocation(); // Utilisez le hook useLocation pour obtenir l'emplacement actuel
-  const showSidebar = location.pathname !== '/d2035'; // Condition pour montrer la barre latérale
-
-  return (
-    <Flex h="100vh" overflowY="hidden">
-      {showSidebar && (
-        <Box position="fixed" h="full" w="250px" overflowY="auto">
-          <Navbar />
-        </Box>
-      )}
-      <Box flex="1" pl={showSidebar ? "270px" : "0"} pr={5} pt={5} overflowY="auto">
-        <Routes>
-          <Route path="/profile" element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          } />
-                    <Route path="/" element={<Pilotage />} />
-          <Route path="/pilotage" element={<Pilotage />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/todo" element={<Todo />} />
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/accompaniment" element={<Accompaniment />} />
-          <Route path="/sponsorship" element={<Sponsorship />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/parrainage" element={<Parrainage />} />
+          <Route path="/sedeconnecter" element={<Logout />} />
         </Routes>
       </Box>
     </Flex>
