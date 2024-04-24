@@ -12,12 +12,23 @@ import Sponsorship from './components/Sponsorship';
 import Profile from './components/Profile/Profile';
 import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
 import Parrainage from './components/Parrainage/Parrainage';
+import { Auth } from '@supabase/auth-ui-react';
+import {supabase} from './supabaseClient';
+import PrivateRoute from './PrivateRoute';
+
 
 function App() {
   return (
     <ChakraProvider>
       <Router>
         <Routes>
+          <Route path="/login" element={
+            <Auth
+              supabaseClient={supabase}
+              appearance={{ theme: 'default' }}
+              providers={['google', 'facebook']} // Ajoutez ou retirez des fournisseurs selon vos besoins
+            />
+          } />
           <Route path="/d2035" element={<D2035 />} />
           <Route path="/catégoriser-toutes-les-transactions" element={<CatégoriserToutesLesTransactions />} />
           <Route path="/immobilisations-amortissements-et-cessions" element={<ImmobilisationsAmortissementsEtCessions />} />
@@ -47,8 +58,8 @@ function App() {
 }
 
 const LayoutWithSidebar = () => {
-  const location = useLocation(); // Obtenez l'emplacement actuel
-  const showSidebar = location.pathname !== '/d2035'; // Ne montrez la barre latérale que pour les routes autres que '/d2035'
+  const location = useLocation(); // Utilisez le hook useLocation pour obtenir l'emplacement actuel
+  const showSidebar = location.pathname !== '/d2035'; // Condition pour montrer la barre latérale
 
   return (
     <Flex h="100vh" overflowY="hidden">
@@ -59,7 +70,12 @@ const LayoutWithSidebar = () => {
       )}
       <Box flex="1" pl={showSidebar ? "270px" : "0"} pr={5} pt={5} overflowY="auto">
         <Routes>
-          <Route path="/" element={<Pilotage />} />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } />
+                    <Route path="/" element={<Pilotage />} />
           <Route path="/pilotage" element={<Pilotage />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/todo" element={<Todo />} />
@@ -68,7 +84,6 @@ const LayoutWithSidebar = () => {
           <Route path="/sponsorship" element={<Sponsorship />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/parrainage" element={<Parrainage />} />
-          {/* La route /d2035 est déjà définie à l'extérieur de ce layout. */}
         </Routes>
       </Box>
     </Flex>

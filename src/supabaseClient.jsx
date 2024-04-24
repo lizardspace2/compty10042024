@@ -1,4 +1,4 @@
-// supabaseClient.js
+// src/supabaseClient.js
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://iholojdqmdamozagajwk.supabase.co';
@@ -8,4 +8,4 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Please define all required environment variables!');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  export const supabase = createClient(supabaseUrl, supabaseAnonKey);
