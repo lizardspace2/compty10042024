@@ -1,11 +1,11 @@
-import { supabase } from './../../../../supabaseClient';  
+import { supabase } from './../../../../supabaseClient';
 import React, { useState, useEffect } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import {
   Box, Button, FormControl, FormLabel, Input, VStack,
   IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
-  ModalBody, Text, Image, HStack, Flex, Tooltip,SimpleGrid,Heading, Stack, Container, Tag,
+  ModalBody, Text, Image, HStack, Flex, Tooltip, SimpleGrid, Heading, Stack, Container, Tag,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -134,12 +134,12 @@ const ExpenseInformation = ({ formData, onChange }) => {
       setSelectedFile(null);
     }
   }, [files]);
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData(prev => ({ ...prev, [name]: value }));
-    };
-  
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
 
 
   return (
@@ -154,7 +154,7 @@ const ExpenseInformation = ({ formData, onChange }) => {
           <FormLabel>Date</FormLabel>
           <ChakraDatePicker
             selected={formData.date_transaction}
-              onChange={(date) => setFormData(prev => ({ ...prev, date_transaction: date }))}
+            onChange={(date) => setFormData(prev => ({ ...prev, date_transaction: date }))}
             dateFormat="dd/MM/yyyy"
             locale={fr}
             customInput={<Input background={inputBg} readOnly />}
@@ -168,20 +168,21 @@ const ExpenseInformation = ({ formData, onChange }) => {
           <FormLabel>Montant</FormLabel>
           <Input
             type="number"
-            background={inputBg}
             step="0.01"
             value={formData.montant_total}
-            onChange={handleInputChange}
+            onChange={onChange}
+            name="montant_total" // Ensure this matches the state key
           />
         </FormControl>
+
         <FormControl id="transaction-annotations">
           <FormLabel>Annotations</FormLabel>
           <InputGroup>
             <Input
               placeholder="Ajouter des mots clés"
-              background={inputBg}
               value={formData.annotations}
-              onChange={handleInputChange}
+              onChange={onChange}
+              name="annotations" // Ensure this matches the state key
             />
             {annotations && (
               <InputRightElement>
@@ -191,7 +192,7 @@ const ExpenseInformation = ({ formData, onChange }) => {
                   size="sm"
                   onClick={() => setAnnotations('')}
                   isRound={true}
-                  style={closeButtonStyle} // Apply the transition effect style
+                  style={closeButtonStyle}
                 />
               </InputRightElement>
             )}
@@ -240,12 +241,12 @@ const ExpenseInformation = ({ formData, onChange }) => {
                 <>
                   {files.length === 0 ? (
                     <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', minHeight: '69vh', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-                    <input {...getInputProps()} />
-                    <AttachmentIcon w={12} h={12} color='gray.500' />
-                    <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-                    <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-                    <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-                  </div>                  
+                      <input {...getInputProps()} />
+                      <AttachmentIcon w={12} h={12} color='gray.500' />
+                      <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
+                      <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
+                      <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
+                    </div>
                   ) : (
                     <VStack width="50%" spacing={4}>
                       <Box w="95%">
@@ -273,7 +274,7 @@ const ExpenseInformation = ({ formData, onChange }) => {
                           {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
                         </Text>
                       </>
-                      </VStack>
+                    </VStack>
                   )}
                 </>
                 {selectedFile && selectedFile.type.startsWith('image/') && (
@@ -302,7 +303,7 @@ const ExpenseVentilationComponent = () => {
   ]);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [activeVentilationIndex, setActiveVentilationIndex] = useState(null);
-  
+
   const categories = {
     Revenues: ['Apport personnel', 'Recette', 'Recette secondaire', 'Redevance de collaboration perçue', 'Autre gain divers', 'Vente d’une immobilisation', 'Emprunt', 'Caution reçue'],
     Remunerations: ['Prélèvement personnel', 'Dépense personnelle', 'Rétrocession versée', 'Redevance de collaboration versée', 'Honoraires payés', '[Salariés] Salaire net', '[Salariés] Impôt à la source', '[Salariés] Charge sociale'],
@@ -335,9 +336,9 @@ const ExpenseVentilationComponent = () => {
 
   const handlePercentageChange = (index, value) => {
     if (value >= 0 && value <= 100) {
-    const newVentilations = [...ventilations];
-    newVentilations[index].percentage = value;
-    setVentilations(newVentilations);
+      const newVentilations = [...ventilations];
+      newVentilations[index].percentage = value;
+      setVentilations(newVentilations);
     }
   };
 
@@ -479,31 +480,32 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
     moyen: '',
     compte_bancaire: '',
     ventilations: []  // Ensure this is what your backend expects
-});
+  });
 
 
   const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target;
+    console.log("Field changed:", name, "Value:", value); // Debugging output
+    setFormData(prev => ({ ...prev, [name]: value }));
+};
 
   const handleSubmitTransaction = async () => {
     const transactionData = {
-        ...formData,
-        ventilations: JSON.stringify(formData.ventilations) // Ensuring it's stringified if your backend expects JSON string
+      ...formData,
+      ventilations: JSON.stringify(formData.ventilations) // Ensuring it's stringified if your backend expects JSON string
     };
 
     const { data, error } = await supabase
-        .from('transactions')
-        .insert([transactionData]);
+      .from('transactions')
+      .insert([transactionData]);
 
     if (error) {
-        console.error("Erreur lors de l'ajout de la transaction :", error.message);
+      console.error("Erreur lors de l'ajout de la transaction :", error.message);
     } else {
-        console.log('Transaction ajoutée avec succès !', data);
-        onToggle();  // Close modal after addition
+      console.log('Transaction ajoutée avec succès !', data);
+      onToggle();  // Close modal after addition
     }
-};
+  };
 
   return (
     <>
@@ -526,7 +528,7 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
           margin="0 auto"
         >
           <ExpenseInformation formData={formData} onChange={handleInputChange} />
-                <ExpenseVentilationComponent />
+          <ExpenseVentilationComponent />
         </SimpleGrid>
       </Box>
     </>
