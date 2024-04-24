@@ -143,7 +143,6 @@ const ExpenseInformation = () => {
           <FormLabel>Libellé</FormLabel>
           <Input
             type="text"
-            defaultValue="Prlv Sepa Symamobile Rum Recipon Guillaume Mari"
             background={inputBg}
           />
         </FormControl>
@@ -166,7 +165,6 @@ const ExpenseInformation = () => {
           <FormLabel>Montant</FormLabel>
           <Input
             type="number"
-            defaultValue="-7.99"
             background={inputBg}
             step="0.01"
           />
@@ -295,7 +293,7 @@ const ExpenseInformation = () => {
 
 const ExpenseVentilationComponent = () => {
   const [ventilations, setVentilations] = useState([
-    { id: 1, category: 'Dépense personnelle', amount: '-0.99', percentage: 100, selectedCategory: '' },
+    { id: 1, category: 'Dépense personnelle', amount: '', percentage: 100, selectedCategory: '' },
   ]);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [activeVentilationIndex, setActiveVentilationIndex] = useState(null);
