@@ -1,4 +1,4 @@
-// TransactionDetailModal.jsx
+import { supabase } from './../../../../supabaseClient';  
 import React, { useState, useEffect } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import {
@@ -17,7 +17,8 @@ import { FaPlus, FaPercent, FaTimes } from 'react-icons/fa';
 import { MdEuro } from 'react-icons/md';
 import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
 
-const ExpenseFormHeader = ({ onToggle }) => {
+
+const ExpenseFormHeader = ({ onToggle, onSubmitTransaction }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" p={4} bg="white" boxShadow="md">
       <Heading as="h3" size="lg">
@@ -27,7 +28,7 @@ const ExpenseFormHeader = ({ onToggle }) => {
         <Button mr={3} onClick={onToggle}>
           Fermer
         </Button>
-        <Button colorScheme="pink" onClick={() => { /* Implement add functionality here */ }}>
+        <Button colorScheme="pink" onClick={onSubmitTransaction}>
           Ajouter
         </Button>
       </Box>
@@ -466,9 +467,39 @@ const ExpenseVentilationComponent = () => {
 };
 
 const ExpenseTransactionDetail = ({ onToggle }) => {
+  const [formData, setFormData] = useState({
+    libelle: '',
+    date_transaction: new Date(),
+    montant_total: 0,
+    ventilations: JSON.stringify([])
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmitTransaction = async () => {
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert([
+        {
+          libelle: formData.libelle,
+          date_transaction: formData.date_transaction,
+          montant_total: formData.montant_total,
+          ventilations: formData.ventilations
+        }
+      ]);
+
+    if (error) console.error("Erreur lors de l'ajout de la transaction :", error);
+    else {
+      console.log('Transaction ajoutée avec succès !', data);
+      onToggle();  // Fermer le modal après l'ajout
+    }
+  };
+
   return (
     <>
-      <ExpenseFormHeader onToggle={onToggle} />
+      <ExpenseFormHeader onToggle={onToggle} onSubmitTransaction={handleSubmitTransaction} />
       <Box
         p={4}
         display="flex"
@@ -486,7 +517,7 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
           maxWidth="1400px"
           margin="0 auto"
         >
-          <ExpenseInformation />
+          <ExpenseInformation formData={formData} onChange={handleInputChange} />
           <ExpenseVentilationComponent />
         </SimpleGrid>
       </Box>
