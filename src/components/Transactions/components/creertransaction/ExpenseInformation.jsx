@@ -63,8 +63,6 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
   );
 };
 
-
-
 const ExpenseInformation = () => {
   const [annotations, setAnnotations] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
