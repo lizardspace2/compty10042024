@@ -363,12 +363,16 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
   };
 
   const handleCategorySelect = (category) => {
-    const newVentilations = [...ventilationsState];
-    newVentilations[activeVentilationIndex].selectedCategory = category;
-    setVentilations(newVentilations);
-    onVentilationChange(activeVentilationIndex, 'selectedCategory', category); // Mettre à jour la catégorie dans le formulaire parent
-    onCategoryModalClose();
-  };
+    // S'assurer que l'index est valide
+    if (activeVentilationIndex != null && ventilations[activeVentilationIndex]) {
+        onVentilationChange(activeVentilationIndex, 'selectedCategory', category);
+        onCategoryModalClose();
+    } else {
+        console.error("Index de ventilation non valide lors de la sélection de la catégorie");
+    }
+};
+
+
 
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
@@ -487,8 +491,8 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
     moyen: '',
     compte_bancaire: '',
     ventilations: [
-      { id: 1, category: 'Dépense personnelle', amount: '', percentage: 100, selectedCategory: '' }
-    ]
+      { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' }
+  ]
   });
 
   const handleInputChange = (e) => {
@@ -497,10 +501,15 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
   };
 
   const handleVentilationChange = (index, field, value) => {
-    const newVentilations = [...formData.ventilations];
-    newVentilations[index][field] = value;
-    setFormData(prev => ({ ...prev, ventilations: newVentilations }));
-  };
+    const updatedVentilations = formData.ventilations.map((vent, idx) => {
+        if (idx === index) {
+            return { ...vent, [field]: value };
+        }
+        return vent;
+    });
+    setFormData(prev => ({ ...prev, ventilations: updatedVentilations }));
+};
+
 
   const addVentilation = () => {
     setFormData(prev => ({
