@@ -10,12 +10,26 @@ import PilotageBanner from './components/PilotageBanner';
 import RevenueComponent from './components/surlecote/RevenueComponent';
 import ExpensesComponent from './components/surlecote/ExpensesComponent';
 import ResultComponent from './components/surlecote/ResultComponent';
+import ProfitMarginChart from './components/ProfitMarginChart';
+import ExpensesPieChart from './components/ExpensesPieChart';
+import CashFlowChart from './components/CashFlowChart';
+import KPICards from './components/KPICards';
+import MonthlyComparisonChart from './components/MonthlyComparisonChart';
+import QuarterlyRevenueChart from './components/QuarterlyRevenueChart';
+import PaymentMethodsChart from './components/PaymentMethodsChart';
+import TaxProjectionChart from './components/TaxProjectionChart';
+import ClientDistributionChart from './components/ClientDistributionChart';
+import WorkingCapitalChart from './components/WorkingCapitalChart';
 
 function Pilotage() {
   return (
     <Box bg="gray.50" minH="100vh">
       <PilotageBanner />
       <Box maxWidth="1600px" mx="auto" p={6}>
+        {/* KPI Cards Section */}
+        <KPICards />
+
+        {/* Main Chart with Side Stats */}
         <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center" py={4}>
           <GridItem display="flex" flexDirection="column" justifyContent="space-between">
             <Box mt={2}><RevenueComponent amount={127000} currency="€" /></Box>
@@ -26,25 +40,72 @@ function Pilotage() {
             <MyChartComponent />
           </GridItem>
         </Grid>
+
+        {/* Revenue and Expense Tables */}
         <Box py={2}>
-        <RevenueTable/>
+          <RevenueTable/>
         </Box>
         <Box py={2}>
-        <DepenseTable/>
+          <DepenseTable/>
         </Box>
-        <Grid templateColumns="1fr 1fr" gap={6} py={4}>
-          <GridItem py={4}> {/* Added padding to create space */}
+
+        {/* Profit Margin Chart - Full Width */}
+        <Box py={4}>
+          <ProfitMarginChart />
+        </Box>
+
+        {/* Cash Flow Chart - Full Width */}
+        <Box py={4}>
+          <CashFlowChart />
+        </Box>
+
+        {/* Threshold and Expenses Bar Charts */}
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={6} py={4}>
+          <GridItem>
             <ThresholdProgressBar />
           </GridItem>
-          <GridItem py={4}> {/* Added padding to create space */}
+          <GridItem>
             <ExpensesBarChart />
           </GridItem>
         </Grid>
-        <Grid templateColumns="1fr 1fr" gap={6}>
-          <GridItem py={4}> {/* Added padding to create space */}
+
+        {/* Treasury Chart and Expenses Pie Chart */}
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={6} py={4}>
+          <GridItem>
             <TreasuryChart />
           </GridItem>
           <GridItem>
+            <ExpensesPieChart />
+          </GridItem>
+        </Grid>
+
+        {/* Tax Projection - Full Width */}
+        <Box py={4}>
+          <TaxProjectionChart />
+        </Box>
+
+        {/* Working Capital Chart - Full Width */}
+        <Box py={4}>
+          <WorkingCapitalChart />
+        </Box>
+
+        {/* Quarterly Revenue and Payment Methods */}
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={6} py={4}>
+          <GridItem>
+            <QuarterlyRevenueChart />
+          </GridItem>
+          <GridItem>
+            <PaymentMethodsChart />
+          </GridItem>
+        </Grid>
+
+        {/* Client Distribution and Monthly Comparison */}
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={6} py={4}>
+          <GridItem>
+            <ClientDistributionChart />
+          </GridItem>
+          <GridItem>
+            <MonthlyComparisonChart />
           </GridItem>
         </Grid>
       </Box>
