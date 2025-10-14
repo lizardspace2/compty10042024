@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
+import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
@@ -10,125 +10,53 @@ import Documents from './components/Documents/Documents';
 import Accompaniment from './components/Accompagnement/Accompaniment';
 import Sponsorship from './components/Sponsorship';
 import Profile from './components/Profile/Profile';
-import D2035 from './components/D2035/D2035'; // Assurez-vous que le chemin est correct
+import D2035 from './components/D2035/D2035';
 import Parrainage from './components/Parrainage/Parrainage';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { supabase } from './supabaseClient';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import Logout from './Logout';
 
-function App() {
-  const [session, setSession] = useState(null);
+function AppContent() {
+  const { session, loading } = useAuth();
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-    };
-
-    fetchSession();
-  }, []);
-
-  const localization = {
-    variables: {
-      sign_up: {
-        email_label: 'Adresse e-mail',
-        password_label: 'Créer un mot de passe',
-        email_input_placeholder: 'Votre adresse e-mail',
-        password_input_placeholder: 'Votre mot de passe',
-        button_label: 'S\'inscrire',
-        loading_button_label: 'Inscription en cours ...',
-        social_provider_text: 'Se connecter avec {{provider}}',
-        link_text: 'Vous n\'avez pas de compte ? Inscrivez-vous',
-        confirmation_text: 'Vérifiez votre e-mail pour le lien de confirmation',
-      },
-      sign_in: {
-        email_label: 'Adresse e-mail',
-        password_label: 'Votre mot de passe',
-        email_input_placeholder: 'Votre adresse e-mail',
-        password_input_placeholder: 'Votre mot de passe',
-        button_label: 'Se connecter',
-        loading_button_label: 'Connexion en cours ...',
-        social_provider_text: 'Se connecter avec {{provider}}',
-        link_text: 'Vous avez déjà un compte ? Connectez-vous',
-        confirmation_text: 'Vérifiez votre e-mail pour le lien de confirmation',
-      },
-      magic_link: {
-        email_input_label: 'Adresse e-mail',
-        email_input_placeholder: 'Votre adresse e-mail',
-        button_label: 'Se connecter',
-        loading_button_label: 'Connexion en cours ...',
-        link_text: 'Envoyer un e-mail de lien magique',
-        confirmation_text: 'Vérifiez votre e-mail pour le lien magique',
-      },
-      forgotten_password: {
-        email_label: 'Adresse e-mail',
-        password_label: 'Votre mot de passe',
-        email_input_placeholder: 'Votre adresse e-mail',
-        password_input_placeholder: 'Votre mot de passe',
-        button_label: 'Envoyer les instructions de réinitialisation du mot de passe',
-        loading_button_label: 'Envoi des instructions de réinitialisation ...',
-        link_text: 'Mot de passe oublié ?',
-        confirmation_text: 'Vérifiez votre e-mail pour le lien de réinitialisation de mot de passe',
-      },
-      update_password: {
-        password_label: 'Nouveau mot de passe',
-        password_input_placeholder: 'Votre nouveau mot de passe',
-        button_label: 'Mettre à jour le mot de passe',
-        loading_button_label: 'Mise à jour du mot de passe ...',
-        confirmation_text: 'Votre mot de passe a été mis à jour',
-      },
-      verify_otp: {
-        email_input_label: 'Adresse e-mail',
-        email_input_placeholder: 'Votre adresse e-mail',
-        phone_input_label: 'Numéro de téléphone',
-        phone_input_placeholder: 'Votre numéro de téléphone',
-        token_input_label: 'Jeton',
-        token_input_placeholder: 'Votre jeton OTP',
-        button_label: 'Vérifier le jeton',
-        loading_button_label: 'Connexion en cours ...',
-      },
-    },
-  };
-  
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <Text>Chargement...</Text>
+      </Box>
+    );
+  }
 
   return (
+    <Routes>
+      {session ? (
+        <Route path="*" element={<LayoutWithSidebar />} />
+      ) : (
+        <>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </>
+      )}
+    </Routes>
+  );
+}
+
+function App() {
+  return (
     <ChakraProvider>
-      <Router>
-        {session ? (
-          <Routes>
-            <Route path="*" element={<LayoutWithSidebar />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/login" element={
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                height: '100vh', // pour centrer verticalement
-              }}>
-                <Auth
-                  maxW='90%'
-                  textAlign="center"
-                  supabaseClient={supabase}
-                  appearance={{
-                    theme: ThemeSupa, 
-                    style: {
-                      button: { background: 'pink'},
-                      anchor: { color: 'pink' },
-                    },
-                  }}
-                  providers={['google', 'facebook', 'twitter']}  
-                  localization={localization}
-                />
-              </div>
-            } />
-            <Route path="*" element={<Navigate to="/login" />} />
-          </Routes>
-        )}
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
     </ChakraProvider>
   );
 }
