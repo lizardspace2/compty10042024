@@ -8,7 +8,7 @@ const ParrainageBanner = () => {
       justifyContent="space-between"
       alignItems="center"
       borderBottom="1px"
-      borderColor="gray.200" // Match the borderColor of TransactionsHeader
+      borderColor="red.100" // Match the borderColor of TransactionsHeader
       p={4}
       boxShadow="sm" // Match the boxShadow of TransactionsHeader
     >

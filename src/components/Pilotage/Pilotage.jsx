@@ -13,9 +13,9 @@ import ResultComponent from './components/surlecote/ResultComponent';
 
 function Pilotage() {
   return (
-    <div>
+    <Box bg="gray.50" minH="100vh">
       <PilotageBanner />
-      <Box maxWidth="1600px" mx="auto" overflow="hidden">
+      <Box maxWidth="1600px" mx="auto" p={6}>
         <Grid templateColumns={{ sm: '1fr', md: '1fr 20fr' }} gap={6} textAlign="center" py={4}>
           <GridItem display="flex" flexDirection="column" justifyContent="space-between">
             <Box mt={2}><RevenueComponent amount={127000} currency="€" /></Box>
@@ -48,7 +48,7 @@ function Pilotage() {
           </GridItem>
         </Grid>
       </Box>
-    </div>
+    </Box>
   );
 }
 

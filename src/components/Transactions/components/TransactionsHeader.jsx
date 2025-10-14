@@ -20,7 +20,7 @@ import TransactionDetailModal from './creertransaction/TransactionDetailModal';
 import ExpenseTransactionDetail from './creertransaction/ExpenseTransactionDetail';
 
 const TransactionsHeader = ({ onToggleFilter }) => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.700');
   const filterButtonColorScheme = useColorModeValue('gray', 'blue');
   const addButtonColorScheme = useColorModeValue('pink', 'green');
@@ -45,30 +45,36 @@ return (
     <Flex
       justifyContent="space-between"
       alignItems="center"
+      bg="red.50"
       borderBottom="1px"
-      borderColor={borderColor}
-      p={4}
+      borderColor="red.100"
+      p={6}
       boxShadow="sm"
     >
-      <Heading size="md">Transactions</Heading>
-        <Flex alignItems="center">
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
+      <Heading size="lg" color="gray.800">Transactions</Heading>
+        <Flex alignItems="center" gap={2}>
+          <InputGroup maxW="400px">
+            <InputLeftElement pointerEvents="none" h={10}>
               <MdSearch color="gray.500" />
             </InputLeftElement>
             <Input
               type="search"
               placeholder="Rechercher"
-              bgColor={inputBgColor}
-              boxShadow="base"
-              maxW="400px"
+              h={10}
+              borderRadius="xl"
+              borderColor="gray.300"
+              _focus={{
+                borderColor: 'red.400',
+                boxShadow: '0 0 0 1px var(--chakra-colors-red-400)',
+              }}
             />
           </InputGroup>
           <Button
             leftIcon={<FcHeatMap />}
-            ml={2}
-            colorScheme={filterButtonColorScheme}
-            variant="solid"
+            variant="outline"
+            borderRadius="xl"
+            h={10}
+            _hover={{ bg: 'red.50', borderColor: 'red.400' }}
             onClick={onToggleFilter}
           >
             Filtrer
@@ -78,20 +84,31 @@ return (
           <MenuButton
             as={Button}
             rightIcon={<ChevronDownIcon />}
-            colorScheme={addButtonColorScheme}
-            ml={2}
-            borderRadius="full"
-            boxShadow="md"
+            leftIcon={<MdAdd />}
+            bgGradient="linear(to-r, red.400, red.500)"
+            _hover={{ bgGradient: 'linear(to-r, red.500, red.600)' }}
+            color="white"
+            h={10}
+            borderRadius="xl"
           >
             Ajouter
           </MenuButton>
-          <MenuList>
-            {/* Utilise des fonctions distinctes pour ouvrir les modals */}
-            <MenuItem onClick={handleOpenJustificatifModal}>Justificatif</MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal}>Autre dépense professionnelle</MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal}>Autre recette professionnelle</MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal}>Dépense en espèces</MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal}>Recette en espèces</MenuItem>
+          <MenuList borderRadius="xl" boxShadow="xl">
+            <MenuItem onClick={handleOpenJustificatifModal} _hover={{ bg: 'red.50' }}>
+              Justificatif
+            </MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+              Autre dépense professionnelle
+            </MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+              Autre recette professionnelle
+            </MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+              Dépense en espèces
+            </MenuItem>
+            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+              Recette en espèces
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

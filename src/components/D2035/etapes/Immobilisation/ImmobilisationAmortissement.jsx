@@ -4,7 +4,7 @@ import { MdOutlineExitToApp } from 'react-icons/md';
 
 const ImmobilisationAmortissement = () => {
   return (
-    <Box maxWidth="container.xl" mx="auto" p={5} bg="white">
+    <Box maxWidth="container.xl" mx="auto" p={5} bg="red.50">
       <Heading as="h3" fontSize="xl" mb={4}>
         Immobilisations, amortissements et cessions
       </Heading>

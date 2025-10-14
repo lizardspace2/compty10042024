@@ -4,7 +4,7 @@ import { FcAdvance } from "react-icons/fc";
 
 const CreerUneSci = () => {
   const cardBg = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   return (
     <Box

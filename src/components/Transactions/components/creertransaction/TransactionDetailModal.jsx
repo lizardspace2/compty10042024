@@ -20,7 +20,7 @@ import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, 
 
 const ExpenseFormHeader = ({ onToggle, onSubmitTransaction }) => {
   return (
-    <Flex justifyContent="space-between" alignItems="center" p={4} bg="white" boxShadow="md">
+    <Flex justifyContent="space-between" alignItems="center" p={4} bg="red.50" boxShadow="md">
       <Heading as="h3" size="lg">
         Ajout d'une dépense professionnelle
       </Heading>
@@ -232,7 +232,7 @@ const ExpenseInformation = ({ formData, onChange }) => {
             <ModalHeader>Ajouter des justificatifs</ModalHeader>
             <Box
               borderBottomWidth="1px"
-              borderColor="gray.200"
+              borderColor="red.100"
               width="full"
             />
             <ModalCloseButton />
@@ -261,7 +261,7 @@ const ExpenseInformation = ({ formData, onChange }) => {
                             leftIcon={<LiaCloudUploadAltSolid />}
                             colorScheme="teal"
                             variant="outline"
-                            bg={useColorModeValue('white', 'gray.800')}
+                            bg={useColorModeValue('red.50', 'gray.800')}
                             color={useColorModeValue('gray.600', 'white')}
                             _hover={{
                               bg: useColorModeValue('gray.100', 'gray.700'),
@@ -325,7 +325,7 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
 
   const iconColor = useColorModeValue('gray.200', 'gray.300');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const hoverBg = useColorModeValue("green.100", "green.700");
   const activeBg = useColorModeValue("blue.300", "blue.800");
 
@@ -378,7 +378,7 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
       {ventilations.map((vent, index) => (
-        <Box key={vent.id} p={4} bg="white" shadow="sm" mb={4} rounded="md">
+        <Box key={vent.id} p={4} bg="red.50" shadow="sm" mb={4} rounded="md">
           <Flex alignItems="center" justifyContent="space-between">
             <Heading size="md" mb={4}>Ventilation {index + 1}</Heading>
             <IconButton

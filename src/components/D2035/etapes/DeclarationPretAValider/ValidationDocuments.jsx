@@ -14,7 +14,7 @@ const ValidationDocuments = () => {
     >
       <VStack spacing={4}>
         <HStack justify="center">
-          <Circle size="24px" bg="pink.500" color="white">
+          <Circle size="24px" bg="red.50">
             <Text fontSize="sm">1</Text>
           </Circle>
           <Text fontSize="lg" fontWeight="semibold">

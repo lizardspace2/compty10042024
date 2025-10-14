@@ -14,7 +14,7 @@ import { IoInformationCircleOutline } from 'react-icons/io5';
 
 function ThresholdProgressBar() {
   const theme = useTheme();
-  const bgColor = useColorModeValue('white', theme.colors.gray[800]);
+  const bgColor = useColorModeValue('red.50', theme.colors.gray[800]);
   const borderColor = useColorModeValue(theme.colors.gray[200], theme.colors.gray[700]);
   const threshold = 34; // Threshold percentage
   const charges = -32; // Charges percentage

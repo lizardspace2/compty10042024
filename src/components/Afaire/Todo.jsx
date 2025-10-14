@@ -8,29 +8,40 @@ function Todo() {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
   return (
-    <Flex>
-      <Box flex="1" p={4}>
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          borderBottom="1px"
-          borderColor="gray.700"
-          p={4}
-        >
-          <Heading size="md">À faire</Heading>
-          {!isOpen && (
-            // Add the icon to the button using the rightIcon prop
-            <Button onClick={onToggle} colorScheme="teal" rightIcon={<Icon as={FaChevronRight} />}>
-              À venir
-            </Button>
-          )}
-        </Flex>
-        <Box maxWidth="1400px" textAlign="center" mx="auto" >
-        <Declaration2035 />
+    <Box bg="gray.50" minH="100vh">
+      {/* Header */}
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        bg="red.50"
+        borderBottom="1px"
+        borderColor="red.100"
+        p={6}
+        boxShadow="sm"
+      >
+        <Heading size="lg" color="gray.800">À faire</Heading>
+        {!isOpen && (
+          <Button
+            onClick={onToggle}
+            rightIcon={<Icon as={FaChevronRight} />}
+            variant="outline"
+            borderRadius="xl"
+            _hover={{ bg: 'red.50', borderColor: 'red.400' }}
+          >
+            À venir
+          </Button>
+        )}
+      </Flex>
+
+      <Flex>
+        <Box flex="1" p={6} transition="margin 0.3s" marginRight={isOpen ? "400px" : "0"}>
+          <Box maxWidth="1400px" textAlign="center" mx="auto">
+            <Declaration2035 />
+          </Box>
         </Box>
-      </Box>
-      {isOpen && <UpcomingTasks onClose={onToggle} />}
-    </Flex>
+        {isOpen && <UpcomingTasks onClose={onToggle} />}
+      </Flex>
+    </Box>
   );
 }
 

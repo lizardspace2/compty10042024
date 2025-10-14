@@ -39,7 +39,7 @@ const ComposantParrainage = () => {
       boxShadow="md"
       borderWidth="1px"
       borderRadius="md"
-      bg="white"
+      bg="red.50"
       align="stretch"
     >
       <Text fontWeight="semibold">Parrainage</Text>

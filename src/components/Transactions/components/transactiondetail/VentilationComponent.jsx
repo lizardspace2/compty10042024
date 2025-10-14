@@ -26,7 +26,7 @@ const VentilationComponent = () => {
 
   const iconColor = useColorModeValue('gray.200', 'gray.300');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   const addVentilation = () => {
     setVentilations([...ventilations, { category: '', amount: '', percentage: 0 }]);
@@ -43,7 +43,7 @@ const VentilationComponent = () => {
         Ventilation(s) 
       </Text>
     {ventilations.map((ventilation, index) => (
-      <Box key={index} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
+      <Box key={index} mb={4} p={4} bg="red.50" borderRadius="lg" boxShadow="sm">
         <Flex justify="space-between" align="center">
           <Text fontWeight="medium">Ventilation {index + 1}</Text>
           <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">

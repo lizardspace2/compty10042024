@@ -17,7 +17,7 @@ const TransactionDetails = ({ onClose }) => {
       maxW="400px"
       p={4}
       position="relative"
-      bg="white"
+      bg="red.50"
       h="100vh"
     >
       <CloseButton position="absolute" right="4" top="4" onClick={onClose} />

@@ -9,29 +9,23 @@ import CompteurFilleulsAbonnes from './components/CompteurFilleulsAbonnes';
 
 const Parrainage = () => {
     return (
-        <div>
+        <Box bg="gray.50" minH="100vh">
             <ParrainageBanner />
-            <Box p={4} >
-                <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+            <Box p={6}>
+                <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                     <OffreParrainage />
                     <ComposantParrainage />
                 </Grid>
-                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                    <Box mt={4}>
-                        <CompteurFilleulsInvites />
-                    </Box>
-                    <Box mt={4}>
-                        <CompteurFilleulsInscrits />
-                    </Box>
-                    <Box mt={4}>
-                        <CompteurFilleulsAbonnes />
-                    </Box>
+                <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={6}>
+                    <CompteurFilleulsInvites />
+                    <CompteurFilleulsInscrits />
+                    <CompteurFilleulsAbonnes />
                 </Grid>
-                <Box mt={4}>
+                <Box mt={6}>
                     <InformationsLegales />
                 </Box>
             </Box>
-        </div>
+        </Box>
     );
 };
 

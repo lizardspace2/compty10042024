@@ -207,7 +207,7 @@ const ExpenseInformation = () => {
             <ModalHeader>Ajouter des justificatifs</ModalHeader>
             <Box
               borderBottomWidth="1px"
-              borderColor="gray.200"
+              borderColor="red.100"
               width="full"
             />
             <ModalCloseButton />
@@ -236,7 +236,7 @@ const ExpenseInformation = () => {
                             leftIcon={<LiaCloudUploadAltSolid />}
                             colorScheme="teal"
                             variant="outline"
-                            bg={useColorModeValue('white', 'gray.800')}
+                            bg={useColorModeValue('red.50', 'gray.800')}
                             color={useColorModeValue('gray.600', 'white')}
                             _hover={{
                               bg: useColorModeValue('gray.100', 'gray.700'),

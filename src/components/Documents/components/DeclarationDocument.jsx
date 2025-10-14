@@ -21,7 +21,7 @@ const DottedBox = ({ label, value, status, buttonText }) => {
       borderWidth="1px"
       borderRadius="lg"
       borderStyle="dotted"
-      borderColor="gray.200"
+      borderColor="red.100"
     >
       <Flex align="center">
         <Text fontSize="sm" color="gray.500">{label}</Text>
@@ -46,7 +46,7 @@ const TaskCard = ({
   buttonText
 }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   return (
     <Box

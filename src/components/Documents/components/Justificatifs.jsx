@@ -12,7 +12,7 @@ import { FcRules, FcInfo } from 'react-icons/fc';
 
 const JustificatifEnAttente = ({ name, date, amount }) => {
   const boxBg = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const infoIconColor = useColorModeValue('blue.500', 'blue.300');
 
   return (
@@ -44,7 +44,7 @@ const JustificatifEnAttente = ({ name, date, amount }) => {
         borderWidth="1px"
         borderRadius="lg"
         borderStyle="dotted"
-        borderColor="gray.200"
+        borderColor="red.100"
         p={2}
       >
         <Box>

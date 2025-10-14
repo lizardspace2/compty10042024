@@ -32,10 +32,10 @@ function TransactionItem() {
   const { isOpen: isCategoryOpen, onOpen: onCategoryOpen, onClose: onCategoryClose } = useDisclosure();
   const { isOpen: isDetailOpen, onToggle: onDetailToggle } = useDisclosure();
   const { isOpen: isKeywordModalOpen, onOpen: onKeywordModalOpen, onClose: onKeywordModalClose } = useDisclosure();
-  const bgColor = useColorModeValue('gray.50', 'gray.700');
+  const bgColor = useColorModeValue('red.50', 'gray.700');
   const dateColor = useColorModeValue('gray.600', 'gray.300');
   const amountColor = useColorModeValue('red.500', 'red.300');
-  const hoverBgColor = useColorModeValue('gray.100', 'gray.600');
+  const hoverBgColor = useColorModeValue('red.100', 'gray.600');
 
   const [keyword, setKeyword] = useState('');
 

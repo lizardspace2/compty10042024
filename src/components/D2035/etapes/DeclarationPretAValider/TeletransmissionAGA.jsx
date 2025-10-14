@@ -14,7 +14,7 @@ const TeletransmissionAGA = () => {
     >
       <VStack spacing={4}>
         <HStack justify="center">
-          <Circle size="24px" bg="blue.300" color="white">
+          <Circle size="24px" bg="red.50">
             <Text fontSize="sm">2</Text>
           </Circle>
           <Text fontSize="lg" fontWeight="semibold">

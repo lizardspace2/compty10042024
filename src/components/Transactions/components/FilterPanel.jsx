@@ -25,8 +25,8 @@ import {
   import { MdDateRange, MdEuroSymbol } from 'react-icons/md';
   import { FaChevronDown,FaChevronUp } from "react-icons/fa";
 const useDatePickerStyle = () => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const bgColor = useColorModeValue('white', 'gray.700');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
+  const bgColor = useColorModeValue('red.50', 'gray.700');
   return {
     className: "chakra-datepicker",
     style: {
@@ -42,7 +42,7 @@ const useDatePickerStyle = () => {
 };
 
 const FilterPanel = () => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
     const inputBgColor = useColorModeValue('white', 'gray.700');
     const { isOpen, onOpen, onClose } = useDisclosure();
   

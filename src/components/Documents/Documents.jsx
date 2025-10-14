@@ -7,14 +7,14 @@ import { Box } from '@chakra-ui/react';
 
 function Documents() {
   return (
-    <div>
+    <Box bg="gray.50" minH="100vh">
       <DocumentBanner />
-      <Box maxWidth="1000px" textAlign="center" mx="auto" >
+      <Box maxWidth="1000px" textAlign="center" mx="auto" p={6}>
         <DeclarationDocument />
         <Justificatifs />
         <DossierDocument />
       </Box>
-    </div>
+    </Box>
   );
 }
 

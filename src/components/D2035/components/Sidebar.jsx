@@ -11,12 +11,12 @@ const Sidebar = ({ tasks }) => {
   return (
     <Box
       w="300px"
-      bg="white"
+      bg="red.50"
       p={4}
       boxShadow="lg"
       borderRadius="md"
       border="1px"
-      borderColor="gray.200"
+      borderColor="red.100"
     >
       <Text fontSize="2xl" fontWeight="bold" mb={3} color="gray.800">
         {tasks[0]} {/* Assuming the first item is the title */}

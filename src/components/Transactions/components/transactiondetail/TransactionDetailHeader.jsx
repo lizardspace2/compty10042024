@@ -43,7 +43,7 @@ const TransactionDetailHeader = ({ onClose }) => {
         <Button size="sm" variant="outline" onClick={onClose} mr={2}>
           Fermer
         </Button>
-        <Button size="sm" bg={buttonBgColor} color="white">
+        <Button size="sm" bg="red.50">
           Appliquer
         </Button>
       </Flex>

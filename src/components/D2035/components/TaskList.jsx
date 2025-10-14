@@ -6,7 +6,7 @@ const TaskList = ({ tasks }) => {
   const listItemHoverBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
-    <Box width="full" p={4} bg={useColorModeValue('white', 'gray.800')} boxShadow="sm" borderRadius="md">
+    <Box width="full" p={4} bg={useColorModeValue('red.50', 'gray.800')} boxShadow="sm" borderRadius="md">
       <List spacing={3}>
         {tasks.map((task, index) => (
           <ListItem
@@ -17,7 +17,7 @@ const TaskList = ({ tasks }) => {
             py={2}
             px={4}
             borderBottom="1px"
-            borderColor="gray.200"
+            borderColor="red.100"
             _last={{ borderBottom: 'none' }}
             _hover={{ bg: listItemHoverBg, transition: 'background-color 0.3s' }}
             cursor="pointer"

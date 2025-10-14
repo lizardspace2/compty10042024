@@ -13,8 +13,8 @@ import {
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
 function RevenueTable() {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue('red.50', 'gray.800');
+  const borderColor = useColorModeValue('red.100', 'gray.700');
   
   // Example data for 12 months - replace this with your actual data
   const revenues = [

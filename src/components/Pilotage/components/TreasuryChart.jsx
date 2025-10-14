@@ -38,14 +38,14 @@ const data = [
 
 function TreasuryChart() {
   const theme = useTheme();
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const lineColor = theme.colors.teal[300];
+  const bgColor = useColorModeValue('red.50', 'gray.800');
+  const lineColor = theme.colors.red[400];
 
   // Custom tooltip component for the recharts Tooltip
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <Box bg="white" p="2" boxShadow="md" borderRadius="lg">
+        <Box bg="red.50" p="2" boxShadow="md" borderRadius="lg">
           <Text fontWeight="bold">{`${label} : ${payload[0].value} €`}</Text>
         </Box>
       );
@@ -55,8 +55,7 @@ function TreasuryChart() {
   };
 
   return (
-    <Box p={5} bg={bgColor} borderRadius="lg" boxShadow="md"       border="1px" // 1px border
-    borderColor="gray.200" >
+    <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100" >
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Text fontSize="xl" fontWeight="bold">
           Trésorerie
@@ -80,7 +79,7 @@ function TreasuryChart() {
             />
           </ChakraTooltip>
         </Flex>
-        <Text fontSize="3xl" fontWeight="bold" color={theme.colors.teal[600]}>
+        <Text fontSize="3xl" fontWeight="bold" color="red.500">
           4 973 €
         </Text>
       </Flex>

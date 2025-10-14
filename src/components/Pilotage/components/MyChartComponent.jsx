@@ -63,7 +63,7 @@ const CustomBarShape = (props) => {
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <Box bg="gray.700" color="white" p="2" borderRadius="md" boxShadow="xl">
+        <Box bg="red.50" p="2" borderRadius="md" boxShadow="xl">
           <p>{`${label}`}</p>
           <p>{`Revenues: ${payload[0].value}€`}</p>
           <p>{`Expenses: ${payload[1].value}€`}</p>
@@ -89,8 +89,8 @@ const CustomTick = (props) => {
 // ... CustomBarShape, CustomTooltip, and data array remain unchanged
 
 function MyChartComponent() {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue('red.50', 'gray.800');
+  const borderColor = useColorModeValue('red.100', 'gray.700');
   const textColor = useColorModeValue('gray.700', 'gray.200');
   const barSize = 50; // Set the size of the bars
 

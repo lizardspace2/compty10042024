@@ -1,8 +1,6 @@
 import React from 'react';
-import { Flex, Heading, Menu, MenuButton, MenuList, MenuItem, Button, Icon } from '@chakra-ui/react';
+import { Flex, Heading, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
 import { IoIosArrowDown } from 'react-icons/io';
-import { MdSearch, MdFilterList } from 'react-icons/md';
-import { BsPlus } from 'react-icons/bs';
 
 const PilotageBanner = () => {
   const yearOptions = ['Exercice 2024', 'Exercice 2023', 'Exercice 2022'];
@@ -11,26 +9,32 @@ const PilotageBanner = () => {
     <Flex
       justifyContent="space-between"
       alignItems="center"
+      bg="red.50"
       borderBottom="1px"
-      borderColor="gray.200" // Match the borderColor of TransactionsHeader
-      p={4}
-      boxShadow="sm" // Match the boxShadow of TransactionsHeader
+      borderColor="red.100"
+      p={6}
+      boxShadow="sm"
     >
-      <Heading size="md">Pilotage</Heading>
-      <Flex>
-        <Menu>
-          <MenuButton as={Button} rightIcon={<IoIosArrowDown />} size="lg" rounded="md" ml={2}>
-            {yearOptions[1]} {/* Default selected value */}
-          </MenuButton>
-          <MenuList>
-            {yearOptions.map((year, index) => (
-              <MenuItem key={index} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
-      </Flex>
+      <Heading size="lg" color="gray.800">Pilotage</Heading>
+      <Menu>
+        <MenuButton
+          as={Button}
+          rightIcon={<IoIosArrowDown />}
+          variant="outline"
+          borderRadius="xl"
+          borderColor="gray.300"
+          _hover={{ bg: 'red.50', borderColor: 'red.400' }}
+        >
+          {yearOptions[0]}
+        </MenuButton>
+        <MenuList borderRadius="xl" boxShadow="xl">
+          {yearOptions.map((year, index) => (
+            <MenuItem key={index} _hover={{ bg: 'red.50' }}>
+              {year}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
     </Flex>
   );
 };

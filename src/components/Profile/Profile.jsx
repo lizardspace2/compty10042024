@@ -1,20 +1,16 @@
-// Import du composant ProfileBanner.jsx
 import { Box } from '@chakra-ui/react';
 import ProfileBanner from './components/ProfileBanner';
 import ProfileTabs from './components/ProfileTabs';
 
-// Définition du composant qui utilise ProfileBanner
 const Profile = () => {
   return (
-    <div>
-      {/* Utilisation du composant ProfileBanner avec un espace en dessous */}
-      <ProfileBanner  />
-      <Box p={4} >
-      <ProfileTabs />
+    <Box bg="gray.50" minH="100vh">
+      <ProfileBanner />
+      <Box p={6}>
+        <ProfileTabs />
       </Box>
-    </div>
+    </Box>
   );
 };
 
-// Export du composant Profile
 export default Profile;

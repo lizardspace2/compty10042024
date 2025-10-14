@@ -4,7 +4,7 @@ import { FaLightbulb } from 'react-icons/fa'; // This is a placeholder icon
 
 const KnowledgeBaseCard = () => {
   const boxBg = useColorModeValue('gray.100', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const cardShadow = useColorModeValue('md', 'dark-lg');
 
   return (

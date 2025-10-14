@@ -10,7 +10,7 @@ const CompteurFilleulsAbonnes = () => {
     <VStack
       spacing={2}
       p={4}
-      bg="white"
+      bg="red.50"
       boxShadow="md"
       borderRadius="lg"
       align="center"

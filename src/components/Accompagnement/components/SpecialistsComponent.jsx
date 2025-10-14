@@ -13,7 +13,7 @@ const SpecialistsComponent = () => {
         <Avatar name="Specialist 2" src="path/to/image2.jpg" />
         <Avatar name="Specialist 3" src="path/to/image3.jpg" />
         {/* Plus symbol to show more than 3 specialists */}
-        <Avatar bg="red.500" color="white">
+        <Avatar bg="red.50">
           +70
         </Avatar>
       </AvatarGroup>

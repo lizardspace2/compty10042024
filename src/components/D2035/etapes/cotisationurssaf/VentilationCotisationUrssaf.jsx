@@ -12,7 +12,7 @@ import {
 import { CheckCircleIcon, EditIcon } from '@chakra-ui/icons';
 
 const VentilationCotisationUrssaf = () => {
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   return (
     <Box maxWidth="container.xl" mx="auto" p={5} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>

@@ -14,7 +14,7 @@ import { TfiReload } from "react-icons/tfi";
 
 const HeaderD2035 = () => {
   const bgColor = useColorModeValue('gray.100', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const navigate = useNavigate(); // Utilisez useNavigate pour la navigation
 
   // Fonction pour naviguer vers la route '/todo'

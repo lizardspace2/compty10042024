@@ -12,7 +12,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelL
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <Box bg="black" color="white" p="2" borderRadius="md" boxShadow="xl">
+      <Box bg="red.50" p="2" borderRadius="md" boxShadow="xl">
         <Text>{`${label}`}</Text>
         <Text>{`${payload[0].name}: ${payload[0].value.toLocaleString('fr-FR')} €`}</Text>
       </Box>
@@ -33,14 +33,14 @@ const data = [
 
 function ExpensesBarChart() {
   const theme = useTheme();
-  const bgColor = useColorModeValue('white', 'gray.100');
+  const bgColor = useColorModeValue('red.50', 'gray.100');
   const textColor = useColorModeValue('gray.600', 'gray.200');
   const barFillColor = theme.colors.pink[300];
   const totalExpenses = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm" border="1px" // 1px border
-    borderColor="gray.200" >
+    borderColor="red.100" >
             <VStack spacing={5} align="stretch">
         <Text fontSize="xl" fontWeight="semibold" mb={1}>
           Dépenses

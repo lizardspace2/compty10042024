@@ -21,34 +21,35 @@ function Transactions() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex>
-      <Box flex="1" p={4} transition="margin 0.3s" marginRight={isFilterOpen ? "400px" : "0"}>
-        <TransactionsHeader onToggleFilter={onFilterToggle} />
-        <Box maxWidth="1000px" textAlign="center" mx="auto">
+    <Box bg="gray.50" minH="100vh">
+      <TransactionsHeader onToggleFilter={onFilterToggle} />
+      <Flex>
+        <Box flex="1" p={6} transition="margin 0.3s" marginRight={isFilterOpen ? "400px" : "0"}>
+          <Box maxWidth="1000px" textAlign="center" mx="auto">
           <AccountSummary/>
           <div onClick={onDetailToggle}>
             <TransactionItem onOpenUploadModal={onOpen} />
           </div>
+          </Box>
         </Box>
-      </Box>
 
-
-
-      <Box
-        pos="fixed"
-        right={isFilterOpen ? "0" : "-400px"}  // Slides in from the right
-        top="0"
-        h="100vh"
-        w="400px"
-        bg="white"
-        boxShadow="md"
-        zIndex="overlay"
-        transition="right 0.3s"
-      >
-        <TransactionDetails onClose={onFilterToggle} />
-      </Box>
-
-    </Flex>
+        <Box
+          pos="fixed"
+          right={isFilterOpen ? "0" : "-400px"}
+          top="0"
+          h="100vh"
+          w="400px"
+          bg="red.50"
+          boxShadow="xl"
+          zIndex="overlay"
+          transition="right 0.3s"
+          borderLeft="1px"
+          borderColor="red.100"
+        >
+          <TransactionDetails onClose={onFilterToggle} />
+        </Box>
+      </Flex>
+    </Box>
   );
 }
 

@@ -5,7 +5,7 @@ import { IoCloudDownloadOutline } from 'react-icons/io5'; // For the download ic
 
 const Document = () => {
   const boxBg = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   return (
     <Box

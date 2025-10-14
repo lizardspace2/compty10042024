@@ -11,9 +11,9 @@ const RevenueComponent = ({ amount, currency }) => {
       display="flex"
       alignItems="center"
       border="1px" // 1px border
-      borderColor="gray.200" // light gray border color
+      borderColor="red.100" // light gray border color
       width="auto" // width adjusted to content
-      bg="white" // white background
+      bg="red.50" background
       maxW="200px"
       minH="90px"
     >

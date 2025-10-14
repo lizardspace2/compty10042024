@@ -2,27 +2,12 @@ import { Box, Text, Container } from "@chakra-ui/react";
 
 const Header = () => {
   return (
-    <Box as="header" bg="white" py={4} boxShadow="sm">
+    <Box as="header" bg="red.50" py={4} boxShadow="sm" borderBottom="1px" borderColor="red.100">
       <Container maxW="container.xl">
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box display="flex" alignItems="center" gap={2}>
-            <Box
-              w={10}
-              h={10}
-              bgGradient="linear(to-br, red.400, red.500)"
-              borderRadius="xl"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text color="white" fontSize="xl" fontWeight="bold">
-                S
-              </Text>
-            </Box>
-            <Text fontSize="xl" fontWeight="bold" color="gray.800">
-              Superprof
-            </Text>
-          </Box>
+          <Text fontSize="2xl" fontWeight="bold" color="red.500">
+            Compty
+          </Text>
         </Box>
       </Container>
     </Box>

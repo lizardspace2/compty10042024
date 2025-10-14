@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ChakraProvider, Box, Flex, Text } from '@chakra-ui/react';
+import theme from './theme/theme';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
@@ -51,7 +52,7 @@ function AppContent() {
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <AuthProvider>
         <Router>
           <AppContent />
@@ -66,13 +67,13 @@ const LayoutWithSidebar = () => {
   const showSidebar = location.pathname !== '/d2035'; // Condition pour montrer la barre latérale
 
   return (
-    <Flex h="100vh" overflowY="hidden">
+    <Flex h="100vh" overflowY="hidden" bg="gray.50">
       {showSidebar && (
-        <Box position="fixed" h="full" w="250px" overflowY="auto">
+        <Box position="fixed" h="full" w="250px" overflowY="auto" zIndex={10}>
           <Navbar />
         </Box>
       )}
-      <Box flex="1" pl={showSidebar ? "270px" : "0"} pr={5} pt={5} overflowY="auto">
+      <Box flex="1" pl={showSidebar ? "250px" : "0"} overflowY="auto" bg="gray.50">
         <Routes>
 
                     <Route path="/" element={<Pilotage />} />

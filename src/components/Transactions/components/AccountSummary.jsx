@@ -16,7 +16,7 @@ const AccountSummary = () => {
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   return (
-    <Box p={4} bg="white" maxW="400px" w="full" mx="auto">
+    <Box p={4} maxW="400px" w="full" mx="auto">
       <Menu isOpen={isOpen} matchWidth>
         {/* Mouse events added here to control the visibility of the dropdown */}
         <MenuButton 

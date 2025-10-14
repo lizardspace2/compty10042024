@@ -4,8 +4,8 @@ import { IoMdArrowRoundForward } from 'react-icons/io';
 import { FcApproval } from 'react-icons/fc';
 
 const InfoOffreRegimeFiscal = () => {
-  const bgColor = useColorModeValue('gray.100', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const bgColor = useColorModeValue('red.50', 'gray.700');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
 
   return (
     <Box

@@ -56,7 +56,7 @@ const ExpenseVentilationComponent = () => {
 
   const iconColor = useColorModeValue('gray.200', 'gray.300');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = useColorModeValue('red.100', 'gray.600');
   const hoverBg = useColorModeValue("green.100", "green.700");
   const activeBg = useColorModeValue("blue.300", "blue.800");
 
@@ -103,7 +103,7 @@ const ExpenseVentilationComponent = () => {
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
       <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
       {ventilations.map((ventilation, index) => (
-        <Box key={ventilation.id} mb={4} p={4} bg="white" borderRadius="lg" boxShadow="sm">
+        <Box key={ventilation.id} mb={4} p={4} bg="red.50" borderRadius="lg" boxShadow="sm">
           <Flex justify="space-between" align="center">
             <Text fontWeight="medium">Ventilation {index + 1}</Text>
             <Tooltip label="Supprimer cette ventilation" hasArrow placement="top">
