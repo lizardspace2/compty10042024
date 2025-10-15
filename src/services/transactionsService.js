@@ -142,6 +142,53 @@ export const updateTransaction = async (transactionId, updates) => {
   }
 };
 
+// Mettre à jour une transaction avec ses ventilations
+export const updateTransactionComplete = async (transactionId, transactionData) => {
+  try {
+    const { ventilations, ...transactionMain } = transactionData;
+
+    // Mettre à jour la transaction
+    const { data: transaction, error: transactionError } = await supabase
+      .from('transactions')
+      .update(transactionMain)
+      .eq('id', transactionId)
+      .select()
+      .single();
+
+    if (transactionError) throw transactionError;
+
+    // Supprimer les anciennes ventilations
+    const { error: deleteError } = await supabase
+      .from('ventilations')
+      .delete()
+      .eq('transaction_id', transactionId);
+
+    if (deleteError) throw deleteError;
+
+    // Insérer les nouvelles ventilations
+    if (ventilations && ventilations.length > 0) {
+      const ventilationsData = ventilations.map(v => ({
+        transaction_id: transactionId,
+        categorie_id: v.categorie_id,
+        categorie_nom: v.categorie_nom,
+        montant: v.montant,
+        pourcentage: v.pourcentage
+      }));
+
+      const { error: ventilationsError } = await supabase
+        .from('ventilations')
+        .insert(ventilationsData);
+
+      if (ventilationsError) throw ventilationsError;
+    }
+
+    return { data: transaction, error: null };
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour complète de la transaction:', error);
+    return { data: null, error };
+  }
+};
+
 // Supprimer une transaction
 export const deleteTransaction = async (transactionId) => {
   try {

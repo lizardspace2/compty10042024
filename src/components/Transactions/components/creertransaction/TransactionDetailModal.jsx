@@ -1,14 +1,15 @@
 import { supabase } from './../../../../supabaseClient';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
 import { useEntreprise } from '../../../../contexts/EntrepriseContext';
-import { createTransaction } from '../../../../services/transactionsService';
-import { useToast } from '@chakra-ui/react';
+import { createTransaction, updateTransactionComplete } from '../../../../services/transactionsService';
+import { useToast, useDisclosure } from '@chakra-ui/react';
 import {
   Box, Button, FormControl, FormLabel, Input, VStack, Select,
   IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, Text, Image, HStack, Flex, Tooltip, SimpleGrid, Heading, Stack, Container, Tag,
+  AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, AlertDialogCloseButton,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,16 +17,16 @@ import { useDropzone } from 'react-dropzone';
 import { chakra } from '@chakra-ui/react';
 import { fr } from 'date-fns/locale';
 import { LiaCloudUploadAltSolid } from "react-icons/lia";
-import { FaPlus, FaPercent, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaPercent, FaTimes, FaPaperclip, FaSave, FaEdit, FaTrash, FaFileAlt } from 'react-icons/fa';
 import { MdEuro } from 'react-icons/md';
 import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
 
 
-const ExpenseFormHeader = ({ onToggle, onSubmitTransaction, isUploading }) => {
+const ExpenseFormHeader = ({ onToggle, onSubmitTransaction, isUploading, isEditing }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" p={4} bg="red.50" boxShadow="md">
       <Heading as="h3" size="lg">
-        Ajout d'une dépense professionnelle
+        {isEditing ? 'Modification de la transaction' : 'Ajout d\'une dépense professionnelle'}
       </Heading>
       <Box>
         <Button mr={3} onClick={onToggle} isDisabled={isUploading}>
@@ -35,9 +36,9 @@ const ExpenseFormHeader = ({ onToggle, onSubmitTransaction, isUploading }) => {
           colorScheme="pink"
           onClick={onSubmitTransaction}
           isLoading={isUploading}
-          loadingText="Ajout en cours..."
+          loadingText={isEditing ? "Modification en cours..." : "Ajout en cours..."}
         >
-          Ajouter
+          {isEditing ? 'Modifier' : 'Ajouter'}
         </Button>
       </Box>
     </Flex>
@@ -92,7 +93,140 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
   );
 };
 
+// Nouveau composant pour gérer les justificatifs existants
+const JustificatifsManager = ({
+  justificatifs,
+  editingFileName,
+  newFileName,
+  onStartEdit,
+  onSaveEdit,
+  onCancelEdit,
+  onDeleteClick,
+  onFileNameChange,
+  onUploadClick,
+  isUploading
+}) => {
+  const fileBg = useColorModeValue('red.50', 'gray.700');
+  const fileBorderColor = useColorModeValue('red.200', 'gray.600');
+  const textColor = useColorModeValue('gray.700', 'red.50');
+
+  if (!justificatifs || justificatifs.length === 0) {
+    return null;
+  }
+
+  return (
+    <VStack spacing={2} align="stretch" mt={2}>
+      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+        Justificatifs existants ({justificatifs.length})
+      </Text>
+      {justificatifs.map((justificatif) => {
+        const isImage = justificatif.type_fichier?.startsWith('image/');
+        const filePath = justificatif.url_stockage?.split('/').pop();
+
+        return (
+          <Box
+            key={justificatif.id}
+            borderWidth="1px"
+            borderRadius="lg"
+            p={3}
+            bg={fileBg}
+            borderColor={fileBorderColor}
+          >
+            {editingFileName === justificatif.id ? (
+              <HStack w="100%">
+                <Input
+                  value={newFileName}
+                  onChange={(e) => onFileNameChange(e.target.value)}
+                  size="sm"
+                  autoFocus
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') onSaveEdit(justificatif.id);
+                  }}
+                />
+                <IconButton
+                  icon={<FaSave />}
+                  size="sm"
+                  colorScheme="green"
+                  onClick={() => onSaveEdit(justificatif.id)}
+                  aria-label="Enregistrer"
+                />
+                <IconButton
+                  icon={<FaTimes />}
+                  size="sm"
+                  onClick={onCancelEdit}
+                  aria-label="Annuler"
+                />
+              </HStack>
+            ) : (
+              <HStack justifyContent="space-between">
+                <HStack spacing={2} flex={1}>
+                  {isImage && justificatif.url_stockage ? (
+                    <Image
+                      src={justificatif.url_stockage}
+                      boxSize="40px"
+                      objectFit="cover"
+                      borderRadius="md"
+                    />
+                  ) : (
+                    <FaPaperclip color={textColor} />
+                  )}
+                  <VStack align="start" spacing={0} flex={1}>
+                    <Text fontWeight="medium" fontSize="sm" color={textColor}>
+                      {justificatif.nom_fichier}
+                    </Text>
+                    <Text fontSize="xs" color="gray.500">
+                      {justificatif.type_fichier} • {(justificatif.taille_fichier / 1024).toFixed(2)} Ko
+                    </Text>
+                  </VStack>
+                </HStack>
+                <HStack spacing={1}>
+                  {isImage && justificatif.url_stockage && (
+                    <IconButton
+                      icon={<AttachmentIcon />}
+                      size="xs"
+                      variant="ghost"
+                      onClick={() => window.open(justificatif.url_stockage, '_blank')}
+                      aria-label="Voir"
+                    />
+                  )}
+                  <IconButton
+                    icon={<FaEdit />}
+                    size="xs"
+                    variant="ghost"
+                    colorScheme="blue"
+                    onClick={() => onStartEdit(justificatif.id, justificatif.nom_fichier)}
+                    aria-label="Renommer"
+                  />
+                  <IconButton
+                    icon={<FaTrash />}
+                    size="xs"
+                    variant="ghost"
+                    colorScheme="red"
+                    onClick={() => onDeleteClick(justificatif, filePath)}
+                    aria-label="Supprimer"
+                  />
+                </HStack>
+              </HStack>
+            )}
+          </Box>
+        );
+      })}
+      <Button
+        leftIcon={<FaPlus />}
+        size="sm"
+        colorScheme="blue"
+        variant="outline"
+        onClick={onUploadClick}
+        isLoading={isUploading}
+      >
+        Ajouter un justificatif
+      </Button>
+    </VStack>
+  );
+};
+
 const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }) => {
+  const toast = useToast();
   const [annotations, setAnnotations] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
@@ -100,6 +234,15 @@ const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const [selectedFile, setSelectedFile] = useState(null);
   const maxFiles = 10;
+
+  // États pour gérer les justificatifs existants
+  const [editingFileName, setEditingFileName] = useState(null);
+  const [newFileName, setNewFileName] = useState('');
+  const [justificatifToDelete, setJustificatifToDelete] = useState(null);
+  const [isUploadingJustificatif, setIsUploadingJustificatif] = useState(false);
+  const { isOpen: isDeleteJustificatifOpen, onOpen: onDeleteJustificatifOpen, onClose: onDeleteJustificatifClose } = useDisclosure();
+  const cancelJustificatifRef = useRef();
+  const fileInputRef = useRef();
 
   const { getRootProps, getInputProps, isDragReject, fileRejections } = useDropzone({
     accept: 'image/png, image/jpeg, application/pdf',
@@ -535,7 +678,7 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
   );
 };
 
-const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionType }) => {
+const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionType, transactionToEdit }) => {
   const { entreprise } = useEntreprise();
   const toast = useToast();
   const [files, setFiles] = useState([]);
@@ -546,20 +689,51 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
     ? 'especes'
     : '';
 
-  const [formData, setFormData] = useState({
-    libelle: '',
-    date_transaction: new Date(),
-    montant_total: 0,
-    annotations: '',
-    justificatifs: [],
-    moyen_paiement: initialMoyenPaiement,
-    compte_bancaire_id: '',
-    type_transaction: 'depense',
-    statut: 'en_attente',
-    ventilations: [
-      { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' }
-  ]
-  });
+  const getInitialFormData = () => {
+    if (transactionToEdit) {
+      return {
+        id: transactionToEdit.id,
+        libelle: transactionToEdit.libelle || '',
+        date_transaction: transactionToEdit.date_transaction ? new Date(transactionToEdit.date_transaction) : new Date(),
+        montant_total: transactionToEdit.montant_total || 0,
+        annotations: transactionToEdit.annotations || '',
+        justificatifs: transactionToEdit.justificatifs || [],
+        moyen_paiement: transactionToEdit.moyen_paiement || '',
+        compte_bancaire_id: transactionToEdit.compte_bancaire_id || '',
+        type_transaction: transactionToEdit.type_transaction || 'depense',
+        statut: transactionToEdit.statut || 'en_attente',
+        ventilations: transactionToEdit.ventilations && transactionToEdit.ventilations.length > 0
+          ? transactionToEdit.ventilations.map((v, index) => ({
+              id: index + 1,
+              amount: v.montant || '',
+              percentage: v.pourcentage || 0,
+              selectedCategory: v.categorie_nom || ''
+            }))
+          : [{ id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' }]
+      };
+    }
+    return {
+      libelle: '',
+      date_transaction: new Date(),
+      montant_total: 0,
+      annotations: '',
+      justificatifs: [],
+      moyen_paiement: initialMoyenPaiement,
+      compte_bancaire_id: '',
+      type_transaction: 'depense',
+      statut: 'en_attente',
+      ventilations: [
+        { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' }
+      ]
+    };
+  };
+
+  const [formData, setFormData] = useState(getInitialFormData());
+
+  // Mettre à jour le formulaire quand transactionToEdit change
+  useEffect(() => {
+    setFormData(getInitialFormData());
+  }, [transactionToEdit]);
 
   // useEffect pour recalculer les montants des ventilations quand le montant total change
   useEffect(() => {
@@ -676,14 +850,27 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
         }))
       };
 
-      // Créer la transaction d'abord
-      const { data: transaction, error: transactionError } = await createTransaction(transactionData);
+      let transaction;
+      let transactionError;
+
+      // Créer ou modifier la transaction
+      if (transactionToEdit) {
+        // Mode modification
+        const result = await updateTransactionComplete(formData.id, transactionData);
+        transaction = result.data;
+        transactionError = result.error;
+      } else {
+        // Mode création
+        const result = await createTransaction(transactionData);
+        transaction = result.data;
+        transactionError = result.error;
+      }
 
       if (transactionError) {
         throw transactionError;
       }
 
-      console.log('Transaction ajoutée avec succès !', transaction);
+      console.log(`Transaction ${transactionToEdit ? 'modifiée' : 'ajoutée'} avec succès !`, transaction);
 
       // Uploader les justificatifs si présents
       if (files.length > 0) {
@@ -731,7 +918,7 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
 
       toast({
         title: 'Succès',
-        description: `Transaction créée avec succès${files.length > 0 ? ` avec ${files.length} justificatif(s)` : ''}`,
+        description: `Transaction ${transactionToEdit ? 'modifiée' : 'créée'} avec succès${files.length > 0 ? ` avec ${files.length} justificatif(s)` : ''}`,
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -742,10 +929,10 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
       onToggle();
 
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la transaction :", error);
+      console.error(`Erreur lors de ${transactionToEdit ? 'la modification' : 'l\'ajout'} de la transaction :`, error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de créer la transaction',
+        description: `Impossible de ${transactionToEdit ? 'modifier' : 'créer'} la transaction`,
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -758,7 +945,12 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
 
   return (
     <>
-      <ExpenseFormHeader onToggle={onToggle} onSubmitTransaction={handleSubmitTransaction} isUploading={isUploading} />
+      <ExpenseFormHeader
+        onToggle={onToggle}
+        onSubmitTransaction={handleSubmitTransaction}
+        isUploading={isUploading}
+        isEditing={!!transactionToEdit}
+      />
       <Box
         p={4}
         display="flex"
@@ -796,12 +988,17 @@ const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionTyp
 };
 
 
-const TransactionDetailModal = ({ isDetailOpen, onToggle, onTransactionAdded, transactionType }) => {
+const TransactionDetailModal = ({ isDetailOpen, onToggle, onTransactionAdded, transactionType, transactionToEdit }) => {
   return (
     <Modal isOpen={isDetailOpen} onClose={onToggle} size="full" overflow="auto">
       <ModalOverlay />
       <ModalContent m={0} maxW="100vw">
-        <ExpenseTransactionDetail onToggle={onToggle} onTransactionAdded={onTransactionAdded} transactionType={transactionType} />
+        <ExpenseTransactionDetail
+          onToggle={onToggle}
+          onTransactionAdded={onTransactionAdded}
+          transactionType={transactionType}
+          transactionToEdit={transactionToEdit}
+        />
       </ModalContent>
     </Modal>
   );
