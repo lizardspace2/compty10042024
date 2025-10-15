@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Pilotage from './components/Pilotage/Pilotage';
 import Transactions from './components/Transactions/Transactions';
+import TransactionsImproved from './components/Transactions/TransactionsImproved';
 import Todo from './components/Afaire/Todo';
 import Documents from './components/Documents/Documents';
 import Accompaniment from './components/Accompagnement/Accompaniment';
@@ -16,6 +17,7 @@ import Parrainage from './components/Parrainage/Parrainage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { EntrepriseProvider } from './contexts/EntrepriseContext';
 import PrivateRoute from './PrivateRoute';
 import Logout from './Logout';
 
@@ -54,9 +56,11 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <Router>
-          <AppContent />
-        </Router>
+        <EntrepriseProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </EntrepriseProvider>
       </AuthProvider>
     </ChakraProvider>
   );
@@ -78,7 +82,8 @@ const LayoutWithSidebar = () => {
 
                     <Route path="/" element={<Pilotage />} />
           <Route path="/pilotage" element={<Pilotage />} />
-          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/transactions" element={<TransactionsImproved />} />
+          <Route path="/transactions-old" element={<Transactions />} />
           <Route path="/todo" element={<Todo />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/accompaniment" element={<Accompaniment />} />

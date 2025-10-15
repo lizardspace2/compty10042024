@@ -1,8 +1,11 @@
 import { supabase } from './../../../../supabaseClient';
 import React, { useState, useEffect } from 'react';
 import { AttachmentIcon, CloseIcon } from '@chakra-ui/icons';
+import { useEntreprise } from '../../../../contexts/EntrepriseContext';
+import { createTransaction } from '../../../../services/transactionsService';
+import { useToast } from '@chakra-ui/react';
 import {
-  Box, Button, FormControl, FormLabel, Input, VStack,
+  Box, Button, FormControl, FormLabel, Input, VStack, Select,
   IconButton, InputGroup, InputRightElement, Modal, useColorModeValue,
   ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, Text, Image, HStack, Flex, Tooltip, SimpleGrid, Heading, Stack, Container, Tag,
@@ -18,17 +21,22 @@ import { MdEuro } from 'react-icons/md';
 import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
 
 
-const ExpenseFormHeader = ({ onToggle, onSubmitTransaction }) => {
+const ExpenseFormHeader = ({ onToggle, onSubmitTransaction, isUploading }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" p={4} bg="red.50" boxShadow="md">
       <Heading as="h3" size="lg">
         Ajout d'une dépense professionnelle
       </Heading>
       <Box>
-        <Button mr={3} onClick={onToggle}>
+        <Button mr={3} onClick={onToggle} isDisabled={isUploading}>
           Fermer
         </Button>
-        <Button colorScheme="pink" onClick={onSubmitTransaction}>
+        <Button
+          colorScheme="pink"
+          onClick={onSubmitTransaction}
+          isLoading={isUploading}
+          loadingText="Ajout en cours..."
+        >
           Ajouter
         </Button>
       </Box>
@@ -84,10 +92,9 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
   );
 };
 
-const ExpenseInformation = ({ formData, onChange }) => {
+const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }) => {
   const [annotations, setAnnotations] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [files, setFiles] = useState([]);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
@@ -171,8 +178,24 @@ const ExpenseInformation = ({ formData, onChange }) => {
             step="0.01"
             value={formData.montant_total}
             onChange={onChange}
-            name="montant_total" // Ensure this matches the state key
+            name="montant_total"
           />
+        </FormControl>
+
+        <FormControl id="transaction-moyen-paiement">
+          <FormLabel>Moyen de paiement</FormLabel>
+          <Select
+            value={formData.moyen_paiement}
+            onChange={onChange}
+            name="moyen_paiement"
+            placeholder="Sélectionner un moyen"
+          >
+            <option value="virement">Virement</option>
+            <option value="carte">Carte bancaire</option>
+            <option value="cheque">Chèque</option>
+            <option value="especes">Espèces</option>
+            <option value="prelevement">Prélèvement</option>
+          </Select>
         </FormControl>
 
         <FormControl id="transaction-annotations">
@@ -374,9 +397,40 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
 
 
 
+  // Calculer le total des pourcentages
+  const totalPourcentage = ventilations.reduce((sum, v) => sum + parseFloat(v.percentage || 0), 0);
+  const isValidTotal = Math.abs(totalPourcentage - 100) < 0.01;
+
   return (
     <Box p={4} bg={bgColor} borderRadius="lg" borderWidth="1px" borderColor={borderColor}>
-      <Text fontSize="lg" fontWeight="semibold" mb={4}>Ventilation(s)</Text>
+      <VStack spacing={2} align="stretch" mb={4}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text fontSize="lg" fontWeight="semibold">Ventilation(s)</Text>
+          <HStack spacing={2}>
+            <Text fontSize="sm" fontWeight="medium">Total:</Text>
+            <Text
+              fontSize="lg"
+              fontWeight="bold"
+              color={isValidTotal ? 'green.500' : 'red.500'}
+            >
+              {totalPourcentage.toFixed(2)}%
+            </Text>
+            {isValidTotal ? (
+              <Text fontSize="sm" color="green.500">✓</Text>
+            ) : (
+              <Text fontSize="sm" color="red.500">⚠</Text>
+            )}
+          </HStack>
+        </Flex>
+        {!isValidTotal && (
+          <Box bg="orange.50" p={2} borderRadius="md" borderLeft="3px solid" borderColor="orange.400">
+            <Text fontSize="xs" color="orange.700">
+              ⚠ Le total des pourcentages doit être exactement 100%.
+              {totalPourcentage < 100 ? ` Il manque ${(100 - totalPourcentage).toFixed(2)}%.` : ` Il y a ${(totalPourcentage - 100).toFixed(2)}% en trop.`}
+            </Text>
+          </Box>
+        )}
+      </VStack>
       {ventilations.map((vent, index) => (
         <Box key={vent.id} p={4} bg="red.50" shadow="sm" mb={4} rounded="md">
           <Flex alignItems="center" justifyContent="space-between">
@@ -481,19 +535,45 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
   );
 };
 
-const ExpenseTransactionDetail = ({ onToggle }) => {
+const ExpenseTransactionDetail = ({ onToggle, onTransactionAdded, transactionType }) => {
+  const { entreprise } = useEntreprise();
+  const toast = useToast();
+  const [files, setFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Déterminer le moyen de paiement initial basé sur le type de transaction
+  const initialMoyenPaiement = (transactionType === 'depense_especes' || transactionType === 'recette_especes')
+    ? 'especes'
+    : '';
+
   const [formData, setFormData] = useState({
     libelle: '',
     date_transaction: new Date(),
     montant_total: 0,
     annotations: '',
     justificatifs: [],
-    moyen: '',
-    compte_bancaire: '',
+    moyen_paiement: initialMoyenPaiement,
+    compte_bancaire_id: '',
+    type_transaction: 'depense',
+    statut: 'en_attente',
     ventilations: [
       { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' }
   ]
   });
+
+  // useEffect pour recalculer les montants des ventilations quand le montant total change
+  useEffect(() => {
+    if (formData.montant_total > 0) {
+      const updatedVentilations = formData.ventilations.map(vent => {
+        if (vent.percentage > 0) {
+          const montantCalcule = (parseFloat(vent.percentage) / 100) * parseFloat(formData.montant_total);
+          return { ...vent, amount: montantCalcule.toFixed(2) };
+        }
+        return vent;
+      });
+      setFormData(prev => ({ ...prev, ventilations: updatedVentilations }));
+    }
+  }, [formData.montant_total]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -503,7 +583,21 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
   const handleVentilationChange = (index, field, value) => {
     const updatedVentilations = formData.ventilations.map((vent, idx) => {
         if (idx === index) {
-            return { ...vent, [field]: value };
+            const updatedVent = { ...vent, [field]: value };
+
+            // Si on modifie le pourcentage, calculer automatiquement le montant
+            if (field === 'percentage' && formData.montant_total) {
+              const montantCalcule = (parseFloat(value) / 100) * parseFloat(formData.montant_total);
+              updatedVent.amount = montantCalcule.toFixed(2);
+            }
+
+            // Si on modifie le montant, calculer automatiquement le pourcentage
+            if (field === 'amount' && formData.montant_total) {
+              const pourcentageCalcule = (parseFloat(value) / parseFloat(formData.montant_total)) * 100;
+              updatedVent.percentage = pourcentageCalcule.toFixed(2);
+            }
+
+            return updatedVent;
         }
         return vent;
     });
@@ -524,29 +618,147 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
   };
 
   const handleSubmitTransaction = async () => {
-    const transactionData = {
-      ...formData,
-      ventilations: formData.ventilations.map(({ id, amount, percentage, selectedCategory }) => ({
-        id, amount, percentage, category: selectedCategory
-      }))
-    };
-  
-    const { data, error } = await supabase
-      .from('transactions')
-      .insert([transactionData]);
-  
-    if (error) {
-      console.error("Erreur lors de l'ajout de la transaction :", error.message);
-    } else {
-      console.log('Transaction ajoutée avec succès !', data);
-      onToggle();  // Close modal after addition
+    if (!entreprise?.id) {
+      toast({
+        title: 'Erreur',
+        description: 'Vous devez d\'abord créer une entreprise',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Valider que le total des pourcentages = 100%
+    const totalPourcentage = formData.ventilations.reduce((sum, v) => sum + parseFloat(v.percentage || 0), 0);
+    if (Math.abs(totalPourcentage - 100) > 0.01) {
+      toast({
+        title: 'Erreur de ventilation',
+        description: `Le total des pourcentages doit être exactement 100% (actuellement: ${totalPourcentage.toFixed(2)}%)`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Valider que toutes les ventilations ont une catégorie
+    const ventilationsSansCategorie = formData.ventilations.filter(v => !v.selectedCategory);
+    if (ventilationsSansCategorie.length > 0) {
+      toast({
+        title: 'Erreur de ventilation',
+        description: 'Toutes les ventilations doivent avoir une catégorie sélectionnée',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      // Préparer les données de la transaction
+      const transactionData = {
+        entreprise_id: entreprise.id,
+        libelle: formData.libelle,
+        date_transaction: formData.date_transaction.toISOString().split('T')[0],
+        montant_total: parseFloat(formData.montant_total),
+        type_transaction: formData.type_transaction,
+        moyen_paiement: formData.moyen_paiement || null,
+        compte_bancaire_id: formData.compte_bancaire_id || null,
+        annotations: formData.annotations || null,
+        statut: formData.statut,
+        ventilations: formData.ventilations.map(v => ({
+          categorie_nom: v.selectedCategory,
+          montant: parseFloat(v.amount) || 0,
+          pourcentage: parseFloat(v.percentage) || 0
+        }))
+      };
+
+      // Créer la transaction d'abord
+      const { data: transaction, error: transactionError } = await createTransaction(transactionData);
+
+      if (transactionError) {
+        throw transactionError;
+      }
+
+      console.log('Transaction ajoutée avec succès !', transaction);
+
+      // Uploader les justificatifs si présents
+      if (files.length > 0) {
+        for (const file of files) {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${transaction.id}_${Date.now()}.${fileExt}`;
+          const filePath = `justificatifs/${fileName}`;
+
+          // Upload vers Supabase Storage
+          const { error: uploadError } = await supabase.storage
+            .from('documents')
+            .upload(filePath, file);
+
+          if (uploadError) {
+            console.error('Erreur upload fichier:', uploadError);
+            continue; // Continue avec les autres fichiers
+          }
+
+          // Récupérer l'URL publique
+          const { data: { publicUrl } } = supabase.storage
+            .from('documents')
+            .getPublicUrl(filePath);
+
+          // Enregistrer dans la base de données
+          const { error: justificatifError } = await supabase
+            .from('justificatifs')
+            .insert([{
+              transaction_id: transaction.id,
+              nom_fichier: file.name,
+              type_fichier: file.type,
+              taille_fichier: file.size,
+              url_stockage: publicUrl
+            }]);
+
+          if (justificatifError) {
+            console.error('Erreur enregistrement justificatif:', justificatifError);
+          }
+        }
+      }
+
+      // Call the callback to refresh the transactions list BEFORE closing
+      if (onTransactionAdded) {
+        await onTransactionAdded();
+      }
+
+      toast({
+        title: 'Succès',
+        description: `Transaction créée avec succès${files.length > 0 ? ` avec ${files.length} justificatif(s)` : ''}`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+
+      // Réinitialiser le formulaire
+      setFiles([]);
+      onToggle();
+
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la transaction :", error);
+      toast({
+        title: 'Erreur',
+        description: 'Impossible de créer la transaction',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsUploading(false);
     }
   };
   
 
   return (
     <>
-      <ExpenseFormHeader onToggle={onToggle} onSubmitTransaction={handleSubmitTransaction} />
+      <ExpenseFormHeader onToggle={onToggle} onSubmitTransaction={handleSubmitTransaction} isUploading={isUploading} />
       <Box
         p={4}
         display="flex"
@@ -564,7 +776,13 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
           maxWidth="1400px"
           margin="0 auto"
         >
-          <ExpenseInformation formData={formData} onChange={handleInputChange} />
+          <ExpenseInformation
+            formData={formData}
+            onChange={handleInputChange}
+            setFormData={setFormData}
+            files={files}
+            setFiles={setFiles}
+          />
           <ExpenseVentilationComponent
             ventilations={formData.ventilations}
             onVentilationChange={handleVentilationChange}
@@ -578,12 +796,12 @@ const ExpenseTransactionDetail = ({ onToggle }) => {
 };
 
 
-const TransactionDetailModal = ({ isDetailOpen, onToggle }) => {
+const TransactionDetailModal = ({ isDetailOpen, onToggle, onTransactionAdded, transactionType }) => {
   return (
     <Modal isOpen={isDetailOpen} onClose={onToggle} size="full" overflow="auto">
       <ModalOverlay />
       <ModalContent m={0} maxW="100vw">
-        <ExpenseTransactionDetail onToggle={onToggle} />
+        <ExpenseTransactionDetail onToggle={onToggle} onTransactionAdded={onTransactionAdded} transactionType={transactionType} />
       </ModalContent>
     </Modal>
   );

@@ -26,12 +26,14 @@ const TransactionsHeader = ({ onToggleFilter }) => {
   const addButtonColorScheme = useColorModeValue('pink', 'green');
   const [showJustificatifModal, setShowJustificatifModal] = useState(false); // État pour le modal justificatif
   const [showDepenseModal, setShowDepenseModal] = useState(false); // État pour le modal de dépense
+  const [transactionType, setTransactionType] = useState(null); // Type de transaction
 
   const handleOpenJustificatifModal = () => {
     setShowJustificatifModal(true);
   };
 
-  const handleOpenDepenseModal = () => {
+  const handleOpenDepenseModal = (type = null) => {
+    setTransactionType(type);
     setShowDepenseModal(true);
   };
 
@@ -97,16 +99,16 @@ return (
             <MenuItem onClick={handleOpenJustificatifModal} _hover={{ bg: 'red.50' }}>
               Justificatif
             </MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+            <MenuItem onClick={() => handleOpenDepenseModal('autre_depense')} _hover={{ bg: 'red.50' }}>
               Autre dépense professionnelle
             </MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+            <MenuItem onClick={() => handleOpenDepenseModal('autre_recette')} _hover={{ bg: 'red.50' }}>
               Autre recette professionnelle
             </MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+            <MenuItem onClick={() => handleOpenDepenseModal('depense_especes')} _hover={{ bg: 'red.50' }}>
               Dépense en espèces
             </MenuItem>
-            <MenuItem onClick={handleOpenDepenseModal} _hover={{ bg: 'red.50' }}>
+            <MenuItem onClick={() => handleOpenDepenseModal('recette_especes')} _hover={{ bg: 'red.50' }}>
               Recette en espèces
             </MenuItem>
           </MenuList>
@@ -117,6 +119,7 @@ return (
     <TransactionDetailModal
     isDetailOpen={showDepenseModal}
     onToggle={handleCloseModals}
+    transactionType={transactionType}
   />
     {showJustificatifModal && <FileUploadModal onClose={handleCloseModals} modalType="justificatif" />}
   </>
