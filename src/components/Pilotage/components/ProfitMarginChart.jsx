@@ -5,6 +5,11 @@ import {
   Flex,
   useColorModeValue,
   useTheme,
+  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from '@chakra-ui/react';
 import {
   AreaChart,
@@ -16,21 +21,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-
-const data = [
-  { month: 'Jan', revenue: 10417, expenses: 7200, margin: 3217 },
-  { month: 'Fév', revenue: 10417, expenses: 7500, margin: 2917 },
-  { month: 'Mar', revenue: 10417, expenses: 6800, margin: 3617 },
-  { month: 'Avr', revenue: 10417, expenses: 7100, margin: 3317 },
-  { month: 'Mai', revenue: 10417, expenses: 7400, margin: 3017 },
-  { month: 'Jun', revenue: 10417, expenses: 7000, margin: 3417 },
-  { month: 'Jul', revenue: 10417, expenses: 7300, margin: 3117 },
-  { month: 'Aoû', revenue: 10417, expenses: 6900, margin: 3517 },
-  { month: 'Sep', revenue: 10417, expenses: 7200, margin: 3217 },
-  { month: 'Oct', revenue: 10694, expenses: 7100, margin: 3594 },
-  { month: 'Nov', revenue: 10417, expenses: 7000, margin: 3417 },
-  { month: 'Déc', revenue: 10417, expenses: 7500, margin: 2917 },
-];
+import { useProfitMarginData } from '../hooks/useProfitMarginData';
 
 function ProfitMarginChart() {
   const theme = useTheme();
@@ -39,19 +30,73 @@ function ProfitMarginChart() {
   const expensesColor = theme.colors.red[400];
   const marginColor = theme.colors.blue[400];
 
+  // Charger les données depuis Supabase
+  const { data, loading, error } = useProfitMarginData();
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <Box bg="red.50" p="3" boxShadow="md" borderRadius="lg" border="1px" borderColor="red.100">
           <Text fontWeight="bold" mb={1}>{label}</Text>
-          <Text fontSize="sm" color="green.600">Revenus: {payload[0].value} €</Text>
-          <Text fontSize="sm" color="red.600">Dépenses: {payload[1].value} €</Text>
-          <Text fontSize="sm" color="blue.600">Marge: {payload[2].value} €</Text>
+          <Text fontSize="sm" color="green.600">
+            Revenus: {payload[0]?.value?.toLocaleString('fr-FR')} €
+          </Text>
+          <Text fontSize="sm" color="red.600">
+            Dépenses: {payload[1]?.value?.toLocaleString('fr-FR')} €
+          </Text>
+          <Text fontSize="sm" color="blue.600">
+            Marge: {payload[2]?.value?.toLocaleString('fr-FR')} €
+          </Text>
         </Box>
       );
     }
     return null;
   };
+
+  // Gestion du chargement
+  if (loading) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Flex justifyContent="center" alignItems="center" minH="400px">
+          <Spinner size="xl" color="red.500" thickness="4px" />
+        </Flex>
+      </Box>
+    );
+  }
+
+  // Gestion des erreurs
+  if (error) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Alert status="error" borderRadius="lg">
+          <AlertIcon />
+          <Box>
+            <AlertTitle>Erreur de chargement</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Box>
+        </Alert>
+      </Box>
+    );
+  }
+
+  // Gestion des données vides
+  if (!data || data.length === 0) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Flex justifyContent="space-between" alignItems="center" mb={4}>
+          <Text fontSize="xl" fontWeight="bold">
+            Évolution de la marge bénéficiaire
+          </Text>
+        </Flex>
+        <Alert status="info" borderRadius="lg">
+          <AlertIcon />
+          <AlertDescription>
+            Aucune donnée de marge disponible pour le moment.
+          </AlertDescription>
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
