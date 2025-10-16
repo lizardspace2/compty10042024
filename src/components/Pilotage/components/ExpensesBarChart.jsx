@@ -5,8 +5,10 @@ import {
   VStack,
   useColorModeValue,
   useTheme,
+  Skeleton
 } from '@chakra-ui/react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useDashboardData } from '../hooks/useDashboardData';
 
 // Custom tooltip component
 const CustomTooltip = ({ active, payload, label }) => {
@@ -22,59 +24,89 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const data = [
-    { name: 'Cotisations retraite', value: 12000 },
-    { name: 'Cotisations URSSAF', value: 8500 },
-    { name: 'Cotisations facultatives Madelin', value: 4700 },
-    { name: 'Abonnements logiciels', value: 2100 },
-    { name: 'Assurance professionnelle', value: 1300 },
-    { name: 'Autres dépenses', value: 500 },
-  ];
-
 function ExpensesBarChart() {
   const theme = useTheme();
+  const { data, loading } = useDashboardData();
   const bgColor = useColorModeValue('red.50', 'gray.100');
   const textColor = useColorModeValue('gray.600', 'gray.200');
   const barFillColor = theme.colors.pink[300];
-  const totalExpenses = data.reduce((sum, item) => sum + item.value, 0);
+
+  // Transformer les données pour le graphique à barres
+  const chartData = React.useMemo(() => {
+    if (!data?.expenses) return [];
+    
+    return data.expenses
+      .slice(0, 6) // Prendre les 6 premières catégories
+      .map(item => ({
+        name: item.categorie,
+        value: item.montant_total,
+        color: item.couleur
+      }));
+  }, [data?.expenses]);
+
+  const totalExpenses = chartData.reduce((sum, item) => sum + item.value, 0);
+
+  if (loading) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm" border="1px" borderColor="red.100">
+        <VStack spacing={5} align="stretch">
+          <Skeleton height="24px" width="150px" />
+          <Skeleton height="40px" width="200px" />
+          <Skeleton height="300px" />
+        </VStack>
+      </Box>
+    );
+  }
 
   return (
-    <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm" border="1px" // 1px border
-    borderColor="red.100" >
-            <VStack spacing={5} align="stretch">
+    <Box p={5} bg={bgColor} borderRadius="md" boxShadow="sm" border="1px" borderColor="red.100">
+      <VStack spacing={5} align="stretch">
         <Text fontSize="xl" fontWeight="semibold" mb={1}>
-          Dépenses
+          Dépenses par catégorie
         </Text>
         <Text fontSize="3xl" fontWeight="bold" color={theme.colors.pink[600]}>
           {totalExpenses.toLocaleString('fr-FR')} €
         </Text>
-      <ResponsiveContainer width="100%" height={300}> {/* Adjusted height for better visibility */}
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ top: 0, right: 30, bottom: 0, left: 30 }}
-          barCategoryGap="15%" // Adjusted for closer bar grouping
-        >
-          <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: textColor }} />
-          <YAxis 
-            dataKey="name" 
-            type="category" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: textColor }} 
-            interval={0} // To show all ticks
-          />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-          <Bar 
-            dataKey="value" 
-            fill={barFillColor} 
-            radius={[0, 10, 10, 0]} // Adjusted for rounded corners
-            barSize={20} // Adjusted bar thickness
+        
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={chartData}
+            layout="vertical"
+            margin={{ top: 0, right: 30, bottom: 0, left: 30 }}
+            barCategoryGap="15%"
           >
-            {/* ... Cell components for individual bar colors */}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <XAxis 
+              type="number" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: textColor }}
+              tickFormatter={(value) => `${value.toLocaleString('fr-FR')} €`}
+            />
+            <YAxis 
+              dataKey="name" 
+              type="category" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: textColor }} 
+              interval={0}
+              width={100}
+            />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+            <Bar 
+              dataKey="value" 
+              radius={[0, 10, 10, 0]}
+              barSize={20}
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color || barFillColor} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+        
+        <Text fontSize="sm" color="gray.600" textAlign="center">
+          {chartData.length} catégories principales
+        </Text>
       </VStack>
     </Box>
   );

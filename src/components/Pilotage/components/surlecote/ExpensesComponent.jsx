@@ -1,33 +1,33 @@
+// src/components/surlecote/ExpensesComponent.js
 import React from 'react';
-import { Box, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
-import { IoMdRemoveCircleOutline } from 'react-icons/io'; // Change to an appropriate icon for expenses
+import { Box, Text, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { useDashboardData } from '../../hooks/useDashboardData';
 
-const ExpensesComponent = ({ amount, currency }) => {
-  return (
-    <Box
-      p={2} // Consistent padding with the RevenueComponent
-      boxShadow="md"
-      borderRadius="md"
-      display="flex"
-      alignItems="center"
-      border="1px" // 1px border
-      borderColor="red.100" // light gray border color
-      width="auto" // width adjusts to content
-      bg="red.50" background
-      maxW="200px"
-      minH="90px"
-    >
-      <Box color="#f195b9" mr={2}> {/* Color for expenses icon */}
-        <IoMdRemoveCircleOutline size="1.5em" /> {/* Adjust icon size as needed */}
+function ExpensesComponent({ amount, currency }) {
+  const { data, loading } = useDashboardData();
+  const bgColor = useColorModeValue('red.50', 'red.900');
+  const borderColor = useColorModeValue('red.200', 'red.700');
+
+  const displayAmount = data?.kpi?.total_depenses || amount;
+
+  if (loading) {
+    return (
+      <Box p={4} bg={bgColor} borderRadius="lg" border="1px" borderColor={borderColor}>
+        <Skeleton height="60px" />
       </Box>
-      <Stat>
-        <StatLabel color="gray.500" fontSize="sm">Dépenses</StatLabel>
-        <StatNumber fontSize="lg" lineHeight="1.1em">
-          1000 €
-        </StatNumber>
-      </Stat>
+    );
+  }
+
+  return (
+    <Box p={4} bg={bgColor} borderRadius="lg" border="1px" borderColor={borderColor}>
+      <Text fontSize="sm" color="gray.600" mb={1}>
+        Expenses
+      </Text>
+      <Text fontSize="2xl" fontWeight="bold" color="red.600">
+        {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(displayAmount)}
+      </Text>
     </Box>
   );
-};
+}
 
 export default ExpensesComponent;

@@ -387,3 +387,43 @@ LEFT JOIN ventilations v ON v.transaction_id = t.id
 LEFT JOIN comptes_bancaires cb ON cb.id = t.compte_bancaire_id
 JOIN exercices_fiscaux ef ON ef.id = t.exercice_fiscal_id AND ef.statut = 'en_cours'
 ORDER BY t.date_transaction DESC;
+
+-- View pour l'analyse des clients
+CREATE OR REPLACE VIEW analyse_clients AS
+SELECT 
+  t.entreprise_id,
+  t.exercice_fiscal_id,
+  -- Extraire le client du libellé (logique à adapter)
+  CASE 
+    WHEN t.libelle ILIKE '%client a%' OR t.libelle ILIKE '%société a%' THEN 'Client A'
+    WHEN t.libelle ILIKE '%client b%' OR t.libelle ILIKE '%société b%' THEN 'Client B'
+    WHEN t.libelle ILIKE '%client c%' OR t.libelle ILIKE '%société c%' THEN 'Client C'
+    WHEN t.libelle ILIKE '%client d%' OR t.libelle ILIKE '%société d%' THEN 'Client D'
+    WHEN t.libelle ILIKE '%client e%' OR t.libelle ILIKE '%société e%' THEN 'Client E'
+    WHEN t.libelle ILIKE '%client f%' OR t.libelle ILIKE '%société f%' THEN 'Client F'
+    WHEN t.libelle ILIKE '%client g%' OR t.libelle ILIKE '%société g%' THEN 'Client G'
+    WHEN t.libelle ILIKE '%client h%' OR t.libelle ILIKE '%société h%' THEN 'Client H'
+    ELSE 'Autres clients'
+  END as nom_client,
+  
+  SUM(t.montant_total) as chiffre_affaires,
+  COUNT(*) as nombre_transactions,
+  AVG(t.montant_total) as panier_moyen
+
+FROM transactions t
+JOIN exercices_fiscaux ef ON ef.id = t.exercice_fiscal_id AND ef.statut = 'en_cours'
+WHERE t.type_transaction = 'revenu'
+GROUP BY t.entreprise_id, t.exercice_fiscal_id, 
+  CASE 
+    WHEN t.libelle ILIKE '%client a%' OR t.libelle ILIKE '%société a%' THEN 'Client A'
+    WHEN t.libelle ILIKE '%client b%' OR t.libelle ILIKE '%société b%' THEN 'Client B'
+    WHEN t.libelle ILIKE '%client c%' OR t.libelle ILIKE '%société c%' THEN 'Client C'
+    WHEN t.libelle ILIKE '%client d%' OR t.libelle ILIKE '%société d%' THEN 'Client D'
+    WHEN t.libelle ILIKE '%client e%' OR t.libelle ILIKE '%société e%' THEN 'Client E'
+    WHEN t.libelle ILIKE '%client f%' OR t.libelle ILIKE '%société f%' THEN 'Client F'
+    WHEN t.libelle ILIKE '%client g%' OR t.libelle ILIKE '%société g%' THEN 'Client G'
+    WHEN t.libelle ILIKE '%client h%' OR t.libelle ILIKE '%société h%' THEN 'Client H'
+    ELSE 'Autres clients'
+  END
+HAVING SUM(t.montant_total) > 0
+ORDER BY chiffre_affaires DESC;

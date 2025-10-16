@@ -1,29 +1,36 @@
+// src/components/DepenseTable.js
 import React from 'react';
 import {
   Box,
   useColorModeValue,
   Table,
   Thead,
+  Tbody,
   Tr,
   Th,
   Td,
   Flex,
   Icon,
+  Skeleton
 } from '@chakra-ui/react';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import { useDashboardData } from '../hooks/useDashboardData';
 
 function DepenseTable() {
+  const { data, loading } = useDashboardData();
   const bgColor = useColorModeValue('red.50', 'gray.800');
   const borderColor = useColorModeValue('red.100', 'gray.700');
-  
-  // Example data for 12 months - replace this with your actual data
-  const revenues = [
-    10417, 10417, 10417, 10417, 10417, 10417,
-    10417, 10417, 10417, 10694, 10417, 10417, // Data for 12 months
-  ];
 
-  // Calculate the sum of all 12 months
-  const totalDepense = revenues.reduce((sum, current) => sum + current, 0);
+  // Filtrer seulement les dépenses
+  const expenseTransactions = data?.transactions?.filter(t => t.type_transaction === 'depense') || [];
+
+  if (loading) {
+    return (
+      <Box p={4} bg={bgColor} borderRadius="lg" boxShadow="md" borderColor={borderColor} borderWidth={1}>
+        <Skeleton height="200px" />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -42,15 +49,28 @@ function DepenseTable() {
             <Th>
               <Flex align="center">
                 <Icon as={MdKeyboardArrowRight} mr={2} />
-                Depenses
+                Dépenses
               </Flex>
             </Th>
-            {revenues.map((amount, index) => (
-              <Th isNumeric key={index}>{amount.toLocaleString()}</Th>
-            ))}
-            <Th isNumeric fontWeight="1000">{totalDepense.toLocaleString()}</Th>
+            <Th>Date</Th>
+            <Th>Catégorie</Th>
+            <Th isNumeric>Montant</Th>
+            <Th>Moyen de paiement</Th>
           </Tr>
         </Thead>
+        <Tbody>
+          {expenseTransactions.map((transaction) => (
+            <Tr key={transaction.id}>
+              <Td>{transaction.libelle}</Td>
+              <Td>{new Date(transaction.date_transaction).toLocaleDateString('fr-FR')}</Td>
+              <Td>{transaction.categorie_nom}</Td>
+              <Td isNumeric fontWeight="bold" color="red.500">
+                -{transaction.montant_total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}
+              </Td>
+              <Td>{transaction.moyen_paiement}</Td>
+            </Tr>
+          ))}
+        </Tbody>
       </Table>
     </Box>
   );

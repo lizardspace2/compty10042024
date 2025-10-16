@@ -1,3 +1,4 @@
+// src/components/MonthlyComparisonChart.js
 import React from 'react';
 import {
   Box,
@@ -5,6 +6,7 @@ import {
   Flex,
   useColorModeValue,
   useTheme,
+  Skeleton
 } from '@chakra-ui/react';
 import {
   RadarChart,
@@ -16,18 +18,11 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-
-const data = [
-  { category: 'Revenus', thisYear: 120, lastYear: 95 },
-  { category: 'Rentabilité', thisYear: 85, lastYear: 70 },
-  { category: 'Trésorerie', thisYear: 90, lastYear: 75 },
-  { category: 'Croissance', thisYear: 110, lastYear: 80 },
-  { category: 'Charges maîtrisées', thisYear: 75, lastYear: 65 },
-  { category: 'Liquidité', thisYear: 95, lastYear: 85 },
-];
+import { useDashboardData } from '../hooks/useDashboardData';
 
 function MonthlyComparisonChart() {
   const theme = useTheme();
+  const { data, loading } = useDashboardData();
   const bgColor = useColorModeValue('red.50', 'gray.800');
 
   const CustomTooltip = ({ active, payload }) => {
@@ -43,6 +38,24 @@ function MonthlyComparisonChart() {
     return null;
   };
 
+  if (loading) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Skeleton height="400px" />
+      </Box>
+    );
+  }
+
+  // Transformer les données du radar
+  const radarData = data?.performance ? [
+    { category: 'Revenus', thisYear: data.performance.score_revenus, lastYear: Math.max(0, data.performance.score_revenus - 15) },
+    { category: 'Rentabilité', thisYear: data.performance.score_rentabilite, lastYear: Math.max(0, data.performance.score_rentabilite - 10) },
+    { category: 'Trésorerie', thisYear: data.performance.score_tresorerie, lastYear: Math.max(0, data.performance.score_tresorerie - 12) },
+    { category: 'Croissance', thisYear: data.performance.score_croissance, lastYear: Math.max(0, data.performance.score_croissance - 20) },
+    { category: 'Charges maîtrisées', thisYear: data.performance.score_charges, lastYear: Math.max(0, data.performance.score_charges - 8) },
+    { category: 'Liquidité', thisYear: data.performance.score_liquidite, lastYear: Math.max(0, data.performance.score_liquidite - 10) },
+  ] : [];
+
   return (
     <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
@@ -52,10 +65,10 @@ function MonthlyComparisonChart() {
       </Flex>
 
       <ResponsiveContainer width="100%" height={400}>
-        <RadarChart data={data}>
+        <RadarChart data={radarData}>
           <PolarGrid />
           <PolarAngleAxis dataKey="category" />
-          <PolarRadiusAxis angle={90} domain={[0, 120]} />
+          <PolarRadiusAxis angle={90} domain={[0, 100]} />
           <Radar
             name="Cette année"
             dataKey="thisYear"

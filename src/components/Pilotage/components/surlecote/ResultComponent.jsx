@@ -1,36 +1,38 @@
+// src/components/surlecote/ResultComponent.js
 import React from 'react';
-import { Box, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
-import { IoMdStats } from 'react-icons/io'; // A generic icon for results
+import { Box, Text, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { useDashboardData } from '../../hooks/useDashboardData';
 
-const ResultComponent = ({ amount, currency }) => {
-  // Determine color based on the amount (profit or loss)
-  const resultColor = amount >= 0 ? 'green.500' : 'red.500';
+function ResultComponent({ amount, currency }) {
+  const { data, loading } = useDashboardData();
+  const bgColor = useColorModeValue('blue.50', 'blue.900');
+  const borderColor = useColorModeValue('blue.200', 'blue.700');
+
+  const displayAmount = data?.kpi?.resultat_net || amount;
+  const isPositive = displayAmount >= 0;
+
+  if (loading) {
+    return (
+      <Box p={4} bg={bgColor} borderRadius="lg" border="1px" borderColor={borderColor}>
+        <Skeleton height="60px" />
+      </Box>
+    );
+  }
 
   return (
-    <Box
-      p={2} // Consistent padding with the RevenueComponent and ExpensesComponent
-      boxShadow="md"
-      borderRadius="md"
-      display="flex"
-      alignItems="center"
-      border="1px" // 1px border
-      borderColor="red.100" // light gray border color
-      width="auto" // width adjusts to content
-      bg="red.50" background
-      maxW="200px"
-      minH="90px"
-    >
-      <Box color="#333333" mr={2}> {/* Color for results icon */}
-        <IoMdStats size="1.5em" /> {/* Adjust icon size as needed */}
-      </Box>
-      <Stat>
-        <StatLabel color="gray.500" fontSize="sm">Resultat</StatLabel>
-        <StatNumber fontSize="lg" lineHeight="1.1em" >
-          1526 €
-        </StatNumber>
-      </Stat>
+    <Box p={4} bg={bgColor} borderRadius="lg" border="1px" borderColor={borderColor}>
+      <Text fontSize="sm" color="gray.600" mb={1}>
+        Result
+      </Text>
+      <Text 
+        fontSize="2xl" 
+        fontWeight="bold" 
+        color={isPositive ? 'green.600' : 'red.600'}
+      >
+        {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(displayAmount)}
+      </Text>
     </Box>
   );
-};
+}
 
 export default ResultComponent;

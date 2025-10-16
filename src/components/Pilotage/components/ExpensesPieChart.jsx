@@ -1,9 +1,11 @@
+// src/components/ExpensesPieChart.js
 import React from 'react';
 import {
   Box,
   Text,
   Flex,
   useColorModeValue,
+  Skeleton
 } from '@chakra-ui/react';
 import {
   PieChart,
@@ -13,20 +15,10 @@ import {
   Legend,
   Tooltip,
 } from 'recharts';
-
-const data = [
-  { name: 'Salaires & charges', value: 35000 },
-  { name: 'Loyer & charges locatives', value: 18000 },
-  { name: 'Matériel & outillage', value: 12000 },
-  { name: 'Déplacements', value: 8000 },
-  { name: 'Télécom & fournitures', value: 5000 },
-  { name: 'Formation', value: 4000 },
-  { name: 'Autres', value: 3000 },
-];
-
-const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE'];
+import { useDashboardData } from '../hooks/useDashboardData';
 
 function ExpensesPieChart() {
+  const { data, loading } = useDashboardData();
   const bgColor = useColorModeValue('red.50', 'gray.800');
 
   const CustomTooltip = ({ active, payload }) => {
@@ -34,9 +26,9 @@ function ExpensesPieChart() {
       return (
         <Box bg="red.50" p="3" boxShadow="md" borderRadius="lg" border="1px" borderColor="red.100">
           <Text fontWeight="bold">{payload[0].name}</Text>
-          <Text fontSize="sm">Montant: {payload[0].value} €</Text>
+          <Text fontSize="sm">Montant: {payload[0].value.toLocaleString()} €</Text>
           <Text fontSize="sm">
-            Pourcentage: {((payload[0].value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(1)}%
+            Pourcentage: {((payload[0].value / (data?.expenses?.reduce((a, b) => a + b.montant_total, 0) || 1)) * 100).toFixed(1)}%
           </Text>
         </Box>
       );
@@ -64,6 +56,16 @@ function ExpensesPieChart() {
     );
   };
 
+  if (loading) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Skeleton height="400px" />
+      </Box>
+    );
+  }
+
+  const expensesData = data?.expenses || [];
+
   return (
     <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
@@ -75,17 +77,17 @@ function ExpensesPieChart() {
       <ResponsiveContainer width="100%" height={350}>
         <PieChart>
           <Pie
-            data={data}
+            data={expensesData}
             cx="50%"
             cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
             outerRadius={120}
             fill="#8884d8"
-            dataKey="value"
+            dataKey="montant_total"
           >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            {expensesData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.couleur} />
             ))}
           </Pie>
           <Tooltip content={<CustomTooltip />} />
@@ -95,7 +97,7 @@ function ExpensesPieChart() {
 
       <Box mt={4}>
         <Text fontSize="sm" color="gray.600" textAlign="center">
-          Total des dépenses: {data.reduce((a, b) => a + b.value, 0).toLocaleString()} €
+          Total des dépenses: {expensesData.reduce((a, b) => a + b.montant_total, 0).toLocaleString()} €
         </Text>
       </Box>
     </Box>
