@@ -21,6 +21,7 @@ import TaxProjectionChart from './components/TaxProjectionChart';
 import ClientDistributionChart from './components/ClientDistributionChart';
 import WorkingCapitalChart from './components/WorkingCapitalChart';
 import { useDashboardData } from './hooks/useDashboardData';
+import FiscaliteSelector from './components/fiscalite/FiscaliteSelector';
 
 function Pilotage() {
   const { data } = useDashboardData();
@@ -79,6 +80,14 @@ function Pilotage() {
               <ProfitMarginChart />
               <CashFlowChart />
             </VStack>
+          </Box>
+
+          <Divider my={6} />
+
+          {/* Section: Fiscalité et Optimisation */}
+          <Box>
+            <Heading size="md" mb={4} color="gray.700">Fiscalité et Optimisation</Heading>
+            <FiscaliteSelector />
           </Box>
 
           <Divider my={6} />
