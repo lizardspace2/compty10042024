@@ -85,6 +85,7 @@ function ExpensesPieChart() {
             outerRadius={120}
             fill="#8884d8"
             dataKey="montant_total"
+            nameKey="categorie"
           >
             {expensesData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.couleur} />

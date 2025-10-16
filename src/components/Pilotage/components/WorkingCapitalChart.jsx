@@ -7,10 +7,9 @@ import {
   useTheme,
   HStack,
   VStack,
+  Skeleton,
 } from '@chakra-ui/react';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -20,25 +19,27 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-
-const data = [
-  { mois: 'Jan', bfr: 15000, creances: 25000, dettes: 10000 },
-  { mois: 'Fév', bfr: 16500, creances: 27000, dettes: 10500 },
-  { mois: 'Mar', bfr: 14000, creances: 24000, dettes: 10000 },
-  { mois: 'Avr', bfr: 17000, creances: 28000, dettes: 11000 },
-  { mois: 'Mai', bfr: 15500, creances: 26000, dettes: 10500 },
-  { mois: 'Jun', bfr: 18000, creances: 30000, dettes: 12000 },
-  { mois: 'Jul', bfr: 16000, creances: 27000, dettes: 11000 },
-  { mois: 'Aoû', bfr: 14500, creances: 25000, dettes: 10500 },
-  { mois: 'Sep', bfr: 19000, creances: 31000, dettes: 12000 },
-  { mois: 'Oct', bfr: 17500, creances: 29000, dettes: 11500 },
-  { mois: 'Nov', bfr: 16000, creances: 27000, dettes: 11000 },
-  { mois: 'Déc', bfr: 15000, creances: 26000, dettes: 11000 },
-];
+import { useDashboardData } from '../hooks/useDashboardData';
 
 function WorkingCapitalChart() {
   const theme = useTheme();
+  const { data: dashboardData, loading } = useDashboardData();
   const bgColor = useColorModeValue('red.50', 'gray.800');
+
+  if (loading || !dashboardData?.workingCapital) {
+    return (
+      <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
+        <Skeleton height="400px" />
+      </Box>
+    );
+  }
+
+  const data = dashboardData.workingCapital.map(item => ({
+    mois: item.mois_court,
+    bfr: Math.round(item.bfr || 0),
+    creances: Math.round(item.creances_clients || 0),
+    dettes: Math.round(item.dettes_fournisseurs || 0)
+  }));
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -54,9 +55,10 @@ function WorkingCapitalChart() {
     return null;
   };
 
-  const avgBFR = (data.reduce((sum, item) => sum + item.bfr, 0) / data.length).toFixed(0);
-  const avgCreances = (data.reduce((sum, item) => sum + item.creances, 0) / data.length).toFixed(0);
-  const avgDettes = (data.reduce((sum, item) => sum + item.dettes, 0) / data.length).toFixed(0);
+  const avgBFR = data.length > 0 ? (data.reduce((sum, item) => sum + item.bfr, 0) / data.length).toFixed(0) : 0;
+  const avgCreances = data.length > 0 ? (data.reduce((sum, item) => sum + item.creances, 0) / data.length).toFixed(0) : 0;
+  const avgDettes = data.length > 0 ? (data.reduce((sum, item) => sum + item.dettes, 0) / data.length).toFixed(0) : 0;
+  const delaiPaiement = avgCreances > 0 ? Math.round((avgCreances / (avgCreances + avgDettes)) * 60) : 0;
 
   return (
     <Box p={5} bg={bgColor} borderRadius="xl" boxShadow="sm" border="1px" borderColor="red.100">
@@ -129,8 +131,8 @@ function WorkingCapitalChart() {
           <Text fontSize="lg" fontWeight="bold" color="red.600">{avgDettes} €</Text>
         </VStack>
         <VStack spacing={0}>
-          <Text fontSize="xs" color="gray.600">Délai moyen de paiement</Text>
-          <Text fontSize="lg" fontWeight="bold" color="blue.600">42 jours</Text>
+          <Text fontSize="xs" color="gray.600">Délai estimé</Text>
+          <Text fontSize="lg" fontWeight="bold" color="blue.600">{delaiPaiement} jours</Text>
         </VStack>
       </HStack>
     </Box>

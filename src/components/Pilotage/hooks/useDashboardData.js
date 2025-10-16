@@ -1,8 +1,17 @@
-// src/hooks/useDashboardData.js - Version sans données de démonstration
+// src/hooks/useDashboardData.js - Version optimisée utilisant les vues SQL
+import { useDashboardDataOptimized } from './useDashboardDataOptimized';
+
+// Re-exporter le hook optimisé pour compatibilité avec les composants existants
+export const useDashboardData = () => {
+  return useDashboardDataOptimized();
+};
+
+// Ancienne version conservée pour référence (commentée)
+/*
 import { useState, useEffect } from 'react';
 import { supabase } from './../../../supabaseClient';
 
-export const useDashboardData = () => {
+export const useDashboardDataOld = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -335,3 +344,4 @@ export const useDashboardData = () => {
 
   return { data, loading, error, refetch: fetchDashboardData };
 };
+*/
