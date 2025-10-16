@@ -380,7 +380,7 @@ export const ComparaisonRegimesComponent = ({ data }) => {
         <Text fontSize="md" fontWeight="bold" mb={2}>ℹ️ Comment choisir ?</Text>
         <VStack align="start" spacing={2} fontSize="sm">
           <Text>• <Text as="span" fontWeight="bold">Micro-BNC :</Text> Simple, CA ≤ 77.7k€, abattement 34%</Text>
-          <Text>• <Text as="span" fontWeight="bold">BNC Réel :</Text> Si dépenses > 34% du CA, comptabilité complète</Text>
+          <Text>• <Text as="span" fontWeight="bold">BNC Réel :</Text> Si dépenses &gt; 34% du CA, comptabilité complète</Text>
           <Text>• <Text as="span" fontWeight="bold">Auto-Entrepreneur :</Text> Très simple, charges 24.2%, adapté au démarrage</Text>
           <Text>• <Text as="span" fontWeight="bold">Société :</Text> Protection, croissance, dividendes, plus complexe</Text>
         </VStack>

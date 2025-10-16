@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid, GridItem, VStack, Heading, Divider, useColorModeValue } from '@chakra-ui/react';
 import MyChartComponent from './components/MyChartComponent';
 import RevenueTable from './components/RevenueTable';
@@ -6,7 +6,7 @@ import DepenseTable from './components/DepenseTable';
 import ThresholdProgressBar from './components/ThresholdProgressBar';
 import ExpensesBarChart from './components/ExpensesBarChart';
 import TreasuryChart from './components/TreasuryChart';
-import PilotageBanner from './components/PilotageBanner';
+import PilotageBanner, { ExerciceFiscalContext } from './components/PilotageBanner';
 import RevenueComponent from './components/surlecote/RevenueComponent';
 import ExpensesComponent from './components/surlecote/ExpensesComponent';
 import ResultComponent from './components/surlecote/ResultComponent';
@@ -26,11 +26,13 @@ import FiscaliteSelector from './components/fiscalite/FiscaliteSelector';
 function Pilotage() {
   const { data } = useDashboardData();
   const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const [selectedExercice, setSelectedExercice] = useState(null);
 
   return (
-    <Box bg={bgColor} minH="100vh">
-      <PilotageBanner />
-      <Box maxWidth="1600px" mx="auto" p={6}>
+    <ExerciceFiscalContext.Provider value={{ selectedExercice, setSelectedExercice }}>
+      <Box bg={bgColor} minH="100vh">
+        <PilotageBanner />
+        <Box maxWidth="1600px" mx="auto" p={6}>
         {/* KPI Cards Section */}
         <VStack spacing={6} align="stretch">
           <KPICards />
@@ -163,6 +165,7 @@ function Pilotage() {
         </VStack>
       </Box>
     </Box>
+    </ExerciceFiscalContext.Provider>
   );
 }
 
