@@ -13,14 +13,11 @@ import {
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useDropzone } from 'react-dropzone';
 import { chakra } from '@chakra-ui/react';
 import { fr } from 'date-fns/locale';
-import { LiaCloudUploadAltSolid } from "react-icons/lia";
 import { FaPlus, FaPercent, FaTimes, FaPaperclip, FaSave, FaEdit, FaTrash, FaFileAlt } from 'react-icons/fa';
 import { MdEuro } from 'react-icons/md';
 import { FcFullTrash, FcBullish, FcDebt, FcFactory, FcAutomotive, FcAlarmClock, FcDonate } from 'react-icons/fc';
-
 
 const ExpenseFormHeader = ({ onToggle, onSubmitTransaction, isUploading, isEditing }) => {
   return (
@@ -64,7 +61,8 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
       bg={fileBg}
       borderColor={fileBorderColor}
       width="full"
-      onClick={() => onSelect(file)}
+      onClick={() => onSelect && onSelect(file)}
+      cursor={onSelect ? "pointer" : "default"}
     >
       <HStack spacing={2}>
         {isImage ? (
@@ -80,7 +78,7 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
         <IconButton
           icon={<FcFullTrash />}
           onClick={(e) => {
-            e.stopPropagation();  // Prevent onSelect from being called when deleting
+            e.stopPropagation();
             onDelete(file);
           }}
           aria-label="Delete file"
@@ -93,7 +91,7 @@ const FilePreview = ({ file, onDelete, onSelect }) => {
   );
 };
 
-// Nouveau composant pour gérer les justificatifs existants
+// Composant pour gérer les justificatifs existants (déjà uploadés dans Supabase)
 const JustificatifsManager = ({
   justificatifs,
   editingFileName,
@@ -106,160 +104,148 @@ const JustificatifsManager = ({
   onUploadClick,
   isUploading
 }) => {
-  const fileBg = useColorModeValue('red.50', 'gray.700');
-  const fileBorderColor = useColorModeValue('red.200', 'gray.600');
-  const textColor = useColorModeValue('gray.700', 'red.50');
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('red.100', 'gray.700');
 
   if (!justificatifs || justificatifs.length === 0) {
     return null;
   }
 
   return (
-    <VStack spacing={2} align="stretch" mt={2}>
-      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-        Justificatifs existants ({justificatifs.length})
-      </Text>
+    <VStack spacing={4} align="stretch" mt={4}>
+      <HStack justify="space-between">
+        <Text fontSize="md" fontWeight="semibold" color="gray.700">
+          Justificatifs existants ({justificatifs.length})
+        </Text>
+        <Button
+          leftIcon={<FaPlus />}
+          size="sm"
+          colorScheme="blue"
+          variant="outline"
+          onClick={onUploadClick}
+          isLoading={isUploading}
+        >
+          Ajouter
+        </Button>
+      </HStack>
+
       {justificatifs.map((justificatif) => {
         const isImage = justificatif.type_fichier?.startsWith('image/');
-        const filePath = justificatif.url_stockage?.split('/').pop();
+        const urlParts = justificatif.url_stockage?.split('/') || [];
+        const filePath = `justificatifs/${urlParts[urlParts.length - 1]}`;
 
         return (
           <Box
             key={justificatif.id}
+            p={4}
             borderWidth="1px"
             borderRadius="lg"
-            p={3}
-            bg={fileBg}
-            borderColor={fileBorderColor}
+            borderColor={borderColor}
+            bg={bgColor}
           >
-            {editingFileName === justificatif.id ? (
-              <HStack w="100%">
-                <Input
-                  value={newFileName}
-                  onChange={(e) => onFileNameChange(e.target.value)}
-                  size="sm"
-                  autoFocus
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') onSaveEdit(justificatif.id);
-                  }}
-                />
-                <IconButton
-                  icon={<FaSave />}
-                  size="sm"
-                  colorScheme="green"
-                  onClick={() => onSaveEdit(justificatif.id)}
-                  aria-label="Enregistrer"
-                />
-                <IconButton
-                  icon={<FaTimes />}
-                  size="sm"
-                  onClick={onCancelEdit}
-                  aria-label="Annuler"
-                />
-              </HStack>
-            ) : (
-              <HStack justifyContent="space-between">
-                <HStack spacing={2} flex={1}>
-                  {isImage && justificatif.url_stockage ? (
-                    <Image
-                      src={justificatif.url_stockage}
-                      boxSize="40px"
-                      objectFit="cover"
-                      borderRadius="md"
+            <Flex justify="space-between" align="center">
+              <VStack align="start" spacing={1} flex="1">
+                {editingFileName === justificatif.id ? (
+                  <HStack w="100%">
+                    <Input
+                      value={newFileName}
+                      onChange={(e) => onFileNameChange(e.target.value)}
+                      size="sm"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          onSaveEdit(justificatif.id);
+                        }
+                      }}
                     />
-                  ) : (
-                    <FaPaperclip color={textColor} />
-                  )}
-                  <VStack align="start" spacing={0} flex={1}>
-                    <Text fontWeight="medium" fontSize="sm" color={textColor}>
-                      {justificatif.nom_fichier}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      {justificatif.type_fichier} • {(justificatif.taille_fichier / 1024).toFixed(2)} Ko
-                    </Text>
-                  </VStack>
-                </HStack>
-                <HStack spacing={1}>
-                  {isImage && justificatif.url_stockage && (
                     <IconButton
-                      icon={<AttachmentIcon />}
+                      icon={<FaSave />}
+                      size="sm"
+                      colorScheme="green"
+                      onClick={() => onSaveEdit(justificatif.id)}
+                      aria-label="Sauvegarder"
+                    />
+                    <IconButton
+                      icon={<FaTimes />}
+                      size="sm"
+                      onClick={onCancelEdit}
+                      aria-label="Annuler"
+                    />
+                  </HStack>
+                ) : (
+                  <HStack>
+                    <FaPaperclip />
+                    <Text fontWeight="medium">{justificatif.nom_fichier}</Text>
+                    <IconButton
+                      icon={<FaEdit />}
                       size="xs"
                       variant="ghost"
-                      onClick={() => window.open(justificatif.url_stockage, '_blank')}
-                      aria-label="Voir"
+                      onClick={() => onStartEdit(justificatif.id, justificatif.nom_fichier)}
+                      aria-label="Renommer"
                     />
-                  )}
-                  <IconButton
-                    icon={<FaEdit />}
-                    size="xs"
-                    variant="ghost"
-                    colorScheme="blue"
-                    onClick={() => onStartEdit(justificatif.id, justificatif.nom_fichier)}
-                    aria-label="Renommer"
-                  />
-                  <IconButton
-                    icon={<FaTrash />}
-                    size="xs"
-                    variant="ghost"
-                    colorScheme="red"
-                    onClick={() => onDeleteClick(justificatif, filePath)}
-                    aria-label="Supprimer"
-                  />
-                </HStack>
+                  </HStack>
+                )}
+                <Text fontSize="sm" color="gray.600">
+                  Type: {justificatif.type_fichier} • Taille: {(justificatif.taille_fichier / 1024).toFixed(2)} Ko
+                </Text>
+                <Text fontSize="xs" color="gray.500">
+                  Ajouté le {new Date(justificatif.created_at).toLocaleDateString('fr-FR')}
+                </Text>
+              </VStack>
+              <HStack>
+                <Button
+                  colorScheme="blue"
+                  size="sm"
+                  leftIcon={<FaFileAlt />}
+                  onClick={() => window.open(justificatif.url_stockage, '_blank')}
+                >
+                  Voir
+                </Button>
+                <IconButton
+                  icon={<FaTrash />}
+                  colorScheme="red"
+                  size="sm"
+                  onClick={() => onDeleteClick(justificatif, filePath)}
+                  aria-label="Supprimer"
+                />
               </HStack>
+            </Flex>
+            {isImage && justificatif.url_stockage && (
+              <Box mt={4}>
+                <Image
+                  src={justificatif.url_stockage}
+                  alt={justificatif.nom_fichier}
+                  maxH="400px"
+                  objectFit="contain"
+                  borderRadius="md"
+                />
+              </Box>
             )}
           </Box>
         );
       })}
-      <Button
-        leftIcon={<FaPlus />}
-        size="sm"
-        colorScheme="blue"
-        variant="outline"
-        onClick={onUploadClick}
-        isLoading={isUploading}
-      >
-        Ajouter un justificatif
-      </Button>
     </VStack>
   );
 };
 
 const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }) => {
   const toast = useToast();
-  const [annotations, setAnnotations] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const inputBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const bgColor = useColorModeValue('white', 'gray.800');
   const maxFiles = 10;
 
-  // États pour gérer les justificatifs existants
+  // États pour gérer les justificatifs existants - Inspiré de TransactionsImproved.jsx
   const [editingFileName, setEditingFileName] = useState(null);
   const [newFileName, setNewFileName] = useState('');
+  const [editingLocalFileIndex, setEditingLocalFileIndex] = useState(null);
+  const [newLocalFileName, setNewLocalFileName] = useState('');
   const [justificatifToDelete, setJustificatifToDelete] = useState(null);
   const [isUploadingJustificatif, setIsUploadingJustificatif] = useState(false);
   const { isOpen: isDeleteJustificatifOpen, onOpen: onDeleteJustificatifOpen, onClose: onDeleteJustificatifClose } = useDisclosure();
   const cancelJustificatifRef = useRef();
   const fileInputRef = useRef();
-
-  const { getRootProps, getInputProps, isDragReject, fileRejections } = useDropzone({
-    accept: 'image/png, image/jpeg, application/pdf',
-    maxSize: 10 * 1024 * 1024, // 10MB max size
-    onDrop: acceptedFiles => {
-      setFiles(prevFiles => {
-        // Combine the old files with the new ones and slice the array to keep only 10
-        const updatedFiles = prevFiles.concat(acceptedFiles).slice(0, maxFiles);
-        // Update the previews for the new files
-        return updatedFiles.map(file => Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        }));
-      });
-    },
-    noClick: files.length >= maxFiles, // Disables the dropzone click if the limit is reached
-    noKeyboard: files.length >= maxFiles, // Disables the dropzone keyboard behavior if the limit is reached
-  });
 
   const deleteFile = (fileToDelete) => {
     setFiles(files.filter(file => file !== fileToDelete));
@@ -270,27 +256,227 @@ const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }
     files.forEach(file => URL.revokeObjectURL(file.preview));
     setFiles([]);
   };
-  const closeButtonStyle = {
-    opacity: annotations ? 1 : 0,
-    transition: 'opacity 0.3s ease-out',
-    cursor: 'pointer'
-  };
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
-  };
 
-  useEffect(() => {
-    if (files.length === 0) {
-      setSelectedFile(null);
+  const handleRenameLocalFile = (index) => {
+    if (!newLocalFileName.trim()) {
+      toast({
+        title: 'Erreur',
+        description: 'Le nom de fichier ne peut pas être vide',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
     }
-  }, [files]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const updatedFiles = files.map((file, idx) => {
+      if (idx === index) {
+        // Créer un nouveau fichier avec le nouveau nom
+        const newFile = new File([file], newLocalFileName.trim(), { type: file.type });
+        // Conserver la preview
+        Object.assign(newFile, { preview: file.preview });
+        return newFile;
+      }
+      return file;
+    });
+
+    setFiles(updatedFiles);
+    setEditingLocalFileIndex(null);
+    setNewLocalFileName('');
+
+    toast({
+      title: 'Succès',
+      description: 'Fichier renommé',
+      status: 'success',
+      duration: 2000,
+    });
   };
 
+  // Gestion des justificatifs existants - Inspiré de TransactionsImproved.jsx
+  const handleDeleteJustificatifClick = (justificatif, filePath) => {
+    setJustificatifToDelete({ justificatif, filePath });
+    onDeleteJustificatifOpen();
+  };
 
+  const handleDeleteJustificatifConfirm = async () => {
+    if (!justificatifToDelete) return;
+
+    const { justificatif, filePath } = justificatifToDelete;
+
+    try {
+      // Supprimer le fichier du storage
+      const { error: storageError } = await supabase.storage
+        .from('documents')
+        .remove([filePath]);
+
+      if (storageError) throw storageError;
+
+      // Supprimer l'entrée de la base de données
+      const { error: dbError } = await supabase
+        .from('justificatifs')
+        .delete()
+        .eq('id', justificatif.id);
+
+      if (dbError) throw dbError;
+
+      toast({
+        title: 'Succès',
+        description: 'Justificatif supprimé',
+        status: 'success',
+        duration: 3000,
+      });
+
+      // Mettre à jour le formData en supprimant le justificatif
+      const updatedJustificatifs = formData.justificatifs.filter(j => j.id !== justificatif.id);
+      setFormData(prev => ({ ...prev, justificatifs: updatedJustificatifs }));
+    } catch (error) {
+      console.error('Erreur lors de la suppression du justificatif:', error);
+      toast({
+        title: 'Erreur',
+        description: 'Impossible de supprimer le justificatif',
+        status: 'error',
+        duration: 3000,
+      });
+    } finally {
+      onDeleteJustificatifClose();
+      setJustificatifToDelete(null);
+    }
+  };
+
+  const handleRenameJustificatif = async (justificatifId) => {
+    if (!newFileName.trim()) {
+      toast({
+        title: 'Erreur',
+        description: 'Le nom de fichier ne peut pas être vide',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('justificatifs')
+        .update({ nom_fichier: newFileName.trim() })
+        .eq('id', justificatifId);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Succès',
+        description: 'Justificatif renommé',
+        status: 'success',
+        duration: 3000,
+      });
+
+      setEditingFileName(null);
+      setNewFileName('');
+
+      // Mettre à jour le formData avec le nouveau nom
+      const updatedJustificatifs = formData.justificatifs.map(j =>
+        j.id === justificatifId ? { ...j, nom_fichier: newFileName.trim() } : j
+      );
+      setFormData(prev => ({ ...prev, justificatifs: updatedJustificatifs }));
+    } catch (error) {
+      console.error('Erreur lors du renommage du justificatif:', error);
+      toast({
+        title: 'Erreur',
+        description: 'Impossible de renommer le justificatif',
+        status: 'error',
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleUploadJustificatif = async (event) => {
+    const uploadFiles = Array.from(event.target.files || []);
+    if (uploadFiles.length === 0) return;
+
+    // Si la transaction n'a pas encore d'ID, ajouter les fichiers localement
+    if (!formData.id) {
+      const newFiles = uploadFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      }));
+      setFiles(prevFiles => [...prevFiles, ...newFiles].slice(0, maxFiles));
+
+      toast({
+        title: 'Fichiers ajoutés',
+        description: `${uploadFiles.length} fichier(s) seront uploadés lors de la création`,
+        status: 'info',
+        duration: 3000,
+      });
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+
+    // Si la transaction a un ID, uploader directement vers Supabase
+    setIsUploadingJustificatif(true);
+
+    try {
+      const newJustificatifs = [];
+
+      for (const file of uploadFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${formData.id}_${Date.now()}.${fileExt}`;
+        const filePath = `justificatifs/${fileName}`;
+
+        // Upload vers Supabase Storage
+        const { error: uploadError } = await supabase.storage
+          .from('documents')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        // Récupérer l'URL publique
+        const { data: { publicUrl } } = supabase.storage
+          .from('documents')
+          .getPublicUrl(filePath);
+
+        // Enregistrer dans la base de données
+        const { data: justificatifData, error: dbError } = await supabase
+          .from('justificatifs')
+          .insert([{
+            transaction_id: formData.id,
+            nom_fichier: file.name,
+            type_fichier: file.type,
+            taille_fichier: file.size,
+            url_stockage: publicUrl
+          }])
+          .select()
+          .single();
+
+        if (dbError) throw dbError;
+
+        newJustificatifs.push(justificatifData);
+      }
+
+      toast({
+        title: 'Succès',
+        description: `${uploadFiles.length} justificatif(s) ajouté(s)`,
+        status: 'success',
+        duration: 3000,
+      });
+
+      // Mettre à jour le formData avec les nouveaux justificatifs
+      const updatedJustificatifs = [...(formData.justificatifs || []), ...newJustificatifs];
+      setFormData(prev => ({ ...prev, justificatifs: updatedJustificatifs }));
+    } catch (error) {
+      console.error('Erreur lors de l\'upload du justificatif:', error);
+      toast({
+        title: 'Erreur',
+        description: 'Impossible d\'ajouter le justificatif',
+        status: 'error',
+        duration: 3000,
+      });
+    } finally {
+      setIsUploadingJustificatif(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
@@ -343,27 +529,14 @@ const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }
 
         <FormControl id="transaction-annotations">
           <FormLabel>Annotations</FormLabel>
-          <InputGroup>
-            <Input
-              placeholder="Ajouter des mots clés"
-              value={formData.annotations}
-              onChange={onChange}
-              name="annotations" // Ensure this matches the state key
-            />
-            {annotations && (
-              <InputRightElement>
-                <IconButton
-                  aria-label="Clear annotations"
-                  icon={<CloseIcon />}
-                  size="sm"
-                  onClick={() => setAnnotations('')}
-                  isRound={true}
-                  style={closeButtonStyle}
-                />
-              </InputRightElement>
-            )}
-          </InputGroup>
+          <Input
+            placeholder="Ajouter des mots clés"
+            value={formData.annotations}
+            onChange={onChange}
+            name="annotations"
+          />
         </FormControl>
+        {/* Justificatifs */}
         <FormControl id="transaction-justifications">
           <FormLabel>Justificatifs</FormLabel>
           <InputGroup>
@@ -373,6 +546,7 @@ const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }
               value={files.map(file => file.name).join(', ')}
               onClick={() => setIsFileModalOpen(true)}
               readOnly
+              cursor="pointer"
             />
             {files.length > 0 && (
               <InputRightElement>
@@ -391,83 +565,363 @@ const ExpenseInformation = ({ formData, onChange, setFormData, files, setFiles }
           ))}
         </FormControl>
 
-        // Inside the ExpenseInformation component...
+        {/* Input file caché pour l'upload - Toujours présent */}
+        <Input
+          type="file"
+          ref={fileInputRef}
+          display="none"
+          multiple
+          accept="image/*,application/pdf"
+          onChange={handleUploadJustificatif}
+        />
+
+        {/* Gestionnaire de justificatifs existants - Inspiré de TransactionsImproved.jsx */}
+        {formData.id && formData.justificatifs && (
+          <>
+            <JustificatifsManager
+              justificatifs={formData.justificatifs}
+              editingFileName={editingFileName}
+              newFileName={newFileName}
+              onStartEdit={(id, name) => {
+                setEditingFileName(id);
+                setNewFileName(name);
+              }}
+              onSaveEdit={handleRenameJustificatif}
+              onCancelEdit={() => {
+                setEditingFileName(null);
+                setNewFileName('');
+              }}
+              onDeleteClick={handleDeleteJustificatifClick}
+              onFileNameChange={setNewFileName}
+              onUploadClick={() => fileInputRef.current?.click()}
+              isUploading={isUploadingJustificatif}
+            />
+          </>
+        )}
+
+        {/* Modal Justificatifs - Design de TransactionsImproved.jsx */}
         <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} size="4xl">
           <ModalOverlay />
-          <ModalContent minH="80vh">
-            <ModalHeader>Ajouter des justificatifs</ModalHeader>
-            <Box
-              borderBottomWidth="1px"
-              borderColor="red.100"
-              width="full"
-            />
-            <ModalCloseButton />
-            <ModalBody>
-              <Flex>
-                <>
-                  {files.length === 0 ? (
-                    <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', minHeight: '69vh', border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-                      <input {...getInputProps()} />
-                      <AttachmentIcon w={12} h={12} color='gray.500' />
-                      <Text>Glissez et déposez les fichiers ici, ou cliquez pour sélectionner des fichiers</Text>
-                      <Text fontSize='sm'>Formats autorisés: PNG, JPEG, PDF</Text>
-                      <Text fontSize='sm'>Taille max: 10Mo par justificatif</Text>
-                    </div>
-                  ) : (
-                    <VStack width="50%" spacing={4}>
-                      <Box w="95%">
-                        {files.map((file, index) => (
-                          <FilePreview key={index} file={file} onDelete={deleteFile} onSelect={handleFileSelect} />
-                        ))}
-                      </Box>
-                      <>
-                        <div {...getRootProps({ className: 'dropzone' })} style={{ width: '100%', padding: '10px', textAlign: 'center' }}>
-                          <input {...getInputProps()} />
-                          <Button
-                            leftIcon={<LiaCloudUploadAltSolid />}
-                            colorScheme="teal"
-                            variant="outline"
-                            bg={useColorModeValue('red.50', 'gray.800')}
-                            color={useColorModeValue('gray.600', 'white')}
-                            _hover={{
-                              bg: useColorModeValue('gray.100', 'gray.700'),
-                            }}
-                          >
-                            Ajouter d'autres fichiers
-                          </Button>
-                        </div>
-                        <Text fontSize='sm'>
-                          {`Vous pouvez encore en ajouter ${maxFiles - files.length}.`}
-                        </Text>
-                      </>
-                    </VStack>
-                  )}
-                </>
-                {selectedFile && selectedFile.type.startsWith('image/') && (
-                  <Box width="50%" height="100%">
-                    <Image
-                      src={selectedFile.preview}
-                      alt={`Preview of ${selectedFile.name}`}
-                      objectFit="cover"
-                      width="100%"
-                      height="100%"
-                    />
-                  </Box>
-                )}
+          <ModalContent>
+            <ModalHeader>
+              <Flex justify="space-between" align="center" pr={10}>
+                <Text>Justificatifs - {formData.libelle || 'Nouvelle transaction'}</Text>
+                <Button
+                  leftIcon={<FaPlus />}
+                  colorScheme="blue"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  isLoading={isUploadingJustificatif}
+                  loadingText="Upload..."
+                >
+                  Ajouter
+                </Button>
               </Flex>
+            </ModalHeader>
+            <ModalCloseButton top={4} />
+            <ModalBody pb={6}>
+              {/* Afficher les justificatifs existants (pour transactions avec ID) */}
+              {formData.id && formData.justificatifs && formData.justificatifs.length > 0 ? (
+                <VStack spacing={4} align="stretch">
+                  {formData.justificatifs.map((justificatif) => {
+                    const urlParts = justificatif.url_stockage?.split('/') || [];
+                    const filePath = `justificatifs/${urlParts[urlParts.length - 1]}`;
+
+                    return (
+                      <Box
+                        key={justificatif.id}
+                        p={4}
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        borderColor={borderColor}
+                        bg={bgColor}
+                      >
+                        <Flex justify="space-between" align="center">
+                          <VStack align="start" spacing={1} flex="1">
+                            {editingFileName === justificatif.id ? (
+                              <HStack w="100%">
+                                <Input
+                                  value={newFileName}
+                                  onChange={(e) => setNewFileName(e.target.value)}
+                                  size="sm"
+                                  autoFocus
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      handleRenameJustificatif(justificatif.id);
+                                    }
+                                  }}
+                                />
+                                <IconButton
+                                  icon={<FaSave />}
+                                  size="sm"
+                                  colorScheme="green"
+                                  onClick={() => handleRenameJustificatif(justificatif.id)}
+                                  aria-label="Sauvegarder"
+                                />
+                                <IconButton
+                                  icon={<FaTimes />}
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingFileName(null);
+                                    setNewFileName('');
+                                  }}
+                                  aria-label="Annuler"
+                                />
+                              </HStack>
+                            ) : (
+                              <HStack>
+                                <FaPaperclip />
+                                <Text fontWeight="medium">{justificatif.nom_fichier}</Text>
+                                <IconButton
+                                  icon={<FaEdit />}
+                                  size="xs"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setEditingFileName(justificatif.id);
+                                    setNewFileName(justificatif.nom_fichier);
+                                  }}
+                                  aria-label="Renommer"
+                                />
+                              </HStack>
+                            )}
+                            <Text fontSize="sm" color="gray.600">
+                              Type: {justificatif.type_fichier} • Taille: {(justificatif.taille_fichier / 1024).toFixed(2)} Ko
+                            </Text>
+                            <Text fontSize="xs" color="gray.500">
+                              Ajouté le {new Date(justificatif.created_at).toLocaleDateString('fr-FR')}
+                            </Text>
+                          </VStack>
+                          <HStack>
+                            <Button
+                              colorScheme="blue"
+                              size="sm"
+                              leftIcon={<FaFileAlt />}
+                              onClick={() => window.open(justificatif.url_stockage, '_blank')}
+                            >
+                              Voir
+                            </Button>
+                            <IconButton
+                              icon={<FaTrash />}
+                              colorScheme="red"
+                              size="sm"
+                              onClick={() => handleDeleteJustificatifClick(justificatif, filePath)}
+                              aria-label="Supprimer"
+                            />
+                          </HStack>
+                        </Flex>
+                        {justificatif.type_fichier?.startsWith('image/') && (
+                          <Box mt={4}>
+                            <Image
+                              src={justificatif.url_stockage}
+                              alt={justificatif.nom_fichier}
+                              maxH="400px"
+                              objectFit="contain"
+                              borderRadius="md"
+                            />
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </VStack>
+              ) : files.length > 0 ? (
+                /* Afficher les fichiers locaux (avant création de transaction) */
+                <VStack spacing={4} align="stretch">
+                  {files.map((file, index) => {
+                    const isImage = file.type.startsWith('image/');
+                    return (
+                      <Box
+                        key={index}
+                        p={4}
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        borderColor={borderColor}
+                        bg={bgColor}
+                      >
+                        <Flex justify="space-between" align="center">
+                          <VStack align="start" spacing={1} flex="1">
+                            {editingLocalFileIndex === index ? (
+                              <HStack w="100%">
+                                <Input
+                                  value={newLocalFileName}
+                                  onChange={(e) => setNewLocalFileName(e.target.value)}
+                                  size="sm"
+                                  autoFocus
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      handleRenameLocalFile(index);
+                                    }
+                                  }}
+                                />
+                                <IconButton
+                                  icon={<FaSave />}
+                                  size="sm"
+                                  colorScheme="green"
+                                  onClick={() => handleRenameLocalFile(index)}
+                                  aria-label="Sauvegarder"
+                                />
+                                <IconButton
+                                  icon={<FaTimes />}
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingLocalFileIndex(null);
+                                    setNewLocalFileName('');
+                                  }}
+                                  aria-label="Annuler"
+                                />
+                              </HStack>
+                            ) : (
+                              <HStack>
+                                <FaPaperclip />
+                                <Text fontWeight="medium">{file.name}</Text>
+                                <IconButton
+                                  icon={<FaEdit />}
+                                  size="xs"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setEditingLocalFileIndex(index);
+                                    setNewLocalFileName(file.name);
+                                  }}
+                                  aria-label="Renommer"
+                                />
+                              </HStack>
+                            )}
+                            <Text fontSize="sm" color="gray.600">
+                              Type: {file.type} • Taille: {(file.size / 1024).toFixed(2)} Ko
+                            </Text>
+                            <Text fontSize="xs" color="gray.500">
+                              À uploader lors de la création
+                            </Text>
+                          </VStack>
+                          <HStack>
+                            {isImage && file.preview && (
+                              <Image
+                                src={file.preview}
+                                alt={file.name}
+                                boxSize="50px"
+                                objectFit="cover"
+                                borderRadius="md"
+                              />
+                            )}
+                            <IconButton
+                              icon={<FaTrash />}
+                              colorScheme="red"
+                              size="sm"
+                              onClick={() => deleteFile(file)}
+                              aria-label="Supprimer"
+                            />
+                          </HStack>
+                        </Flex>
+                        {isImage && file.preview && (
+                          <Box mt={4}>
+                            <Image
+                              src={file.preview}
+                              alt={file.name}
+                              maxH="400px"
+                              objectFit="contain"
+                              borderRadius="md"
+                            />
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </VStack>
+              ) : (
+                /* État vide */
+                <Flex justify="center" align="center" h="200px" flexDirection="column">
+                  <FaFileAlt size={48} color="gray" />
+                  <Text mt={4} color="gray.600">Aucun justificatif disponible</Text>
+                  <Button
+                    mt={4}
+                    leftIcon={<FaPlus />}
+                    colorScheme="blue"
+                    onClick={() => fileInputRef.current?.click()}
+                    isLoading={isUploadingJustificatif}
+                  >
+                    Ajouter un justificatif
+                  </Button>
+                </Flex>
+              )}
             </ModalBody>
           </ModalContent>
         </Modal>
+
+        {/* AlertDialog pour confirmer la suppression d'un justificatif - Inspiré de TransactionsImproved.jsx */}
+        <AlertDialog
+          isOpen={isDeleteJustificatifOpen}
+          leastDestructiveRef={cancelJustificatifRef}
+          onClose={onDeleteJustificatifClose}
+          isCentered
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                <HStack spacing={3}>
+                  <Box
+                    bg="red.100"
+                    p={2}
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <FaFileAlt size={20} color="#E53E3E" />
+                  </Box>
+                  <Text>Supprimer le justificatif</Text>
+                </HStack>
+              </AlertDialogHeader>
+              <AlertDialogCloseButton />
+
+              <AlertDialogBody>
+                <VStack align="stretch" spacing={4}>
+                  <Text>
+                    Êtes-vous sûr de vouloir supprimer ce justificatif ? Cette action est irréversible.
+                  </Text>
+                  {justificatifToDelete && (
+                    <Box
+                      p={4}
+                      bg="blue.50"
+                      borderRadius="lg"
+                      border="1px"
+                      borderColor="blue.200"
+                    >
+                      <VStack align="start" spacing={2}>
+                        <HStack spacing={2}>
+                          <FaPaperclip color="#3182CE" />
+                          <Text fontSize="sm" fontWeight="semibold">
+                            {justificatifToDelete.justificatif.nom_fichier}
+                          </Text>
+                        </HStack>
+                        <Text fontSize="sm" color="gray.600">
+                          Type: {justificatifToDelete.justificatif.type_fichier}
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          Taille: {(justificatifToDelete.justificatif.taille_fichier / 1024).toFixed(2)} Ko
+                        </Text>
+                      </VStack>
+                    </Box>
+                  )}
+                </VStack>
+              </AlertDialogBody>
+
+              <AlertDialogFooter>
+                <Button ref={cancelJustificatifRef} onClick={onDeleteJustificatifClose}>
+                  Annuler
+                </Button>
+                <Button colorScheme="red" onClick={handleDeleteJustificatifConfirm} ml={3}>
+                  Supprimer
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       </VStack>
     </Box>
   );
 };
 
 const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddVentilation, onRemoveVentilation }) => {
-  const [ventilationsState, setVentilations] = useState([
-    { id: 1, amount: '', percentage: 100, selectedCategory: 'Dépense personnelle' },
-  ]);
-  
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [activeVentilationIndex, setActiveVentilationIndex] = useState(null);
 
@@ -489,35 +943,10 @@ const ExpenseVentilationComponent = ({ ventilations, onVentilationChange, onAddV
     CotisationsEtTaxes: <FcDonate />
   };
 
-  const iconColor = useColorModeValue('gray.200', 'gray.300');
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('red.100', 'gray.600');
   const hoverBg = useColorModeValue("green.100", "green.700");
   const activeBg = useColorModeValue("blue.300", "blue.800");
-
-  const handleAmountChange = (index, value) => {
-    const newVentilations = [...ventilations];
-    newVentilations[index].amount = value;
-    setVentilations(newVentilations);
-  };
-
-  const handlePercentageChange = (index, value) => {
-    if (value >= 0 && value <= 100) {
-      const newVentilations = [...ventilations];
-      newVentilations[index].percentage = value;
-      setVentilations(newVentilations);
-    }
-  };
-
-  const addVentilation = () => {
-    const newId = ventilationsState.length + 1;
-    setVentilations([...ventilationsState, { id: newId, amount: '', percentage: 0, selectedCategory: '' }]);
-  };
-  
-
-  const removeVentilation = index => {
-    setVentilations(ventilations.filter((_, i) => i !== index));
-  };
 
   const openCategoryModal = (index) => {
     setActiveVentilationIndex(index);
